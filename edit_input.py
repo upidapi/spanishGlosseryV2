@@ -3,6 +3,8 @@ import pygame as pg
 import lisseners
 
 line_data = DataClass()
+pg.init()
+
 font = pg.font.SysFont('Helvatical bold', 24)
 
 
@@ -48,6 +50,14 @@ class EditCallFuncs:
     drag = [False, None]
 
     @staticmethod
+    def get_selected():
+        return EditCallFuncs.selected_line
+
+    @staticmethod
+    def get_drag():
+        return EditCallFuncs.drag
+
+    @staticmethod
     def combine_lines(index):
         if EditCallFuncs.selected_line:
             Basic.combine_lines(index, EditCallFuncs.selected_line)
@@ -76,11 +86,10 @@ class EditCallFuncs:
                 mode += 1
 
                 if mode == 0:
-                    select_line = lisseners.Mouse(1, EditCallFuncs.selected_line)
+                    pass
 
                 if mode == 1:
-                    combine_line = lisseners.Mouse(2, EditCallFuncs.combine_lines)
-                    new_line = lisseners.Mouse(3, Basic.new_line)
+                    pass
 
             over_line = lisseners.Mouse.check_over_word()
 
@@ -102,27 +111,30 @@ class EditCallFuncs:
                     if not EditCallFuncs.selected_line:
                         Basic.new_line()
 
-                    last_item = len(line_data)
+                    last_item = len(line_data) - 1
                     # change position
                     line_data[last_item, 'x'], line_data[last_item, 'y'] = pg.mouse.get_pos()
 
-            if mode == 1:
+            if mode == 0:
                 # combine lines (left click drag)
                 if event.type == pg.MOUSEBUTTONUP and event.button == 1 and EditCallFuncs.selected_line:
                     if EditCallFuncs.drag and over_line and EditCallFuncs.selected_line != over_line:
                         Basic.combine_lines(EditCallFuncs.selected_line, over_line)
+                        lisseners.Text.set_text(line_data[EditCallFuncs.selected_line, 'text'])
 
                     EditCallFuncs.drag = False
 
                 # edit line (return)
                 if EditCallFuncs.selected_line and event.type == pg.KEYDOWN and event.key == pg.K_RETURN:
                     Basic.edit_line(EditCallFuncs.selected_line, lisseners.Text.get_text())
+                    EditCallFuncs.selected_line = None
 
-                # delete line (backspace)
-                if EditCallFuncs.selected_line and event.type == pg.KEYDOWN and event.key == pg.K_BACKSPACE:
+                # delete line (del)
+                if EditCallFuncs.selected_line and event.type == pg.KEYDOWN and event.key == pg.K_DELETE:
                     del line_data[EditCallFuncs.selected_line]
+                    EditCallFuncs.selected_line = None
 
-            if mode == 2:
+            if mode == 0:
                 # combine corresponding translations (left click drag)
                 if event.type == pg.MOUSEBUTTONUP and event.button == 1:
                     if EditCallFuncs.drag and over_line and EditCallFuncs.selected_line != over_line:

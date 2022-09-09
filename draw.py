@@ -1,6 +1,7 @@
 import pygame as pg
 from data import DataClass
 import lisseners
+import edit_input
 
 line_data = DataClass()
 font = pg.font.SysFont('Helvatical bold', 24)
@@ -23,11 +24,18 @@ def draw_pointer(selected, pointer_pos, surface):
 def draw_lines(selected, surface):
     for i, line in enumerate(line_data):
         if i == selected:
-            text = lisseners.Text.get_text()
+            text_img = font.render(lisseners.Text.get_text(), True, (255, 0, 0))
         else:
-            text = line['text']
+            text_img = font.render(line['text'], True, (0, 0, 0))
 
-        text_img = font.render(text, True, (255, 0, 0))
         surface.blit(text_img, (line['x'], line['y']))
+
+
+def draw_combine_line(selected, surface):
+    if selected and edit_input.EditCallFuncs.get_drag():
+        middle = line_data[selected]['x'] + line_data[selected]['width'] // 2, \
+                 line_data[selected]['y'] + line_data[selected]['height'] // 2
+        pg.draw.line(surface, (0, 0, 0), middle, pg.mouse.get_pos())
+
 
 

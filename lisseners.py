@@ -44,7 +44,7 @@ class Text:
 
     @staticmethod
     def set_text(text=''):
-        Text.pointer_pos = len(text) - 1
+        Text.pointer_pos = len(text)
         Text.text = text
 
 

@@ -35,7 +35,7 @@ class DataClass:
         elif type(key) is int:
             return self.data[key]
 
-        if len(key) == 2:
+        elif len(key) == 2:
             return self.data[key[0]][key[1]]
 
     def __delitem__(self, key: str | int | tuple[int, str]):
@@ -45,7 +45,7 @@ class DataClass:
         elif type(key) is int:
             del self.data[key]
 
-        if len(key) == 2:
+        elif len(key) == 2:
             del self.data[key[0]][key[1]]
 
         # changes the data in the other classes
@@ -58,7 +58,7 @@ class DataClass:
         elif type(key) is int:
             self.data[key] = value
 
-        if len(key) == 2:
+        elif len(key) == 2:
             self.data[key[0]][key[1]] = value
 
         # changes the data in the other classes
@@ -110,6 +110,7 @@ def _clean_up_data(dirty_data):
     # ]
 
     for line in dirty_data["ParsedResults"][0]["TextOverlay"]["Lines"]:
+
         line_pos = get_line_bounding_box(line)
 
         line_data = {
@@ -174,3 +175,4 @@ def new_image(select_image="spa_text_glossary_perfect"):
     json_data = get_data_from_image('selected_image.jpg', language='spa')
     # cleans up the data and saves it into the data class
     return _clean_up_data(json_data)
+

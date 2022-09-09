@@ -56,7 +56,7 @@ def get_line_bounding_box(line):
     :param line: a line (data class)
     :return: the bounding box of the line (x, y, width, height)
     """
-    
+
     min_x1, min_y1, max_x2, max_y2 = [1_000_000, 1_000_000, 0, 0]
     words = line["Words"]
     for word in words:
@@ -68,3 +68,5 @@ def get_line_bounding_box(line):
         max_y2 = max(max_y2, y2)
 
     return chords_to_wh((min_x1, min_y1, max_x2, max_y2))
+
+

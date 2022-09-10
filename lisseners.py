@@ -34,13 +34,18 @@ class Text:
                 else:
                     character = event.unicode
                     allowed_characters = '1234567890abcdefghijklmnopqrstuvwxyzåäöñè ,.()!?'
-                    if character in allowed_characters:
+                    # if the len is not 1 then it's a func key
+                    if character in allowed_characters and len(character) == 1:
                         Text.text = before_pointer + event.unicode + after_pointer
                         Text.pointer_pos += 1
 
     @staticmethod
     def get_text():
         return Text.text
+
+    @staticmethod
+    def get_pointer_pos():
+        return Text.pointer_pos
 
     @staticmethod
     def set_text(text=''):

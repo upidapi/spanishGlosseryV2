@@ -13,12 +13,12 @@ def change_title(text):
 
 def draw_pointer(selected, pointer_pos, surface):
     if selected:
-        text = line_data[pointer_pos][0:pointer_pos]
+        text = lisseners.Text.get_text()[0:pointer_pos]
         image_pos = font.render(text, True, (255, 0, 0)).get_size()
-        start_x = line_data[pointer_pos]['x'] + image_pos[0] + 2
+        start_x = line_data[selected]['x'] + image_pos[0]
+        start_y = line_data[selected]['y']
         pg.draw.rect(surface, (0, 0, 0),
-                     pg.Rect(start_x, line_data[pointer_pos]['y'] - 2,
-                     image_pos[1] + 4, 4))
+                     pg.Rect(start_x, start_y, 2, image_pos[1] + 2))
 
 
 def draw_lines(selected, surface):

@@ -32,6 +32,7 @@ while True:
     game_screen.fill((255, 255, 255))
     draw.draw_lines(EditCallFuncs.get_selected(), game_screen)
 
+    draw.draw_pointer(EditCallFuncs.get_selected(), lisseners.Text.get_pointer_pos(), game_screen)
     draw.draw_combine_line(EditCallFuncs.get_selected(), game_screen)
     # DragCheck.draw_select_box()
     EditCallFuncs.edit_modes(frame_events)

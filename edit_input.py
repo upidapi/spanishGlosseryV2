@@ -11,16 +11,16 @@ font = pg.font.SysFont('Helvatical bold', 24)
 class Basic:
     @staticmethod
     def set_line_size(index):
-        text = line_data[index]['text']
+        text = line_data[index, 'text']
         text_img = font.render(text, True, (0, 0, 0))
         text_size = text_img.get_size()
 
-        line_data[index]['width'] = text_size[0]
-        line_data[index]['height'] = text_size[1]
+        line_data[index, 'width'] = text_size[0]
+        line_data[index, 'height'] = text_size[1]
 
     @staticmethod
     def edit_line(index, text):
-        line_data[index]['text'] = text
+        line_data[index, 'text'] = text
         Basic.set_line_size(index)
 
     @staticmethod

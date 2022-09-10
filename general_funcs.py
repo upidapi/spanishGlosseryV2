@@ -70,3 +70,10 @@ def get_line_bounding_box(line):
     return chords_to_wh((min_x1, min_y1, max_x2, max_y2))
 
 
+def mouse_in_line(pos, line_data):
+    x1, y1, x2, y2 = wh_to_chords((line_data['x'], line_data['y'], line_data['width'], line_data['height']))
+
+    if x1 <= pos[0] <= x2 and y1 <= pos[1] <= y2:
+        return True
+    return False
+

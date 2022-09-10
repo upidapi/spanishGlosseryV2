@@ -2,6 +2,7 @@ import pygame as pg
 from data import DataClass
 import lisseners
 import edit_input
+from general_funcs import mouse_in_line
 
 line_data = DataClass()
 font = pg.font.SysFont('Helvatical bold', 24)
@@ -31,11 +32,70 @@ def draw_lines(selected, surface):
         surface.blit(text_img, (line['x'], line['y']))
 
 
+def get_line_points(start, end):
+    """
+    Bresenham's Line Algorithm
+    Produces a list of tuples from start and end
+
+    :param start: x1, y1
+    :param end: x2, y2
+    :return:
+    """
+    # Setup initial conditions
+    x1, y1 = start
+    x2, y2 = end
+    dx = x2 - x1
+    dy = y2 - y1
+
+    # Determine how steep the line is
+    is_steep = abs(dy) > abs(dx)
+
+    # Rotate line
+    if is_steep:
+        x1, y1 = y1, x1
+        x2, y2 = y2, x2
+
+    # Swap start and end points if necessary and store swap state
+    swapped = False
+    if x1 > x2:
+        x1, x2 = x2, x1
+        y1, y2 = y2, y1
+        swapped = True
+
+    # Recalculate differentials
+    dx = x2 - x1
+    dy = y2 - y1
+
+    # Calculate error
+    error = int(dx / 2.0)
+    ystep = 1 if y1 < y2 else -1
+
+    # Iterate over bounding box generating points between start and end
+    y = y1
+    points = []
+    for x in range(x1, x2 + 1):
+        coord = (y, x) if is_steep else (x, y)
+        points.append(coord)
+        error -= abs(dy)
+        if error < 0:
+            y += ystep
+            error += dx
+
+    # Reverse the list if the coordinates were swapped
+    if swapped:
+        points.reverse()
+
+    return points
+
+
 def draw_combine_line(selected, surface):
     if selected and edit_input.EditCallFuncs.get_drag():
-        middle = line_data[selected]['x'] + line_data[selected]['width'] // 2, \
+        x1, y1 = line_data[selected]['x'] + line_data[selected]['width'] // 2, \
                  line_data[selected]['y'] + line_data[selected]['height'] // 2
-        pg.draw.line(surface, (0, 0, 0), middle, pg.mouse.get_pos())
+        x2, y2 = pg.mouse.get_pos()
 
-
+        pixels = get_line_points((x1, y1), (x2, y2))
+        for pixel in pixels:
+            if not mouse_in_line(pixel, line_data[selected]):
+                surface.set_at(pixel, (0, 0, 0))
 

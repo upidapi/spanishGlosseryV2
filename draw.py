@@ -3,6 +3,7 @@ from data import DataClass
 import lisseners
 import edit_input
 from general_funcs import mouse_in_line
+import time
 
 line_data = DataClass()
 font = pg.font.SysFont('Helvatical bold', 24)
@@ -13,7 +14,7 @@ def change_title(text):
 
 
 def draw_pointer(selected, pointer_pos, surface):
-    if selected:
+    if selected and time.time() % 1 < 0.5:
         text = lisseners.Text.get_text()[0:pointer_pos]
         image_pos = font.render(text, True, (255, 0, 0)).get_size()
         start_x = line_data[selected]['x'] + image_pos[0]

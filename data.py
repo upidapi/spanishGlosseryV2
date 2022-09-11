@@ -41,7 +41,6 @@ class DataClass:
             return self.data[key[0]][key[1]]
 
     def __delitem__(self, key: str | int | tuple[int, str]):
-        # todo when you delete an item before the selected one you have to decree the selected_index by one
         if key == 'all':
             del self.data
 
@@ -89,6 +88,21 @@ def save_to_jason(data):
         outfile.write(json_object)
 
 
+def get_bounding_box_data(line):
+    line_pos = get_line_bounding_box(line)
+
+    line_data = {
+        'text': line['LineText'],
+
+        'x': line_pos[0],
+        'y': line_pos[1],
+        'width': line_pos[2],
+        'height': line_pos[3]
+    }
+
+    return line_data
+
+
 def _clean_up_data(dirty_data):
     """
     converts the raw return data into a better format
@@ -114,16 +128,7 @@ def _clean_up_data(dirty_data):
 
     for line in dirty_data["ParsedResults"][0]["TextOverlay"]["Lines"]:
 
-        line_pos = get_line_bounding_box(line)
-
-        line_data = {
-            'text': line['LineText'],
-
-            'x': line_pos[0],
-            'y': line_pos[1],
-            'width': line_pos[2],
-            'height': line_pos[3]
-        }
+        line_data = get_bounding_box_data(line)
 
         clean_data.append(line_data)
 

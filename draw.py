@@ -25,7 +25,10 @@ def draw_pointer(selected, pointer_pos, surface):
 def draw_lines(selected, surface):
     for i, line in enumerate(line_data):
         if i == selected:
-            text_img = font.render(lisseners.Text.get_text(), True, (255, 0, 0))
+            text = lisseners.Text.get_text()
+
+            text_img = font.render(text, True, (255, 0, 0))
+
         else:
             text_img = font.render(line['text'], True, (0, 0, 0))
 

@@ -47,7 +47,7 @@ class Basic:
 
 class EditCallFuncs:
     selected_line = None
-    drag = [False, None]
+    drag = False
 
     @staticmethod
     def get_selected():
@@ -60,14 +60,14 @@ class EditCallFuncs:
     @staticmethod
     def combine_lines(index):
         if EditCallFuncs.selected_line:
-            Basic.combine_lines(index, EditCallFuncs.selected_line)
+            Basic.combine_lines(EditCallFuncs.selected_line, index)
 
     @staticmethod
     def select_line(index):
         EditCallFuncs.selected_line = index
 
     @staticmethod
-    def edit_modes(frame_events):
+    def edit_modes(frame_events, mode):
         # move / new line (right click)
         # combine lines (left click drag), edit line (return), delete line (backspace)
         # combine corresponding translations (left click drag)
@@ -76,21 +76,7 @@ class EditCallFuncs:
         # combine (left click drag), edit (return), delete (backspace)
         # combine translations (left click drag)
 
-        mode = 0
-
         for event in frame_events:
-            # general things
-
-            # next mode (return + ctrl)
-            if event.type == pg.KEYDOWN and event.key == pg.K_RETURN and pg.key.get_mods() & pg.KMOD_CTRL:
-                mode += 1
-
-                if mode == 0:
-                    pass
-
-                if mode == 1:
-                    pass
-
             over_line = lisseners.Mouse.check_over_word()
 
             # select / unselect line (left click)
@@ -99,11 +85,11 @@ class EditCallFuncs:
                     EditCallFuncs.selected_line = over_line
                     lisseners.Text.set_text(line_data[over_line, 'text'])
             elif event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
-                EditCallFuncs.selected_line = None
+                if lisseners.Text.get_text() == '':
+                    del line_data[EditCallFuncs.selected_line]
 
-            # check start drag
-            if event.type == pg.MOUSEBUTTONDOWN and event.button == 1 and over_line:
-                EditCallFuncs.drag = True
+                lisseners.Text.set_text('')
+                EditCallFuncs.selected_line = None
 
             if mode == 0:
                 # move / new line (right click)
@@ -111,22 +97,49 @@ class EditCallFuncs:
                     if not EditCallFuncs.selected_line:
                         Basic.new_line()
 
-                    last_item = len(line_data) - 1
-                    # change position
-                    line_data[last_item, 'x'], line_data[last_item, 'y'] = pg.mouse.get_pos()
+                        EditCallFuncs.selected_line = len(line_data) - 1
 
-            if mode == 0:
+                    # change position
+                    line_data[EditCallFuncs.selected_line, 'x'], line_data[EditCallFuncs.selected_line, 'y']\
+                        = pg.mouse.get_pos()
+
+                    # edit line (return)
+                    if EditCallFuncs.selected_line and event.type == pg.KEYDOWN and event.key == pg.K_RETURN:
+                        if lisseners.Text.get_text() == '':
+                            del line_data[EditCallFuncs.selected_line]
+
+                        else:
+                            Basic.edit_line(EditCallFuncs.selected_line, lisseners.Text.get_text())
+                            lisseners.Text.set_text('')
+
+                        EditCallFuncs.selected_line = None
+
+            if mode == 1:
+                # check start drag
+                if event.type == pg.MOUSEBUTTONDOWN and event.button == 1 and over_line:
+                    EditCallFuncs.drag = True
+
                 # combine lines (left click drag)
                 if event.type == pg.MOUSEBUTTONUP and event.button == 1 and EditCallFuncs.selected_line:
                     if EditCallFuncs.drag and over_line and EditCallFuncs.selected_line != over_line:
                         Basic.combine_lines(EditCallFuncs.selected_line, over_line)
+
+                        if over_line < EditCallFuncs.selected_line:
+                            EditCallFuncs.selected_line -= 1
+
                         lisseners.Text.set_text(line_data[EditCallFuncs.selected_line, 'text'])
 
                     EditCallFuncs.drag = False
 
                 # edit line (return)
                 if EditCallFuncs.selected_line and event.type == pg.KEYDOWN and event.key == pg.K_RETURN:
-                    Basic.edit_line(EditCallFuncs.selected_line, lisseners.Text.get_text())
+                    if lisseners.Text.get_text() == '':
+                        del line_data[EditCallFuncs.selected_line]
+
+                    else:
+                        Basic.edit_line(EditCallFuncs.selected_line, lisseners.Text.get_text())
+                        lisseners.Text.set_text('')
+
                     EditCallFuncs.selected_line = None
 
                 # delete line (del)
@@ -134,7 +147,11 @@ class EditCallFuncs:
                     del line_data[EditCallFuncs.selected_line]
                     EditCallFuncs.selected_line = None
 
-            if mode == 0:
+            if mode == 2:
+                # check start drag
+                if event.type == pg.MOUSEBUTTONDOWN and event.button == 1 and over_line:
+                    EditCallFuncs.drag = True
+
                 # combine corresponding translations (left click drag)
                 if event.type == pg.MOUSEBUTTONUP and event.button == 1:
                     if EditCallFuncs.drag and over_line and EditCallFuncs.selected_line != over_line:

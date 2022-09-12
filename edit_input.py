@@ -47,7 +47,7 @@ class Basic:
         unsorted_line = line_data['all']
         unsorted_line.sort(key=lambda x: x['y'])
 
-        tolerance = 40
+        tolerance = 30
 
         last_line = unsorted_line[0]
         line_y_group = []
@@ -57,14 +57,16 @@ class Basic:
         differance = 0
 
         for line in unsorted_line:
-            differance.append(line['y'] - last_line['y'])
-            if last_line['y'] <= line['y'] <= last_line['y'] + tolerance:
+            differance += line['y'] - last_line['y']
+            if differance <= tolerance:
                 line_y_group.append(line)
             else:
                 return_data = get_multiple_lines_bounding_box(line_y_group)
                 pos = return_data[0:2]
                 size = return_data[2:4]
                 y_lines.append((pos, size))
+
+                differance = 0
 
                 line_y_group = []
 

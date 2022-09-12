@@ -89,10 +89,7 @@ def save_to_jason(data):
 
 
 def get_bounding_box_data(line):
-    # Left, Top, Width, Height
-    # x_key = 'x', y_key = 'x', height_key = 'height', width_key = 'width'
-
-    line_pos = get_line_bounding_box(line, x_key='Left', y_key='Top', width_key='Width',  height_key='Height')
+    line_pos = get_line_bounding_box(line)
 
     line_data = {
         'text': line['LineText'],

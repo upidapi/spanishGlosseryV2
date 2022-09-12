@@ -1,5 +1,8 @@
 import pygame as pg
 
+pg.init()
+font = pg.font.SysFont('Helvatical bold', 24)
+
 
 def wh_to_chords(wh: tuple[int, int, int, int]) -> tuple[int, int, int, int]:
     """
@@ -49,27 +52,51 @@ def button_click_check(button_size, click_pos=None) -> bool:
     return False
 
 
-def get_line_bounding_box(line, master_key=None, x_key='x', y_key='x', height_key='height', width_key='width'):
+def get_size_of_text(text):
+    """
+    gets the size of the text
+
+    :param text:
+    :return: the size of the text (width, height)
+    """
+
+    text_img = font.render(text, True, (0, 0, 0))
+    return text_img.get_size()
+
+
+def get_line_bounding_box(line):
     """
     gets the dimensions of the smallest possible box that contain all the words in the line
 
     :param line: a line (data class)
-    :param master_key:
-    :param x_key:
-    :param y_key:
-    :param height_key:
-    :param width_key:
     :return: the bounding box of the line (x, y, width, height)
     """
 
     min_x1, min_y1, max_x2, max_y2 = [1_000_000, 1_000_000, 0, 0]
-    if master_key:
-        words = line[master_key]
-    else:
-        words = line
-
+    words = line["Words"]
     for word in words:
-        x1, y1, x2, y2 = wh_to_chords((word[x_key], word[y_key], word[width_key], word[height_key]))
+        x1, y1, x2, y2 = wh_to_chords((word["Left"], word["Top"], word["Width"], word["Height"]))
+        # gets the min/max chords of chords to get the bounding box
+        min_x1 = min(min_x1, x1)
+        min_y1 = min(min_y1, y1)
+        max_x2 = max(max_x2, x2)
+        max_y2 = max(max_y2, y2)
+
+    return chords_to_wh((min_x1, min_y1, max_x2, max_y2))
+
+
+def get_multiple_lines_bounding_box(lines: tuple[any] | list[any]):
+    """
+    gets the dimensions of the smallest possible box that contain all the lines
+
+    :param lines: multiple lines
+    :return: the bounding box of the lines (x, y, width, height)
+    """
+
+    min_x1, min_y1, max_x2, max_y2 = [1_000_000, 1_000_000, 0, 0]
+
+    for line in lines:
+        x1, y1, x2, y2 = wh_to_chords((line['x'], line['y'], line['width'], line['height']))
         # gets the min/max chords of chords to get the bounding box
         min_x1 = min(min_x1, x1)
         min_y1 = min(min_y1, y1)
@@ -80,6 +107,13 @@ def get_line_bounding_box(line, master_key=None, x_key='x', y_key='x', height_ke
 
 
 def mouse_in_line(pos, line_data):
+    """
+    checks if the pos is inside the line
+
+    :param pos:
+    :param line_data:
+    :return: True if it's inside False otherwise
+    """
     x1, y1, x2, y2 = wh_to_chords((line_data['x'], line_data['y'], line_data['width'], line_data['height']))
 
     if x1 <= pos[0] <= x2 and y1 <= pos[1] <= y2:

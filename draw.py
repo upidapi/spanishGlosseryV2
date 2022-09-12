@@ -31,6 +31,11 @@ def draw_line_box(surface):
                        outline_width=1, outline_color=(0, 100, 255))
 
 
+def draw_translations_box(translations, surface):
+    for translation in translations:
+        pg.draw.rect(surface, (0, 0, 255), translation, 1)
+
+
 def draw_top_line(surface):
     for line in line_data:
         pg.draw.line(surface, (255, 0, 0), (0, line['y']), (1000, line['y']))

@@ -1,4 +1,4 @@
-import general_funcs
+from general_funcs import *
 from data import DataClass
 import pygame as pg
 import lisseners
@@ -6,15 +6,13 @@ import lisseners
 line_data = DataClass()
 pg.init()
 
-font = pg.font.SysFont('Helvatical bold', 24)
+# font = pg.font.SysFont('Helvatical bold', 24)
 
 
 class Basic:
     @staticmethod
     def set_line_size(index):
-        text = line_data[index, 'text']
-        text_img = font.render(text, True, (0, 0, 0))
-        text_size = text_img.get_size()
+        text_size = get_size_of_text(line_data[index, 'text'])
 
         line_data[index, 'width'] = text_size[0]
         line_data[index, 'height'] = text_size[1]
@@ -39,8 +37,7 @@ class Basic:
     @staticmethod
     def combine_lines(l1_index, l2_index):
         # gets the width of one space
-        space_img = font.render(' ', True, (0, 0, 0))
-        one_space = space_img.get_size()[0]
+        one_space = get_size_of_text(' ')[0]
         line_data[l1_index, 'width'] = line_data[l1_index, 'width'] + one_space + line_data[l2_index, 'width']
         line_data[l1_index, 'text'] = line_data[l1_index, 'text'] + ' ' + line_data[l2_index, 'text']
         del line_data[l2_index]
@@ -50,9 +47,36 @@ class Basic:
         unsorted_line = line_data['all']
         unsorted_line.sort(key=lambda x: x['y'])
 
-        for line in unsorted_line:
-            general_funcs.get_line_bounding_box()
+        tolerance = 40
 
+        last_line = unsorted_line[0]
+        line_y_group = []
+
+        y_lines = []
+
+        differance = 0
+
+        for line in unsorted_line:
+            differance.append(line['y'] - last_line['y'])
+            if last_line['y'] <= line['y'] <= last_line['y'] + tolerance:
+                line_y_group.append(line)
+            else:
+                return_data = get_multiple_lines_bounding_box(line_y_group)
+                pos = return_data[0:2]
+                size = return_data[2:4]
+                y_lines.append((pos, size))
+
+                line_y_group = []
+
+            last_line = line
+
+        return_data = get_multiple_lines_bounding_box(line_y_group)
+        pos = return_data[0:2]
+        size = return_data[2:4]
+        y_lines.append((pos, size))
+
+        print(differance)
+        return y_lines
 
 
 class EditCallFuncs:

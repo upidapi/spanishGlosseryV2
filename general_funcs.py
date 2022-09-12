@@ -49,18 +49,27 @@ def button_click_check(button_size, click_pos=None) -> bool:
     return False
 
 
-def get_line_bounding_box(line):
+def get_line_bounding_box(line, master_key=None, x_key='x', y_key='x', height_key='height', width_key='width'):
     """
     gets the dimensions of the smallest possible box that contain all the words in the line
-    
+
     :param line: a line (data class)
+    :param master_key:
+    :param x_key:
+    :param y_key:
+    :param height_key:
+    :param width_key:
     :return: the bounding box of the line (x, y, width, height)
     """
 
     min_x1, min_y1, max_x2, max_y2 = [1_000_000, 1_000_000, 0, 0]
-    words = line["Words"]
+    if master_key:
+        words = line[master_key]
+    else:
+        words = line
+
     for word in words:
-        x1, y1, x2, y2 = wh_to_chords((word["Left"], word["Top"], word["Width"], word["Height"]))
+        x1, y1, x2, y2 = wh_to_chords((word[x_key], word[y_key], word[width_key], word[height_key]))
         # gets the min/max chords of chords to get the bounding box
         min_x1 = min(min_x1, x1)
         min_y1 = min(min_y1, y1)

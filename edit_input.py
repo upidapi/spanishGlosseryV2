@@ -1,3 +1,4 @@
+import general_funcs
 from data import DataClass
 import pygame as pg
 import lisseners
@@ -43,6 +44,15 @@ class Basic:
         line_data[l1_index, 'width'] = line_data[l1_index, 'width'] + one_space + line_data[l2_index, 'width']
         line_data[l1_index, 'text'] = line_data[l1_index, 'text'] + ' ' + line_data[l2_index, 'text']
         del line_data[l2_index]
+
+    @staticmethod
+    def find_translation():
+        unsorted_line = line_data['all']
+        unsorted_line.sort(key=lambda x: x['y'])
+
+        for line in unsorted_line:
+            general_funcs.get_line_bounding_box()
+
 
 
 class EditCallFuncs:

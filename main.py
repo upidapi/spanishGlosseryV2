@@ -1,6 +1,7 @@
+import edit_input
 import lisseners
 from edit_input import EditCallFuncs, Basic
-from data import DataClass, new_image
+from data import DataClass
 import pygame as pg
 import draw
 
@@ -67,6 +68,10 @@ def edit_event_loop():
 
     EditCallFuncs.edit_modes(frame_events, mode)
 
+    # draw.draw_line_box(game_screen)
+    # draw.draw_top_line(game_screen)
+    draw.draw_translations_box(edit_input.Basic.find_translation(), game_screen)
+
 
 # new_image('spa_text_glossary_perfect')
 
@@ -75,9 +80,9 @@ text_image_dir = 'selected_image.jpg'
 pg_text_img = pg.image.load(text_image_dir)
 
 font = pg.font.SysFont('Helvatical bold', 24)
+clock = pg.time.Clock()
 
 game_screen = pg.display.set_mode((pg_text_img.get_size()))
-clock = pg.time.Clock()
 pg.display.set_caption('add/move lines')
 
 draw_text = True

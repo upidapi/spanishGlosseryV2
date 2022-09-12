@@ -1,3 +1,4 @@
+from general_funcs import *
 from data import DataClass
 import pygame as pg
 import lisseners
@@ -5,15 +6,14 @@ import lisseners
 line_data = DataClass()
 pg.init()
 
-font = pg.font.SysFont('Helvatical bold', 24)
+
+# font = pg.font.SysFont('Helvatical bold', 24)
 
 
 class Basic:
     @staticmethod
     def set_line_size(index):
-        text = line_data[index, 'text']
-        text_img = font.render(text, True, (0, 0, 0))
-        text_size = text_img.get_size()
+        text_size = get_size_of_text(line_data[index, 'text'])
 
         line_data[index, 'width'] = text_size[0]
         line_data[index, 'height'] = text_size[1]
@@ -38,11 +38,52 @@ class Basic:
     @staticmethod
     def combine_lines(l1_index, l2_index):
         # gets the width of one space
-        space_img = font.render(' ', True, (0, 0, 0))
-        one_space = space_img.get_size()[0]
+        one_space = get_size_of_text(' ')[0]
         line_data[l1_index, 'width'] = line_data[l1_index, 'width'] + one_space + line_data[l2_index, 'width']
         line_data[l1_index, 'text'] = line_data[l1_index, 'text'] + ' ' + line_data[l2_index, 'text']
         del line_data[l2_index]
+
+    @staticmethod
+    def find_translation():
+        unsorted_line = line_data['all'].copy()
+        unsorted_line.sort(key=lambda x: x['y'])
+
+        # the percentage you remove from the line
+        # 0 -> the line has to overlap with the hotbox
+        # 0.5 -> half the line has to overlap
+        # 1 -> the center has to overlap
+        # 2 -> the whole lines has to be inside
+
+        margins = 1
+
+        current_lines = []
+        translations = []
+        for line in unsorted_line:
+            # if it's empty
+            if not current_lines:
+                current_lines.append(line)
+            else:
+                bounding_box = wh_to_chords(get_multiple_lines_bounding_box(current_lines))
+                # decreases the line "size" by size * margins
+                # line['y']                  + line['height'] * margins / 2
+                # line['y'] + line['height'] - line['height'] * margins / 2
+                # a + (x - x * m / 2)
+                # a + x(1 - m / 2)
+
+                bottom_line = line['y'] + line['height'] * margins / 2
+                top_line = line['y'] + line['height'] * (1 - margins / 2)
+
+                if bounding_box[1] <= bottom_line <= bounding_box[3] or \
+                        bounding_box[1] <= top_line <= bounding_box[3]:
+                    current_lines.append(line)
+                else:
+                    translations.append(chords_to_wh(bounding_box))
+                    current_lines = [line]
+
+        bounding_box = wh_to_chords(get_multiple_lines_bounding_box(current_lines))
+        translations.append(chords_to_wh(bounding_box))
+
+        return translations
 
 
 class EditCallFuncs:
@@ -100,12 +141,11 @@ class EditCallFuncs:
                         EditCallFuncs.selected_line = len(line_data) - 1
 
                     # change position
-                    line_data[EditCallFuncs.selected_line, 'x'], line_data[EditCallFuncs.selected_line, 'y']\
+                    line_data[EditCallFuncs.selected_line, 'x'], line_data[EditCallFuncs.selected_line, 'y'] \
                         = pg.mouse.get_pos()
 
                 # edit line (return)
                 if EditCallFuncs.selected_line and event.type == pg.KEYDOWN and event.key == pg.K_RETURN:
-                    print('e')
                     if lisseners.Text.get_text() == '':
                         del line_data[EditCallFuncs.selected_line]
 

@@ -13,6 +13,34 @@ def change_title(text):
     pg.display.set_caption(text)
 
 
+def draw_rgba_rect(surface, color, start, size, outline_width=0, outline_color=(0, 0, 0)):
+    # drawing a rect with alpha
+    select_rect = pg.Surface(size)  # the size of your rect
+    select_rect.set_alpha(color[3])  # alpha level
+    select_rect.fill((color[0], color[1], color[2]))  # this fills the entire surface
+
+    surface.blit(select_rect, start)  # (0,0) are the top-left coordinates
+
+    # draws the outline
+    pg.draw.rect(surface, outline_color, start + size, outline_width)
+
+
+def draw_line_box(surface):
+    for line in line_data:
+        draw_rgba_rect(surface, (200, 200, 255, 128), (line['x'], line['y']), (line['width'], line['height']),
+                       outline_width=1, outline_color=(0, 100, 255))
+
+
+def draw_translations_box(translations, surface):
+    for translation in translations:
+        pg.draw.rect(surface, (0, 0, 255), translation, 1)
+
+
+def draw_top_line(surface):
+    for line in line_data:
+        pg.draw.line(surface, (255, 0, 0), (0, line['y']), (1000, line['y']))
+
+
 def draw_pointer(selected, pointer_pos, surface):
     if selected and time.time() % 1 < 0.5:
         text = lisseners.Text.get_text()[0:pointer_pos]

@@ -126,16 +126,17 @@ class EditCallFuncs:
                     line_data[EditCallFuncs.selected_line, 'x'], line_data[EditCallFuncs.selected_line, 'y'] \
                         = pg.mouse.get_pos()
 
-                    # edit line (return)
-                    if EditCallFuncs.selected_line and event.type == pg.KEYDOWN and event.key == pg.K_RETURN:
-                        if lisseners.Text.get_text() == '':
-                            del line_data[EditCallFuncs.selected_line]
+                # edit line (return)
+                if EditCallFuncs.selected_line and event.type == pg.KEYDOWN and event.key == pg.K_RETURN:
+                    print('e')
+                    if lisseners.Text.get_text() == '':
+                        del line_data[EditCallFuncs.selected_line]
 
-                        else:
-                            Basic.edit_line(EditCallFuncs.selected_line, lisseners.Text.get_text())
-                            lisseners.Text.set_text('')
+                    else:
+                        Basic.edit_line(EditCallFuncs.selected_line, lisseners.Text.get_text())
+                        lisseners.Text.set_text('')
 
-                        EditCallFuncs.selected_line = None
+                    EditCallFuncs.selected_line = None
 
             if mode == 1:
                 # check start drag

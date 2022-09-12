@@ -6,6 +6,7 @@ import lisseners
 line_data = DataClass()
 pg.init()
 
+
 # font = pg.font.SysFont('Helvatical bold', 24)
 
 
@@ -47,38 +48,24 @@ class Basic:
         unsorted_line = line_data['all']
         unsorted_line.sort(key=lambda x: x['y'])
 
-        tolerance = 30
-
-        last_line = unsorted_line[0]
-        line_y_group = []
-
-        y_lines = []
-
-        differance = 0
-
+        current_lines = []
+        translations = []
         for line in unsorted_line:
-            differance += line['y'] - last_line['y']
-            if differance <= tolerance:
-                line_y_group.append(line)
+            # if it's empty
+            if not current_lines:
+                current_lines.append(line)
             else:
-                return_data = get_multiple_lines_bounding_box(line_y_group)
-                pos = return_data[0:2]
-                size = return_data[2:4]
-                y_lines.append((pos, size))
+                bounding_box = wh_to_chords(get_multiple_lines_bounding_box(current_lines))
 
-                differance = 0
+                if bounding_box[1] <= line['y'] <= bounding_box[3] or \
+                        bounding_box[1] <= line['y'] + line['height'] <= bounding_box[3]:
+                    current_lines.append(line)
+                else:
+                    print(line['text'], bounding_box[1], line['y'] + line['height'], line['y'], bounding_box[3])
+                    translations.append(chords_to_wh(bounding_box))
+                    current_lines = [line]
 
-                line_y_group = []
-
-            last_line = line
-
-        return_data = get_multiple_lines_bounding_box(line_y_group)
-        pos = return_data[0:2]
-        size = return_data[2:4]
-        y_lines.append((pos, size))
-
-        print(differance)
-        return y_lines
+        return translations
 
 
 class EditCallFuncs:
@@ -136,7 +123,7 @@ class EditCallFuncs:
                         EditCallFuncs.selected_line = len(line_data) - 1
 
                     # change position
-                    line_data[EditCallFuncs.selected_line, 'x'], line_data[EditCallFuncs.selected_line, 'y']\
+                    line_data[EditCallFuncs.selected_line, 'x'], line_data[EditCallFuncs.selected_line, 'y'] \
                         = pg.mouse.get_pos()
 
                 # edit line (return)

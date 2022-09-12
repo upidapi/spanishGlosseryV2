@@ -69,7 +69,7 @@ def edit_event_loop():
     EditCallFuncs.edit_modes(frame_events, mode)
 
     # draw.draw_line_box(game_screen)
-    draw.draw_top_line(game_screen)
+    # draw.draw_top_line(game_screen)
     draw.draw_translations_box(edit_input.Basic.find_translation(), game_screen)
 
 

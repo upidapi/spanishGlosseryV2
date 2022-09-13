@@ -1,6 +1,6 @@
 import edit_input
 import lisseners
-from edit_input import EditCallFuncs, Basic
+from edit_input import EditCallFuncs, Basic, Check
 from data import DataClass
 import pygame as pg
 import draw
@@ -46,17 +46,17 @@ def check_next_mode(frame_events):
         lisseners.listen(frame_events)
         game_screen.fill((255, 255, 255))
 
-        draw.draw_lines(EditCallFuncs.get_selected(), game_screen)
+        draw.draw_lines(Check.get_selected(), game_screen)
 
         if mode == 0:
-            draw.draw_pointer(EditCallFuncs.get_selected(), lisseners.Text.get_pointer_pos(), game_screen)
+            draw.draw_pointer(Check.get_selected(), lisseners.Text.get_pointer_pos(), game_screen)
 
         if mode == 1:
-            draw.draw_combine_line(EditCallFuncs.get_selected(), game_screen)
+            draw.draw_combine_line(Check.get_selected(), game_screen)
             draw.draw_translations_box(edit_input.Basic.find_translation(), game_screen)
 
         if mode == 2:
-            draw.draw_pointer(EditCallFuncs.get_selected(), lisseners.Text.get_pointer_pos(), game_screen)
+            draw.draw_pointer(Check.get_selected(), lisseners.Text.get_pointer_pos(), game_screen)
 
     else:
         game_screen.blit(pg_text_img, (0, 0))

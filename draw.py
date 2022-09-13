@@ -121,7 +121,7 @@ def get_line_points(start, end):
 
 
 def draw_combine_line(selected, surface):
-    if selected and edit_input.EditCallFuncs.get_drag():
+    if selected and edit_input.Check.get_drag():
         x1, y1 = line_data[selected]['x'] + line_data[selected]['width'] // 2, \
                  line_data[selected]['y'] + line_data[selected]['height'] // 2
         x2, y2 = pg.mouse.get_pos()

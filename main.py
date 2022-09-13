@@ -29,12 +29,13 @@ def check_next_mode(frame_events):
                 mode += 1
 
                 if mode == 1:
-                    pg.display.set_caption('combine/edit/delete lines')
+                    pg.display.set_caption('combine/delete/move lines')
                     for i in range(len(data)):
                         Basic.set_line_size(i)
 
                 if mode == 2:
-                    pg.display.set_caption('combine translations')
+                    # todo run autocorrect one every word (languish based on translation)
+                    pg.display.set_caption('edit lines')
 
             if event.type == pg.KEYDOWN and event.key == pg.K_s:
                 draw_text = False
@@ -51,11 +52,11 @@ def check_next_mode(frame_events):
             draw.draw_pointer(EditCallFuncs.get_selected(), lisseners.Text.get_pointer_pos(), game_screen)
 
         if mode == 1:
-            draw.draw_pointer(EditCallFuncs.get_selected(), lisseners.Text.get_pointer_pos(), game_screen)
             draw.draw_combine_line(EditCallFuncs.get_selected(), game_screen)
+            draw.draw_translations_box(edit_input.Basic.find_translation(), game_screen)
 
         if mode == 2:
-            draw.draw_combine_line(EditCallFuncs.get_selected(), game_screen)
+            draw.draw_pointer(EditCallFuncs.get_selected(), lisseners.Text.get_pointer_pos(), game_screen)
 
     else:
         game_screen.blit(pg_text_img, (0, 0))
@@ -71,7 +72,6 @@ def edit_event_loop():
 
     # draw.draw_line_box(game_screen)
     # draw.draw_top_line(game_screen)
-    draw.draw_translations_box(edit_input.Basic.find_translation(), game_screen)
 
 
 # new_image('spa_text_glossary_perfect')

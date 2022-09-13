@@ -87,6 +87,43 @@ class Basic:
         return translations
 
 
+class Check:
+    selected_line = None
+
+    @staticmethod
+    def move_line(frame_events):
+        for event in frame_events:
+            if event.type == pg.MOUSEBUTTONDOWN and event.button == 3:
+                # change position
+                line_data[EditCallFuncs.selected_line, 'x'], line_data[EditCallFuncs.selected_line, 'y'] \
+                    = pg.mouse.get_pos()
+
+    @staticmethod
+    def new_line(frame_events):
+        for event in frame_events:
+            if event.type == pg.MOUSEBUTTONDOWN and event.button == 3:
+                if not EditCallFuncs.selected_line:
+                    Basic.new_line()
+
+                    EditCallFuncs.selected_line = len(line_data) - 1
+
+                # change position
+                Check.move_line(frame_events)
+
+    @staticmethod
+    def edit_line(frame_events):
+        for event in frame_events:
+            if EditCallFuncs.selected_line and event.type == pg.KEYDOWN and event.key == pg.K_RETURN:
+                if lisseners.Text.get_text() == '':
+                    # todo everything should use Check.selected line this will cause problems
+                    del line_data[Check.selected_line]
+
+                else:
+                    Basic.edit_line(EditCallFuncs.selected_line, lisseners.Text.get_text())
+                    lisseners.Text.set_text('')
+
+                EditCallFuncs.selected_line = None
+
 class EditCallFuncs:
     selected_line = None
     drag = False
@@ -147,7 +184,6 @@ class EditCallFuncs:
 
                 # edit line (return)
                 if EditCallFuncs.selected_line and event.type == pg.KEYDOWN and event.key == pg.K_RETURN:
-                    print('e')
                     if lisseners.Text.get_text() == '':
                         del line_data[EditCallFuncs.selected_line]
 

@@ -22,6 +22,7 @@ def check_exit(frame_events):
 def check_next_mode(frame_events):
     global mode, font, draw_text
     # next mode (return + ctrl)
+    # todo change the order things happen 1. 'add/move lines' 2. combine/delete/move 3. edit lines
     for event in frame_events:
         if pg.key.get_mods() & pg.KMOD_CTRL:
             if event.type == pg.KEYDOWN and event.key == pg.K_RETURN:

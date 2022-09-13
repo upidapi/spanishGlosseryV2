@@ -2,7 +2,7 @@ import pygame as pg
 from data import DataClass
 import lisseners
 import edit_input
-from general_funcs import mouse_in_line, get_size_of_text
+from general_funcs import *
 import time
 
 line_data = DataClass()
@@ -86,13 +86,38 @@ def draw_line_box(surface):
 
 
 # normal draws
-def draw_translations_box(translations, surface):
-    for translation in translations:
-        pg.draw.rect(surface, (0, 0, 255), translation, 1)
+def draw_translations_box(translation_lines, surface):
+    for translations in translation_lines:
+        dim = get_multiple_lines_bounding_box(translations)
+        pg.draw.rect(surface, (0, 0, 255), dim, 1)
+
+
+def draw_translation_lines(translation_lines, surface):
+    for translations in translation_lines:
+        translations.sort(key=lambda x: x['x'])
+        full_translations = (len(translations) // 2)
+
+        for i in range(full_translations):
+            line = translations[i * 2]
+            dim1 = line['x'], line['y'], line['width'], line['height']
+            line = translations[i * 2 + 1]
+            dim2 = line['x'], line['y'], line['width'], line['height']
+
+            x1, y1 = dim1[0] + dim1[2] // 2, dim1[1] + dim1[3] // 2
+            x2, y2 = dim2[0] + dim2[2] // 2, dim2[1] + dim2[3] // 2
+
+            pixels = get_line_points((x1, y1), (x2, y2))
+            for pixel in pixels:
+                if not mouse_in_line(pixel, translations[i * 2]) and not mouse_in_line(pixel, translations[i * 2 + 1]):
+                    surface.set_at(pixel, (0, 0, 0))
+
+        if len(translations) != full_translations * 2:
+            dim = translations[-1]['x'], translations[-1]['y'], translations[-1]['width'], translations[-1]['height']
+            pg.draw.rect(surface, (255, 0, 0), dim, 1)
 
 
 def draw_pointer(selected, pointer_pos, surface):
-    if selected and time.time() % 1 < 0.5:
+    if selected is not None and time.time() % 1 < 0.5:
         text = lisseners.Text.get_text()[0:pointer_pos]
         text_size = get_size_of_text(text)
 
@@ -116,7 +141,7 @@ def draw_lines(selected, surface):
 
 
 def draw_combine_line(selected, surface):
-    if selected and edit_input.Check.get_drag():
+    if selected is not None and edit_input.Check.get_drag():
         x1, y1 = line_data[selected]['x'] + line_data[selected]['width'] // 2, \
                  line_data[selected]['y'] + line_data[selected]['height'] // 2
         x2, y2 = pg.mouse.get_pos()

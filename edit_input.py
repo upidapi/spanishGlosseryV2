@@ -74,11 +74,10 @@ class Basic:
                         bounding_box[1] <= top_line <= bounding_box[3]:
                     current_lines.append(line)
                 else:
-                    translations.append(chords_to_wh(bounding_box))
+                    translations.append(current_lines)
                     current_lines = [line]
 
-        bounding_box = wh_to_chords(get_multiple_lines_bounding_box(current_lines))
-        translations.append(chords_to_wh(bounding_box))
+        translations.append(current_lines)
 
         return translations
 
@@ -123,7 +122,7 @@ class Check:
         """
         over_line = lisseners.Mouse.check_over_word()
         if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
-            if over_line:
+            if over_line is not None:
                 Check.selected = over_line
                 lisseners.Text.set_text(line_data[over_line, 'text'])
         elif event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
@@ -140,7 +139,7 @@ class Check:
 
         :param event: the "pg.event"
         """
-        if event.type == pg.MOUSEBUTTONDOWN and event.button == 3:
+        if event.type == pg.MOUSEBUTTONDOWN and event.button == 3 and Check.selected is not None:
             # change position
             line_data[Check.selected, 'x'], line_data[Check.selected, 'y'] \
                 = pg.mouse.get_pos()
@@ -153,7 +152,8 @@ class Check:
         :param event: the "pg.event"
         """
         if event.type == pg.MOUSEBUTTONDOWN and event.button == 3:
-            if not Check.selected:
+            if Check.selected is None:
+                print('new')
                 Basic.new_line()
 
                 Check.selected = len(line_data) - 1
@@ -168,7 +168,7 @@ class Check:
 
         :param event: the "pg.event"
         """
-        if Check.selected and event.type == pg.KEYDOWN and event.key == pg.K_RETURN:
+        if Check.selected is not None and event.type == pg.KEYDOWN and event.key == pg.K_RETURN:
             if lisseners.Text.get_text() == '':
                 del line_data[Check.selected]
 
@@ -187,7 +187,7 @@ class Check:
         """
         over_line = lisseners.Mouse.check_over_word()
 
-        if event.type == pg.MOUSEBUTTONUP and event.button == 1 and Check.selected:
+        if event.type == pg.MOUSEBUTTONUP and event.button == 1 and Check.selected is not None:
             if Check.drag and over_line and Check.selected != over_line:
                 Basic.combine_lines(Check.selected, over_line)
 
@@ -205,7 +205,7 @@ class Check:
 
         :param event: the "pg.event"
         """
-        if Check.selected and event.type == pg.KEYDOWN and event.key == pg.K_DELETE:
+        if Check.selected is not None and event.type == pg.KEYDOWN and event.key == pg.K_DELETE:
             del line_data[Check.selected]
             Check.selected = None
 

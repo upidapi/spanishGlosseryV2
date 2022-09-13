@@ -51,6 +51,7 @@ def draw_mode(frame_events):
         if mode == 1:
             draw.draw_combine_line(Check.get_selected(), game_screen)
             draw.draw_translations_box(Basic.find_translation(), game_screen)
+            draw.draw_translation_lines(Basic.find_translation(), game_screen)
 
         if mode == 2:
             draw.draw_pointer(Check.get_selected(), Text.get_pointer_pos(), game_screen)
@@ -75,6 +76,8 @@ def do_action(frame_events):
             # edit line (return)
             Check.edit_line(event)
 
+            # edit line (return)
+            Check.new_line(event)
 
         if mode == 1:
             # check start drag (left click)
@@ -112,6 +115,7 @@ def main():
     draw_text = True
 
     data = DataClass()
+    print(data[0])
     pg.init()
     clock = pg.time.Clock()
 
@@ -129,5 +133,6 @@ def main():
         clock.tick(60)
 
 
+# todo you can't click the top left line (vocabulary) due to it being the first line
 if __name__ == '__main__':
     main()

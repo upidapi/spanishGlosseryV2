@@ -188,15 +188,21 @@ class EditCallFuncs:
                     del line_data[EditCallFuncs.selected_line]
                     EditCallFuncs.selected_line = None
 
-            if mode == 2:
-                # check start drag
-                if event.type == pg.MOUSEBUTTONDOWN and event.button == 1 and over_line:
-                    EditCallFuncs.drag = True
-
-                # combine corresponding translations (left click drag)
-                if event.type == pg.MOUSEBUTTONUP and event.button == 1:
-                    if EditCallFuncs.drag and over_line and EditCallFuncs.selected_line != over_line:
-                        pass
-                        # todo add the save to corresponding translation
-
-                    EditCallFuncs.drag = False
+            # if mode == 2:
+            #     # move line (right click)
+            #     if event.type == pg.MOUSEBUTTONDOWN and event.button == 3:
+            #         # change position
+            #         line_data[EditCallFuncs.selected_line, 'x'], line_data[EditCallFuncs.selected_line, 'y'] \
+            #             = pg.mouse.get_pos()
+            #
+            #     # check start drag
+            #     if event.type == pg.MOUSEBUTTONDOWN and event.button == 1 and over_line:
+            #         EditCallFuncs.drag = True
+            #
+            #     # combine corresponding translations (left click drag)
+            #     if event.type == pg.MOUSEBUTTONUP and event.button == 1:
+            #         if EditCallFuncs.drag and over_line and EditCallFuncs.selected_line != over_line:
+            #             pass
+            #             # todo add the save to corresponding translation
+            #
+            #         EditCallFuncs.drag = False

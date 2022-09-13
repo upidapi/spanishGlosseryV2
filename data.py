@@ -11,7 +11,6 @@ class DataClass:
     # get modify or delete data from the master data in a pythonic way
     def __init__(self):
         DataClass.instances.append(self)
-        print(DataClass.instances)
 
         # gets the data
         with open("sample.json") as jsonFile:
@@ -21,7 +20,6 @@ class DataClass:
         self.data = json_object
 
     def set_data(self):
-        print('set')
         for obj in DataClass.instances:
             obj.data = self.data
 

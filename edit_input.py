@@ -172,7 +172,6 @@ class Check:
         """
         if Check.selected and event.type == pg.KEYDOWN and event.key == pg.K_RETURN:
             if lisseners.Text.get_text() == '':
-                # todo everything should use Check.selected line this will cause problems
                 del line_data[Check.selected]
 
             else:
@@ -221,10 +220,8 @@ class EditCallFuncs:
         # edit (return)
 
         for event in frame_events:
-            over_line = lisseners.Mouse.check_over_word()
-
             # select / unselect line (left click)
-            Check.selected_line(event)
+            Check.select_line(event)
 
             if mode == 0:
                 # move / new line (right click)

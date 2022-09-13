@@ -2,17 +2,14 @@ import pygame as pg
 from data import DataClass
 import lisseners
 import edit_input
-from general_funcs import mouse_in_line
+from general_funcs import mouse_in_line, get_size_of_text
 import time
 
 line_data = DataClass()
 font = pg.font.SysFont('Helvatical bold', 24)
 
 
-def change_title(text):
-    pg.display.set_caption(text)
-
-
+# general definitions
 def draw_rgba_rect(surface, color, start, size, outline_width=0, outline_color=(0, 0, 0)):
     # drawing a rect with alpha
     select_rect = pg.Surface(size)  # the size of your rect
@@ -23,45 +20,6 @@ def draw_rgba_rect(surface, color, start, size, outline_width=0, outline_color=(
 
     # draws the outline
     pg.draw.rect(surface, outline_color, start + size, outline_width)
-
-
-def draw_line_box(surface):
-    for line in line_data:
-        draw_rgba_rect(surface, (200, 200, 255, 128), (line['x'], line['y']), (line['width'], line['height']),
-                       outline_width=1, outline_color=(0, 100, 255))
-
-
-def draw_translations_box(translations, surface):
-    for translation in translations:
-        pg.draw.rect(surface, (0, 0, 255), translation, 1)
-
-
-def draw_top_line(surface):
-    for line in line_data:
-        pg.draw.line(surface, (255, 0, 0), (0, line['y']), (1000, line['y']))
-
-
-def draw_pointer(selected, pointer_pos, surface):
-    if selected and time.time() % 1 < 0.5:
-        text = lisseners.Text.get_text()[0:pointer_pos]
-        image_pos = font.render(text, True, (255, 0, 0)).get_size()
-        start_x = line_data[selected]['x'] + image_pos[0]
-        start_y = line_data[selected]['y']
-        pg.draw.rect(surface, (0, 0, 0),
-                     pg.Rect(start_x, start_y, 2, image_pos[1] + 2))
-
-
-def draw_lines(selected, surface):
-    for i, line in enumerate(line_data):
-        if i == selected:
-            text = lisseners.Text.get_text()
-
-            text_img = font.render(text, True, (255, 0, 0))
-
-        else:
-            text_img = font.render(line['text'], True, (0, 0, 0))
-
-        surface.blit(text_img, (line['x'], line['y']))
 
 
 def get_line_points(start, end):
@@ -120,6 +78,43 @@ def get_line_points(start, end):
     return points
 
 
+# debug thing
+def draw_line_box(surface):
+    for line in line_data:
+        draw_rgba_rect(surface, (200, 200, 255, 128), (line['x'], line['y']), (line['width'], line['height']),
+                       outline_width=1, outline_color=(0, 100, 255))
+
+
+# normal draws
+def draw_translations_box(translations, surface):
+    for translation in translations:
+        pg.draw.rect(surface, (0, 0, 255), translation, 1)
+
+
+def draw_pointer(selected, pointer_pos, surface):
+    if selected and time.time() % 1 < 0.5:
+        text = lisseners.Text.get_text()[0:pointer_pos]
+        text_size = get_size_of_text(text)
+
+        start_x = line_data[selected]['x'] + get_size_of_text(text)[0]
+        start_y = line_data[selected]['y']
+        pg.draw.rect(surface, (0, 0, 0),
+                     pg.Rect(start_x, start_y, 2, text_size[1] + 2))
+
+
+def draw_lines(selected, surface):
+    for i, line in enumerate(line_data):
+        if i == selected:
+            text = lisseners.Text.get_text()
+
+            text_img = font.render(text, True, (255, 0, 0))
+
+        else:
+            text_img = font.render(line['text'], True, (0, 0, 0))
+
+        surface.blit(text_img, (line['x'], line['y']))
+
+
 def draw_combine_line(selected, surface):
     if selected and edit_input.Check.get_drag():
         x1, y1 = line_data[selected]['x'] + line_data[selected]['width'] // 2, \
@@ -130,4 +125,3 @@ def draw_combine_line(selected, surface):
         for pixel in pixels:
             if not mouse_in_line(pixel, line_data[selected]):
                 surface.set_at(pixel, (0, 0, 0))
-

@@ -6,8 +6,6 @@ import lisseners
 line_data = DataClass()
 pg.init()
 
-font = pg.font.SysFont('Helvatical bold', 24)
-
 
 class Basic:
     @staticmethod
@@ -239,14 +237,6 @@ class Check:
 #
 #                 # delete line (del)
 #                 Check.delete_line(event)
-#
-#                 # not implemented!
-#                 # # combine corresponding translations (left click drag)
-#                 # if event.type == pg.MOUSEBUTTONUP and event.button == 1:
-#                 #     if EditCallFuncs.drag and over_line and EditCallFuncs.selected_line != over_line:
-#                 #         pass
-#                 #
-#                 #     EditCallFuncs.drag = False
 #
 #             if mode == 2:
 #                 # edit line (return)

@@ -1,6 +1,6 @@
 import edit_input
 import lisseners
-from edit_input import EditCallFuncs, Basic, Check
+from edit_input import Basic, Check
 from data import DataClass
 import pygame as pg
 import draw
@@ -30,6 +30,7 @@ def check_next_mode(frame_events):
 
                 if mode == 1:
                     pg.display.set_caption('combine/delete/move lines')
+
                     for i in range(len(data)):
                         Basic.set_line_size(i)
 
@@ -42,6 +43,8 @@ def check_next_mode(frame_events):
             if event.type == pg.KEYUP and event.key == pg.K_s:
                 draw_text = True
 
+
+def draw_mode(frame_events):
     if draw_text:
         lisseners.listen(frame_events)
         game_screen.fill((255, 255, 255))
@@ -62,16 +65,45 @@ def check_next_mode(frame_events):
         game_screen.blit(pg_text_img, (0, 0))
 
 
+def do_action(frame_events):
+    # move / new (right click)
+    # combine (left click drag), move (right click), delete (backspace)
+    # edit (return)
+
+    for event in frame_events:
+        # select / unselect line (left click)
+        Check.select_line(event)
+
+        if mode == 0:
+            # move / new line (right click)
+            Check.move_line(event)
+
+        if mode == 1:
+            # check start drag (left click)
+            Check.start_drag(event)
+
+            # move line (right click)
+            Check.move_line(event)
+
+            # combine lines (left click drag)
+            Check.combine_line(event)
+
+            # delete line (del)
+            Check.delete_line(event)
+
+        if mode == 2:
+            # edit line (return)
+            Check.edit_line(event)
+
+
 def edit_event_loop():
     frame_events = pg.event.get()
 
     check_exit(frame_events)
+
     check_next_mode(frame_events)
-
-    EditCallFuncs.edit_modes(frame_events, mode)
-
-    # draw.draw_line_box(game_screen)
-    # draw.draw_top_line(game_screen)
+    do_action(frame_events)
+    draw_mode(frame_events)
 
 
 # new_image('spa_text_glossary_perfect')

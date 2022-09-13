@@ -212,42 +212,42 @@ class Check:
             Check.selected = None
 
 
-class EditCallFuncs:
-    @staticmethod
-    def edit_modes(frame_events, mode):
-        # move / new (right click)
-        # combine (left click drag), move (right click), delete (backspace)
-        # edit (return)
-
-        for event in frame_events:
-            # select / unselect line (left click)
-            Check.select_line(event)
-
-            if mode == 0:
-                # move / new line (right click)
-                Check.move_line(event)
-
-            if mode == 1:
-                # check start drag (left click)
-                Check.start_drag(event)
-
-                # move line (right click)
-                Check.move_line(event)
-
-                # combine lines (left click drag)
-                Check.combine_line(event)
-
-                # delete line (del)
-                Check.delete_line(event)
-
-                # not implemented!
-                # # combine corresponding translations (left click drag)
-                # if event.type == pg.MOUSEBUTTONUP and event.button == 1:
-                #     if EditCallFuncs.drag and over_line and EditCallFuncs.selected_line != over_line:
-                #         pass
-                #
-                #     EditCallFuncs.drag = False
-
-            if mode == 2:
-                # edit line (return)
-                Check.edit_line(event)
+# class EditCallFuncs:
+#     @staticmethod
+#     def edit_modes(frame_events, mode):
+#         # move / new (right click)
+#         # combine (left click drag), move (right click), delete (backspace)
+#         # edit (return)
+#
+#         for event in frame_events:
+#             # select / unselect line (left click)
+#             Check.select_line(event)
+#
+#             if mode == 0:
+#                 # move / new line (right click)
+#                 Check.move_line(event)
+#
+#             # noinspection SpellCheckingInspection
+#             if mode == 1:
+#                 # check start drag (left click)
+#                 Check.start_drag(event)
+#                 # move line (right click)
+#                 Check.move_line(event)
+#
+#                 # combine lines (left click drag)
+#                 Check.combine_line(event)
+#
+#                 # delete line (del)
+#                 Check.delete_line(event)
+#
+#                 # not implemented!
+#                 # # combine corresponding translations (left click drag)
+#                 # if event.type == pg.MOUSEBUTTONUP and event.button == 1:
+#                 #     if EditCallFuncs.drag and over_line and EditCallFuncs.selected_line != over_line:
+#                 #         pass
+#                 #
+#                 #     EditCallFuncs.drag = False
+#
+#             if mode == 2:
+#                 # edit line (return)
+#                 Check.edit_line(event)

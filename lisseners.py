@@ -9,6 +9,7 @@ class Text:
     # the pointer is where you add/remove characters when you type (is inserted at index pointer)
     pointer_pos = 0
 
+    # noinspection SpellCheckingInspection
     @staticmethod
     def save_text_input(frame_event):
         for event in frame_event:
@@ -33,6 +34,7 @@ class Text:
                 # Unicode standard is used for string
                 else:
                     character = event.unicode
+                    # noinspection SpellCheckingInspection
                     allowed_characters = '1234567890abcdefghijklmnopqrstuvwxyzåäöñè ,.()!?'
                     # if the len is not 1 then it's a func key
                     if character in allowed_characters and len(character) == 1:

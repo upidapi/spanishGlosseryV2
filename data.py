@@ -135,7 +135,7 @@ def _clean_up_data(dirty_data):
 
 def get_data_from_image(filename, language='eng'):
     """
-    OCR.space API request with local file.
+    OCR.space API requests with local file.
 
     :param filename: Your file path & name.
     :param language: Language code to be used in OCR.
@@ -170,7 +170,7 @@ def new_image(select_image="spa_text_glossary_perfect"):
         "eng_text_page": r"C:\Users\videw\Downloads\book page.jpg",
         "spa_text_glossary_rotated": r"C:\Users\videw\Downloads\IMG_2439.jpg",
         "spa_text_glossary_perfect": r"C:\Users\videw\Downloads\IMG_2438.jpg",
-        "spa_text_glossary_inprefect": r"C:\Users\videw\Downloads\IMG_2421.png"
+        "spa_text_glossary_imperfect": r"C:\Users\videw\Downloads\IMG_2421.png"
     }
 
     image_dir = test_images[select_image] if select_image in test_images else select_image

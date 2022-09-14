@@ -133,6 +133,5 @@ def main():
         clock.tick(60)
 
 
-# todo you can't click the top left line (vocabulary) due to it being the first line
 if __name__ == '__main__':
     main()

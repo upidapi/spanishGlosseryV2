@@ -107,12 +107,14 @@ class Check:
     # check funcs
     @staticmethod
     def start_drag(event):
-        if event.type == pg.MOUSEBUTTONDOWN and event.button == 1 and lisseners.Mouse.check_over_word():
+        if event.type == pg.MOUSEBUTTONDOWN and event.button == 1 and\
+                lisseners.Mouse.check_over_word() is not None:
             Check.drag = True
 
     @staticmethod
     def stop_drag(event):
-        if event.type == pg.MOUSEBUTTONUP and event.button == 1 and lisseners.Mouse.check_over_word():
+        if event.type == pg.MOUSEBUTTONUP and event.button == 1 and\
+                lisseners.Mouse.check_over_word() is not None:
             Check.drag = False
 
     @staticmethod
@@ -188,7 +190,7 @@ class Check:
         over_line = lisseners.Mouse.check_over_word()
 
         if event.type == pg.MOUSEBUTTONUP and event.button == 1 and Check.selected is not None:
-            if Check.drag and over_line and Check.selected != over_line:
+            if Check.drag and Check.selected != over_line and over_line is not None:
                 Basic.combine_lines(Check.selected, over_line)
 
                 if over_line < Check.selected:

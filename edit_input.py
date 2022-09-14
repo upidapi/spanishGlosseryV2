@@ -171,11 +171,12 @@ class Check:
         :param event: the "pg.event"
         """
         if Check.selected is not None and event.type == pg.KEYDOWN and event.key == pg.K_RETURN:
-            if lisseners.Text.get_text() == '':
+            text = lisseners.Text.get_text().strip()
+            if text == '':
                 del line_data[Check.selected]
 
             else:
-                Basic.edit_line(Check.selected, lisseners.Text.get_text())
+                Basic.edit_line(Check.selected, text)
                 lisseners.Text.set_text('')
 
             Check.selected = None
@@ -210,6 +211,7 @@ class Check:
         if Check.selected is not None and event.type == pg.KEYDOWN and event.key == pg.K_DELETE:
             del line_data[Check.selected]
             Check.selected = None
+            lisseners.Text.set_text('')
 
 
 # class EditCallFuncs:

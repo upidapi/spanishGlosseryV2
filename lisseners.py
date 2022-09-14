@@ -1,5 +1,6 @@
 from general_funcs import *
 from data import DataClass
+import time
 
 line_data = DataClass()
 
@@ -8,6 +9,7 @@ class Text:
     text = ''
     # the pointer is where you add/remove characters when you type (is inserted at index pointer)
     pointer_pos = 0
+    time_since_last_edit = time.time()
 
     # noinspection SpellCheckingInspection
     @staticmethod
@@ -26,6 +28,7 @@ class Text:
 
                 # Check for backspace
                 if event.key == pg.K_BACKSPACE:
+                    Text.time_since_last_edit = time.time()
 
                     # get text input from 0 to -1 i.e. end.
                     Text.text = before_pointer[:-1] + after_pointer
@@ -38,8 +41,14 @@ class Text:
                     allowed_characters = '1234567890abcdefghijklmnopqrstuvwxyzåäöñè ,.()!?'
                     # if the len is not 1 then it's a func key
                     if character in allowed_characters and len(character) == 1:
+                        Text.time_since_last_edit = time.time()
+
                         Text.text = before_pointer + event.unicode + after_pointer
                         Text.pointer_pos += 1
+
+    @staticmethod
+    def since_last_edit():
+        return time.time() - Text.time_since_last_edit
 
     @staticmethod
     def get_text():

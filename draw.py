@@ -117,14 +117,15 @@ def draw_translation_lines(translation_lines, surface):
 
 
 def draw_pointer(selected, pointer_pos, surface):
-    if selected is not None and time.time() % 1 < 0.5:
-        text = lisseners.Text.get_text()[0:pointer_pos]
-        text_size = get_size_of_text(text)
+    if not edit_input.Check.get_drag() and selected is not None:
+        if lisseners.Text.since_last_edit() < 0.5 or 0.5 > time.time() % 1:
+            text = lisseners.Text.get_text()[0:pointer_pos]
+            text_size = get_size_of_text(text)
 
-        start_x = line_data[selected]['x'] + get_size_of_text(text)[0]
-        start_y = line_data[selected]['y']
-        pg.draw.rect(surface, (0, 0, 0),
-                     pg.Rect(start_x, start_y, 2, text_size[1] + 2))
+            start_x = line_data[selected]['x'] + get_size_of_text(text)[0]
+            start_y = line_data[selected]['y']
+            pg.draw.rect(surface, (0, 0, 0),
+                         pg.Rect(start_x, start_y, 2, text_size[1] + 2))
 
 
 def draw_lines(selected, surface):

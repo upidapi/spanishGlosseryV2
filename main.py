@@ -1,10 +1,10 @@
 from lisseners import Text
 from edit_input import Basic, Check
 # new image is needed
-from data import DataClass, new_image
+from data import DataClass, new_image, save_to_jason
 import pygame as pg
 import draw
-
+import json
 
 def check_exit(frame_events):
     for event in frame_events:
@@ -26,10 +26,30 @@ def check_next_mode(frame_events):
                     # todo run autocorrect one every word (languish based on translation)
                     pg.display.set_caption('edit lines')
 
+                    combined_data = []
+                    for pair1, pair2 in zip(Basic.get_translation_pairs(data['all']),
+                                            Basic.get_translation_pairs(data.get_data2())):
+
+                        combined_data.append(pair1[0])
+                        combined_data.append(pair2[1])
+
+                    data['all'] = combined_data
+
+                if mode == 2:
+                    word_data = []
+                    pairs = Basic.get_translation_pairs(data['all'])
+                    for pair in pairs:
+                        word_data.append((pair[0]['text'], pair[1]['text']))
+
+                    save_to_jason(word_data, 'clean_data_full')
+
             if event.type == pg.KEYDOWN and event.key == pg.K_s:
                 draw_text = False
             if event.type == pg.KEYUP and event.key == pg.K_s:
                 draw_text = True
+
+            if event.type == pg.KEYDOWN and event.key == pg.K_w:
+                data.switch_data()
 
 
 def draw_mode(frame_events):
@@ -43,11 +63,11 @@ def draw_mode(frame_events):
             draw.draw_pointer(Check.get_selected(), Text.get_pointer_pos(), game_screen)
             draw.draw_combine_line(Check.get_selected(), game_screen)
             # draw.draw_translations_box(Basic.find_translation(), game_screen)
-            draw.draw_translation_lines(Basic.find_translation(), game_screen)
+            draw.draw_translation_lines(Basic.get_translation_pairs(data['all']), game_screen)
 
         if mode == 1:
             draw.draw_pointer(Check.get_selected(), Text.get_pointer_pos(), game_screen)
-            draw.draw_translation_lines(Basic.find_translation(), game_screen)
+            draw.draw_translation_lines(Basic.get_translation_pairs(data['all']), game_screen)
 
     else:
         game_screen.blit(pg_text_img, (0, 0))
@@ -122,4 +142,7 @@ def main():
 
 
 if __name__ == '__main__':
+    # new_image('spa_text_glossary_perfect')
+    # new_image('spa_text_glossary_perfect', 'swe', 'lan2_data.json')
+
     main()

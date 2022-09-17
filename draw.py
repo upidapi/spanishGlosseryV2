@@ -92,27 +92,33 @@ def draw_translations_box(translation_lines, surface):
         pg.draw.rect(surface, (0, 0, 255), dim, 1)
 
 
-def draw_translation_lines(translation_lines, surface):
-    for translations in translation_lines:
-        translations.sort(key=lambda x: x['x'])
-        full_translations = (len(translations) // 2)
+def draw_translation_lines(translation_pairs, surface):
+    for translation_pair in translation_pairs:
+        if len(translation_pair) == 2:
+            dim1 = (translation_pair[0]['x'],
+                    translation_pair[0]['y'],
+                    translation_pair[0]['width'],
+                    translation_pair[0]['height'])
 
-        for i in range(full_translations):
-            line = translations[i * 2]
-            dim1 = line['x'], line['y'], line['width'], line['height']
-            line = translations[i * 2 + 1]
-            dim2 = line['x'], line['y'], line['width'], line['height']
+            dim2 = (translation_pair[1]['x'],
+                    translation_pair[1]['y'],
+                    translation_pair[1]['width'],
+                    translation_pair[1]['height'])
 
             x1, y1 = dim1[0] + dim1[2] // 2, dim1[1] + dim1[3] // 2
             x2, y2 = dim2[0] + dim2[2] // 2, dim2[1] + dim2[3] // 2
 
             pixels = get_line_points((x1, y1), (x2, y2))
             for pixel in pixels:
-                if not mouse_in_line(pixel, translations[i * 2]) and not mouse_in_line(pixel, translations[i * 2 + 1]):
+                if not mouse_in_line(pixel, translation_pair[0]) and not mouse_in_line(pixel, translation_pair[1]):
                     surface.set_at(pixel, (0, 0, 0))
 
-        if len(translations) != full_translations * 2:
-            dim = translations[-1]['x'], translations[-1]['y'], translations[-1]['width'], translations[-1]['height']
+        else:
+            dim = (translation_pair[0]['x'],
+                   translation_pair[0]['y'],
+                   translation_pair[0]['width'],
+                   translation_pair[0]['height'])
+
             pg.draw.rect(surface, (255, 0, 0), dim, 1)
 
 

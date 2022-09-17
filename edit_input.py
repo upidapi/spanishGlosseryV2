@@ -41,8 +41,8 @@ class Basic:
         del line_data[l2_index]
 
     @staticmethod
-    def find_translation():
-        unsorted_line = line_data['all'].copy()
+    def find_translation(data):
+        unsorted_line = data.copy()
         unsorted_line.sort(key=lambda x: x['y'])
 
         # the percentage you remove from the line
@@ -81,6 +81,24 @@ class Basic:
 
         return translations
 
+    @staticmethod
+    def get_translation_pairs(data):
+        translation_lines = Basic.find_translation(data)
+        translation_pairs = []
+
+        for translations in translation_lines:
+            translations.sort(key=lambda x: x['x'])
+            full_translations = (len(translations) // 2)
+
+            for i in range(full_translations):
+                line1 = translations[i * 2]
+                line2 = translations[i * 2 + 1]
+                translation_pairs.append((line1, line2))
+
+            if len(translations) != full_translations * 2:
+                translation_pairs.append((translations[-1],))
+
+        return translation_pairs
 
 class Check:
     selected = None
@@ -107,13 +125,13 @@ class Check:
     # check funcs
     @staticmethod
     def start_drag(event):
-        if event.type == pg.MOUSEBUTTONDOWN and event.button == 1 and\
+        if event.type == pg.MOUSEBUTTONDOWN and event.button == 1 and \
                 lisseners.Mouse.check_over_word() is not None:
             Check.drag = True
 
     @staticmethod
     def stop_drag(event):
-        if event.type == pg.MOUSEBUTTONUP and event.button == 1 and\
+        if event.type == pg.MOUSEBUTTONUP and event.button == 1 and \
                 lisseners.Mouse.check_over_word() is not None:
             Check.drag = False
 
@@ -212,36 +230,3 @@ class Check:
             del line_data[Check.selected]
             Check.selected = None
             lisseners.Text.set_text('')
-
-
-# class EditCallFuncs:
-#     @staticmethod
-#     def edit_modes(frame_events, mode):
-#         # move / new (right click)
-#         # combine (left click drag), move (right click), delete (backspace)
-#         # edit (return)
-#
-#         for event in frame_events:
-#             # select / unselect line (left click)
-#             Check.select_line(event)
-#
-#             if mode == 0:
-#                 # move / new line (right click)
-#                 Check.move_line(event)
-#
-#             # noinspection SpellCheckingInspection
-#             if mode == 1:
-#                 # check start drag (left click)
-#                 Check.start_drag(event)
-#                 # move line (right click)
-#                 Check.move_line(event)
-#
-#                 # combine lines (left click drag)
-#                 Check.combine_line(event)
-#
-#                 # delete line (del)
-#                 Check.delete_line(event)
-#
-#             if mode == 2:
-#                 # edit line (return)
-#                 Check.edit_line(event)

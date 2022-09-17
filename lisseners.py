@@ -38,9 +38,9 @@ class Text:
                 else:
                     character = event.unicode
                     # noinspection SpellCheckingInspection
-                    allowed_characters = '1234567890abcdefghijklmnopqrstuvwxyzåäöñè ,.()!?'
+                    other_characters = '1234567890 ,.()!?'
                     # if the len is not 1 then it's a func key
-                    if character in allowed_characters and len(character) == 1:
+                    if (character in other_characters or character.isalpha()) and len(character) == 1:
                         Text.time_since_last_edit = time.time()
 
                         Text.text = before_pointer + event.unicode + after_pointer

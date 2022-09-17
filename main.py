@@ -4,7 +4,7 @@ from edit_input import Basic, Check
 from data import DataClass, new_image, save_to_jason
 import pygame as pg
 import draw
-import json
+
 
 def check_exit(frame_events):
     for event in frame_events:
@@ -14,58 +14,93 @@ def check_exit(frame_events):
             quit()
 
 
-def check_next_mode(frame_events):
-    global mode, draw_text
-    # next mode (return + ctrl)
-    for event in frame_events:
-        if pg.key.get_mods() & pg.KMOD_CTRL:
-            if event.type == pg.KEYDOWN and event.key == pg.K_RETURN:
-                mode += 1
+class Mode:
+    # global mode, draw_text
 
-                if mode == 1:
-                    # todo run autocorrect one every word (languish based on translation)
-                    pg.display.set_caption('edit lines')
+    mode = 0
+    draw_text = True
 
-                    combined_data = []
-                    for pair1, pair2 in zip(Basic.get_translation_pairs(data['all']),
-                                            Basic.get_translation_pairs(data.get_data2())):
+    @staticmethod
+    def mode_0_setup():
+        # screen setup
+        pg.display.set_caption('add/combine/delete/move lines')
 
-                        combined_data.append(pair1[0])
-                        combined_data.append(pair2[1])
+        for i in range(len(data)):
+            Basic.set_line_size(i)
 
-                    data['all'] = combined_data
+    @staticmethod
+    def mode_1_setup():
+        pg.display.set_caption('edit lines')
 
-                if mode == 2:
-                    word_data = []
-                    pairs = Basic.get_translation_pairs(data['all'])
-                    for pair in pairs:
-                        word_data.append((pair[0]['text'], pair[1]['text']))
+        combined_data = []
+        for pair1, pair2 in zip(Basic.get_translation_pairs(data['all']),
+                                Basic.get_translation_pairs(data.get_data2())):
+            if len(pair1) == 2 and len(pair2) == 2:
+                combined_data.append(pair1[0])
+                combined_data.append(pair2[1])
+            else:
+                combined_data = data['all']
+                Mode.mode = 0
+                break
 
-                    save_to_jason(word_data, 'clean_data_full')
+        data['all'] = combined_data
 
-            if event.type == pg.KEYDOWN and event.key == pg.K_s:
-                draw_text = False
-            if event.type == pg.KEYUP and event.key == pg.K_s:
-                draw_text = True
+    @staticmethod
+    def mode_2_setup():
+        word_data = []
+        pairs = Basic.get_translation_pairs(data['all'])
+        for pair in pairs:
+            word_data.append((pair[0]['text'], pair[1]['text']))
 
-            if event.type == pg.KEYDOWN and event.key == pg.K_w:
-                data.switch_data()
+        save_to_jason(word_data, 'clean_data_full')
+
+    @staticmethod
+    def next_mode(frame_events):
+        # next mode (return + ctrl)
+        for event in frame_events:
+            if pg.key.get_mods() & pg.KMOD_CTRL:
+                if event.type == pg.KEYDOWN and event.key == pg.K_RETURN:
+                    Mode.mode += 1
+                    if Mode.mode == 0:
+                        Mode.mode_0_setup()
+
+                        break
+
+                    if Mode.mode == 1:
+                        Mode.mode_1_setup()
+
+                        break
+
+                    if Mode.mode == 2:
+                        Mode.mode_2_setup()
+
+                        break
+
+                if event.type == pg.KEYDOWN and event.key == pg.K_s:
+                    Mode.draw_text = False
+                if event.type == pg.KEYUP and event.key == pg.K_s:
+                    Mode.draw_text = True
+
+                if event.type == pg.KEYDOWN and event.key == pg.K_w:
+                    data.switch_data()
+                    for i in range(len(data)):
+                        Basic.set_line_size(i)
 
 
 def draw_mode(frame_events):
-    if draw_text:
+    if Mode.draw_text:
         Text.save_text_input(frame_events)
         game_screen.fill((255, 255, 255))
 
         draw.draw_lines(Check.get_selected(), game_screen)
 
-        if mode == 0:
+        if Mode.mode == 0:
             draw.draw_pointer(Check.get_selected(), Text.get_pointer_pos(), game_screen)
             draw.draw_combine_line(Check.get_selected(), game_screen)
             # draw.draw_translations_box(Basic.find_translation(), game_screen)
             draw.draw_translation_lines(Basic.get_translation_pairs(data['all']), game_screen)
 
-        if mode == 1:
+        if Mode.mode == 1:
             draw.draw_pointer(Check.get_selected(), Text.get_pointer_pos(), game_screen)
             draw.draw_translation_lines(Basic.get_translation_pairs(data['all']), game_screen)
 
@@ -81,7 +116,7 @@ def do_action(frame_events):
         # select / unselect line (left click)
         Check.select_line(event)
 
-        if mode == 0:
+        if Mode.mode == 0:
             # check start drag (left click)
             Check.start_drag(event)
 
@@ -97,7 +132,7 @@ def do_action(frame_events):
             # delete line (del)
             Check.delete_line(event)
 
-        if mode == 1:
+        if Mode.mode == 1:
             # edit line (return)
             Check.edit_line(event)
 
@@ -107,7 +142,7 @@ def edit_event_loop():
 
     check_exit(frame_events)
 
-    check_next_mode(frame_events)
+    Mode.next_mode(frame_events)
     do_action(frame_events)
     draw_mode(frame_events)
 
@@ -120,8 +155,6 @@ def main():
     clock = pg.time.Clock()
 
     # definitions
-    mode = 0
-    draw_text = True
     data = DataClass()
     text_image_dir = 'selected_image.jpg'
     pg_text_img = pg.image.load(text_image_dir)
@@ -129,10 +162,7 @@ def main():
     # new_image('spa_text_glossary_perfect')
     game_screen = pg.display.set_mode((pg_text_img.get_size()))
 
-    # screen setup
-    pg.display.set_caption('add/combine/delete/move lines')
-    for i in range(len(data)):
-        Basic.set_line_size(i)
+    Mode.mode_0_setup()
 
     while True:
         edit_event_loop()

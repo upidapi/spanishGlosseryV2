@@ -1,7 +1,7 @@
 import requests
 import json
 from PIL import Image
-from general_funcs import *
+from edit_image_input.general_funcs import *
 
 
 # format:
@@ -21,8 +21,8 @@ class DataClass:
         DataClass.instances.append(self)
 
         # gets the data
-        self.data1 = load_data_from_json('lan1_data.json')
-        self.data2 = load_data_from_json('lan2_data.json')
+        self.data1 = load_data_from_json('edit_image_input/data/lan1_data.json')
+        self.data2 = load_data_from_json('edit_image_input/data/lan2_data.json')
 
     def set_data(self):
         for obj in DataClass.instances:

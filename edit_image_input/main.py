@@ -1,7 +1,7 @@
 from lisseners import Text
 from edit_input import Basic, Check
 # new image is needed
-from data import DataClass, new_image, save_to_jason
+from data.data import DataClass, save_to_jason
 import pygame as pg
 import draw
 
@@ -156,7 +156,7 @@ def main():
 
     # definitions
     data = DataClass()
-    text_image_dir = 'selected_image.jpg'
+    text_image_dir = 'edit_image_input/data/selected_image.jpg'
     pg_text_img = pg.image.load(text_image_dir)
 
     # new_image('spa_text_glossary_perfect')

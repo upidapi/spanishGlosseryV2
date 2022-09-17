@@ -1,7 +1,7 @@
-from general_funcs import *
-from data import DataClass
+from edit_image_input.general_funcs import *
+from data.data import DataClass
 import pygame as pg
-import lisseners
+from edit_image_input import lisseners
 
 line_data = DataClass()
 pg.init()
@@ -99,6 +99,7 @@ class Basic:
                 translation_pairs.append((translations[-1],))
 
         return translation_pairs
+
 
 class Check:
     selected = None

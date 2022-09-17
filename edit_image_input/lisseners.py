@@ -1,5 +1,5 @@
 from general_funcs import *
-from data import DataClass
+from data.data import DataClass
 import time
 
 line_data = DataClass()

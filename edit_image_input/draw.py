@@ -1,8 +1,6 @@
-import pygame as pg
-from data import DataClass
-import lisseners
-import edit_input
-from general_funcs import *
+from data.data import DataClass
+from edit_image_input import lisseners, edit_input
+from edit_image_input.general_funcs import *
 import time
 
 line_data = DataClass()

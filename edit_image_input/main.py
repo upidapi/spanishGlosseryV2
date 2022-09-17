@@ -1,8 +1,9 @@
+import pygame as pg
+
+from data.funcs import Handler, SimplifiedJson, Cleaner
+
 from lisseners import EditText
 from edit_input import Basic, Check
-# new image is needed
-from data.funcs import Handler, SimplifiedJson
-import pygame as pg
 import draw
 
 
@@ -19,6 +20,7 @@ class Mode:
 
     mode = 0
     draw_text = True
+    selected_lan = 0
 
     @staticmethod
     def mode_0_setup():
@@ -41,6 +43,7 @@ class Mode:
             else:
                 combined_data = data['all']
                 Mode.mode = 0
+                Mode.mode_0_setup()
                 break
 
         data['all'] = combined_data
@@ -64,17 +67,11 @@ class Mode:
                     if Mode.mode == 0:
                         Mode.mode_0_setup()
 
-                        break
-
                     if Mode.mode == 1:
                         Mode.mode_1_setup()
 
-                        break
-
                     if Mode.mode == 2:
                         Mode.mode_2_setup()
-
-                        break
 
                 if event.type == pg.KEYDOWN and event.key == pg.K_s:
                     Mode.draw_text = False
@@ -82,24 +79,27 @@ class Mode:
                     Mode.draw_text = True
 
                 if event.type == pg.KEYDOWN and event.key == pg.K_w:
+                    switch = {0: 1, 1: 0}
+                    Mode.selected_lan = switch[Mode.selected_lan]
                     data.switch_data()
                     for i in range(len(data)):
                         Basic.set_line_size(i)
 
 
 def draw_mode(frame_events):
+    global languishes
     if Mode.draw_text:
         EditText.change_text(frame_events)
         game_screen.fill((255, 255, 255))
 
         draw.draw_lines(Check.get_selected(), game_screen)
+        draw.current_lan(game_screen, languishes[Mode.selected_lan])
 
         if Mode.mode == 0:
             draw.draw_pointer(Check.get_selected(), EditText.get_pointer_pos(), game_screen)
             draw.draw_combine_line(Check.get_selected(), game_screen)
             # draw.draw_translations_box(Basic.find_translation(), game_screen)
             draw.draw_translation_lines(Basic.get_translation_pairs(data['all']), game_screen)
-
         if Mode.mode == 1:
             draw.draw_pointer(Check.get_selected(), EditText.get_pointer_pos(), game_screen)
             draw.draw_translation_lines(Basic.get_translation_pairs(data['all']), game_screen)
@@ -148,20 +148,26 @@ def edit_event_loop():
 
 
 def main():
-    global mode, draw_text, game_screen, pg_text_img, data
-    # new_image('spa_text_glossary_perfect')
-
+    global mode, draw_text, game_screen, pg_text_img, data, languishes
     pg.init()
     clock = pg.time.Clock()
 
     # definitions
     data = Handler()
+
+    # format:
+    # lan_1_word  lan_2_word     lan_1_word  lan_2_word
+    # lan_1_word  lan_2_word     lan_1_word  lan_2_word
+    # lan_1_word  lan_2_word     lan_1_word  lan_2_word
+    languishes = 'spa', 'swe'
+
     text_image_dir = 'data/selected_image.jpg'
     pg_text_img = pg.image.load(text_image_dir)
-
     game_screen = pg.display.set_mode((pg_text_img.get_size()))
 
     Mode.mode_0_setup()
+
+    # Cleaner.new_image('spa_text_glossary_perfect', languishes)
 
     while True:
         edit_event_loop()
@@ -171,7 +177,4 @@ def main():
 
 
 if __name__ == '__main__':
-    # new_image('spa_text_glossary_perfect')
-    # new_image('spa_text_glossary_perfect', 'swe', 'lan2_data.json')
-
     main()

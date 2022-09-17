@@ -155,3 +155,13 @@ def draw_combine_line(selected, surface):
         for pixel in pixels:
             if not mouse_in_line(pixel, line_data[selected]):
                 surface.set_at(pixel, (0, 0, 0))
+
+
+def current_lan(surface, lan='swe'):
+    text_img = font.render(lan, True, (0, 0, 0))
+    text_size = text_img.get_size()
+
+    pg.draw.rect(surface, (255, 0, 0),
+                 pg.Rect(0, 0, text_size[0] + 10, text_size[1] + 10))
+
+    surface.blit(text_img, (5, 5))

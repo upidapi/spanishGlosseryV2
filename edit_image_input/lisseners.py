@@ -12,7 +12,6 @@ class EditText:
 
     @staticmethod
     def change_text(frame_events):
-        print(EditText.text)
         for event in frame_events:
             if event.type == pg.KEYDOWN:
                 EditText.last_edit_time = time.time()
@@ -52,7 +51,6 @@ class EditText:
 
     @staticmethod
     def set_text(text):
-        print(f'set text {EditText.get_text()}')
         EditText.text = text
         EditText.pointer_pos = len(text)
 

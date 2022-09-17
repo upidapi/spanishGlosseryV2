@@ -4,14 +4,6 @@ from PIL import Image
 from edit_image_input.general_funcs import *
 
 
-# format:
-# lan_1_word  lan_2_word     lan_1_word  lan_2_word
-# lan_1_word  lan_2_word     lan_1_word  lan_2_word
-# lan_1_word  lan_2_word     lan_1_word  lan_2_word
-lan_1 = 'spa'
-lan_2 = 'swe'
-
-
 class SimplifiedJson:
     @staticmethod
     def load_data_from_json(file):
@@ -241,8 +233,8 @@ class Cleaner:
         return return_data
 
     @staticmethod
-    def new_image(select_image="spa_text_glossary_perfect", lan=('spa', 'swe')):
-        files = ["lan1_data.json", "lan2_data.json"]
+    def new_image(select_image, lan):
+        files = [r'..\edit_image_input\data\lan1_data.json', r'..\edit_image_input\data\lan2_data.json']
         test_images = {
             "eng_text_page": r"C:\Users\videw\Downloads\book page.jpg",
             "spa_text_glossary_rotated": r"C:\Users\videw\Downloads\IMG_2439.jpg",
@@ -254,12 +246,12 @@ class Cleaner:
         image = Image.open(image_dir)
         image.thumbnail((1000, 1000))
 
-        image.save('selected_image.jpg')
+        image.save(r'..\edit_image_input\data\selected_image.jpg')
 
         # gets the data and cleans up the data format
         clean_data = []
         for i in range(2):
-            json_data = Cleaner.get_data_from_image('selected_image.jpg', language=lan[i])
+            json_data = Cleaner.get_data_from_image(r'..\edit_image_input\data\selected_image.jpg', language=lan[i])
             clean_data.append(Cleaner.clean_up_data(json_data))
 
         # add some missing words

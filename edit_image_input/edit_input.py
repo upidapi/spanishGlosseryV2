@@ -1,9 +1,9 @@
 from edit_image_input.general_funcs import *
-from data.data import DataClass
+from data.funcs import Handler
 import pygame as pg
-from edit_image_input import lisseners
+from lisseners import EditText, check_over_word
 
-line_data = DataClass()
+line_data = Handler()
 pg.init()
 
 
@@ -127,13 +127,13 @@ class Check:
     @staticmethod
     def start_drag(event):
         if event.type == pg.MOUSEBUTTONDOWN and event.button == 1 and \
-                lisseners.Mouse.check_over_word() is not None:
+                check_over_word() is not None:
             Check.drag = True
 
     @staticmethod
     def stop_drag(event):
         if event.type == pg.MOUSEBUTTONUP and event.button == 1 and \
-                lisseners.Mouse.check_over_word() is not None:
+                check_over_word() is not None:
             Check.drag = False
 
     @staticmethod
@@ -141,16 +141,17 @@ class Check:
         """
         checks if you have selected/unselected a line
         """
-        over_line = lisseners.Mouse.check_over_word()
+        over_line = check_over_word()
         if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
             if over_line is not None:
                 Check.selected = over_line
-                lisseners.Text.set_text(line_data[over_line, 'text'])
+                text = line_data[over_line, 'text']
+                EditText.set_text(text)
         elif event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
-            if lisseners.Text.get_text() == '':
+            if EditText.get_text() == '':
                 del line_data[Check.selected]
 
-            lisseners.Text.set_text('')
+            EditText.set_text('')
             Check.selected = None
 
     @staticmethod
@@ -190,13 +191,13 @@ class Check:
         :param event: the "pg.event"
         """
         if Check.selected is not None and event.type == pg.KEYDOWN and event.key == pg.K_RETURN:
-            text = lisseners.Text.get_text().strip()
+            text = EditText.get_text().strip()
             if text == '':
                 del line_data[Check.selected]
 
             else:
                 Basic.edit_line(Check.selected, text)
-                lisseners.Text.set_text('')
+                EditText.set_text('')
 
             Check.selected = None
 
@@ -207,7 +208,7 @@ class Check:
 
         :param event: the "pg.event"
         """
-        over_line = lisseners.Mouse.check_over_word()
+        over_line = check_over_word()
 
         if event.type == pg.MOUSEBUTTONUP and event.button == 1 and Check.selected is not None:
             if Check.drag and Check.selected != over_line and over_line is not None:
@@ -216,7 +217,7 @@ class Check:
                 if over_line < Check.selected:
                     Check.selected -= 1
 
-                lisseners.Text.set_text(line_data[Check.selected, 'text'])
+                EditText.set_text(line_data[Check.selected, 'text'])
 
             Check.drag = False
 
@@ -230,4 +231,4 @@ class Check:
         if Check.selected is not None and event.type == pg.KEYDOWN and event.key == pg.K_DELETE:
             del line_data[Check.selected]
             Check.selected = None
-            lisseners.Text.set_text('')
+            EditText.set_text('')

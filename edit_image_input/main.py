@@ -1,7 +1,7 @@
-from lisseners import Text
+from lisseners import EditText
 from edit_input import Basic, Check
 # new image is needed
-from data.data import DataClass, save_to_jason
+from data.funcs import Handler, SimplifiedJson
 import pygame as pg
 import draw
 
@@ -52,7 +52,7 @@ class Mode:
         for pair in pairs:
             word_data.append((pair[0]['text'], pair[1]['text']))
 
-        save_to_jason(word_data, 'clean_data_full')
+        SimplifiedJson.save_to_jason(word_data, '../clean_data_full')
 
     @staticmethod
     def next_mode(frame_events):
@@ -89,19 +89,19 @@ class Mode:
 
 def draw_mode(frame_events):
     if Mode.draw_text:
-        Text.save_text_input(frame_events)
+        EditText.change_text(frame_events)
         game_screen.fill((255, 255, 255))
 
         draw.draw_lines(Check.get_selected(), game_screen)
 
         if Mode.mode == 0:
-            draw.draw_pointer(Check.get_selected(), Text.get_pointer_pos(), game_screen)
+            draw.draw_pointer(Check.get_selected(), EditText.get_pointer_pos(), game_screen)
             draw.draw_combine_line(Check.get_selected(), game_screen)
             # draw.draw_translations_box(Basic.find_translation(), game_screen)
             draw.draw_translation_lines(Basic.get_translation_pairs(data['all']), game_screen)
 
         if Mode.mode == 1:
-            draw.draw_pointer(Check.get_selected(), Text.get_pointer_pos(), game_screen)
+            draw.draw_pointer(Check.get_selected(), EditText.get_pointer_pos(), game_screen)
             draw.draw_translation_lines(Basic.get_translation_pairs(data['all']), game_screen)
 
     else:
@@ -155,11 +155,10 @@ def main():
     clock = pg.time.Clock()
 
     # definitions
-    data = DataClass()
-    text_image_dir = 'edit_image_input/data/selected_image.jpg'
+    data = Handler()
+    text_image_dir = 'data/selected_image.jpg'
     pg_text_img = pg.image.load(text_image_dir)
 
-    # new_image('spa_text_glossary_perfect')
     game_screen = pg.display.set_mode((pg_text_img.get_size()))
 
     Mode.mode_0_setup()

@@ -1,9 +1,10 @@
-from data.data import DataClass
-from edit_image_input import lisseners, edit_input
-from edit_image_input.general_funcs import *
+from data.funcs import Handler
+from lisseners import EditText
+from edit_input import Check
+from general_funcs import *
 import time
 
-line_data = DataClass()
+line_data = Handler()
 font = pg.font.SysFont('Helvatical bold', 24)
 
 
@@ -121,9 +122,9 @@ def draw_translation_lines(translation_pairs, surface):
 
 
 def draw_pointer(selected, pointer_pos, surface):
-    if not edit_input.Check.get_drag() and selected is not None:
-        if lisseners.Text.since_last_edit() < 0.5 or 0.5 > time.time() % 1:
-            text = lisseners.Text.get_text()[0:pointer_pos]
+    if not Check.get_drag() and selected is not None:
+        if EditText.time_since_last_edit() < 0.5 or 0.5 > time.time() % 1:
+            text = EditText.get_text()[0:pointer_pos]
             text_size = get_size_of_text(text)
 
             start_x = line_data[selected]['x'] + get_size_of_text(text)[0]
@@ -135,8 +136,7 @@ def draw_pointer(selected, pointer_pos, surface):
 def draw_lines(selected, surface):
     for i, line in enumerate(line_data):
         if i == selected:
-            text = lisseners.Text.get_text()
-
+            text = EditText.get_text()
             text_img = font.render(text, True, (255, 0, 0))
 
         else:
@@ -146,7 +146,7 @@ def draw_lines(selected, surface):
 
 
 def draw_combine_line(selected, surface):
-    if selected is not None and edit_input.Check.get_drag():
+    if selected is not None and Check.get_drag():
         x1, y1 = line_data[selected]['x'] + line_data[selected]['width'] // 2, \
                  line_data[selected]['y'] + line_data[selected]['height'] // 2
         x2, y2 = pg.mouse.get_pos()

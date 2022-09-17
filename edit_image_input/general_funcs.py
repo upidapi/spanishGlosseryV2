@@ -119,4 +119,3 @@ def mouse_in_line(pos, line_data):
     if x1 <= pos[0] <= x2 and y1 <= pos[1] <= y2:
         return True
     return False
-

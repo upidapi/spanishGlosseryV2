@@ -151,6 +151,14 @@ class Word:
         return w1_to_w2, w2_to_w1
 
 
+def save_data(data):
+    selected_directories = tkfilebrowser.askopenfilename(initialdir=r"../load_words/words/", title='select')
+
+    # converts python-array to json-document with indent 4
+    json_object = json.dumps(data, indent=4)
+    with open(selected_directories, "w") as outfile:
+        outfile.write(json_object)
+
 def get_data(select):
     # example parameters
     Word.Split(';')

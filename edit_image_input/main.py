@@ -55,7 +55,7 @@ class Mode:
         for pair in pairs:
             word_data.append((pair[0]['text'], pair[1]['text']))
 
-        SimplifiedJson.save_to_jason(word_data, '../clean_data_full')
+        SimplifiedJson.save_to_jason(word_data, '../load_words/words/ch2/clean_data_full')
 
     @staticmethod
     def next_mode(frame_events):

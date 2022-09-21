@@ -51,44 +51,7 @@ class Split:
         return word.split(self.split)
 
 
-def clean(word):
-    word = [word]
-    split_word = []
-    for instance in Split.instances:
-        for part in word:
-            split_word += instance.logic(part)
-        word += split_word
-    word = split_word
-
-    for instance in RemoveX.instances:
-        for i, part in enumerate(word):
-            word[i] = instance.logic(part)
-
-    for instance in RemoveBetween.instances:
-        for i, part in enumerate(word):
-            word[i] = instance.logic(part)
-
-    for i, part in enumerate(word):
-        word[i] = part.strip()
-
-    return word
-
-
-def find_alternative_translations(data: list):
-    w1_to_w2 = {}
-    w2_to_w1 = {}
-
-    for translation in data:
-        for word in translation[0]:
-            if word not in w1_to_w2:
-                w1_to_w2[word] = translation[1]
-            else:
-                w1_to_w2[word] += translation[1]
-
-        for word in translation[1]:
-            if word not in w2_to_w1:
-                w2_to_w1[word] = translation[0]
-            else:
-                w2_to_w1[word] += translation[0]
-
-    return w1_to_w2, w2_to_w1
+def clear():
+    Split.instances = []
+    RemoveX.instances = []
+    RemoveBetween.instances = []

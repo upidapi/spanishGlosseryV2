@@ -33,9 +33,9 @@ def get_files(select='multiple'):
     selected_directories = None
 
     if select == 'multiple':
-        selected_directories = tkfilebrowser.askopendirnames(initialdir=r"../load_words_r/words/", title='select')
+        selected_directories = tkfilebrowser.askopendirnames(initialdir=r"../load_words/words/", title='select')
     elif select == 'singular':
-        selected_directories = tkfilebrowser.askopenfilename(initialdir=r"../load_words_r/words/", title='select')
+        selected_directories = tkfilebrowser.askopenfilename(initialdir=r"../load_words/words/", title='select')
 
     return get_dir_files(selected_directories)
 

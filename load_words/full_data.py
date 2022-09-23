@@ -1,5 +1,5 @@
-import filter
-from file_data import load_data, get_files
+from load_words import filter
+from load_words.file_data import load_data, get_files
 
 
 def clean(word):

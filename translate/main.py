@@ -1,16 +1,79 @@
 import random
 import tkinter as tk
-from load_words import filter
-import load_words.full_data as full_data
-
+from load_words import filter, full_data
 
 filter.Split(';')
 filter.RemoveBetween('(', ')')
 filter.RemoveBetween('/', '/')
 filter.RemoveX('ung.')
 
-root = tk.Tk()
-root.geometry("600x400")
+
+class FadeText:
+    def __init__(self, text_obj, time, end_color, start_color=None):
+        """
+        temp
+
+        :param text_obj: this is the tk.Label that will fade to end_color
+        :param time: the time it takes to fade
+        :param end_color: the color it fades to
+        :param start_color: the color it starts on
+        """
+
+        self.text_obj = text_obj
+        self.time = time
+        self.end_color = end_color
+        if start_color is None:
+            self.start_color = text_obj.cget("bg")
+        else:
+            self.start_color = start_color
+
+    amount = 0
+
+    @staticmethod
+    def wrong(time_step, new=False):
+        if 1 <= Display.amount:
+            Display.amount += 1
+
+        else:
+            color = int(time_step ** 8)
+
+            if 255 < color:
+                color = 255
+            else:
+                root.after(50, Display.wrong(time_step + 0.05))
+
+            color_hex = '#%02x%02x%02x' % (255, color, color)
+            wrong_text.configure(foreground=color_hex)
+
+        if new:
+            Display.amount += 1
+
+
+class Display:
+    amount = 0
+
+    @staticmethod
+    def wrong(time_step, new=False):
+        if 1 <= Display.amount:
+            Display.amount += 1
+
+        else:
+            color = int(time_step ** 8)
+
+            if 255 < color:
+                color = 255
+            else:
+                root.after(50, Display.wrong(time_step + 0.05))
+
+            color_hex = '#%02x%02x%02x' % (255, color, color)
+            wrong_text.configure(foreground=color_hex)
+
+        if new:
+            Display.amount += 1
+
+    @staticmethod
+    def temp():
+        pass
 
 
 class Words:
@@ -65,10 +128,10 @@ class Words:
     def check_correct(word):
         if word in Words.selected[1]:
             Words.right[Words.selected[0]] = Words.selected[1]
-            # todo call some func to show that you did it right
+            # todo call some func to show the right translation
         else:
             Words.wrong[Words.selected[0]] = Words.selected[1]
-            # todo call some func to show the right translation
+            Display.wrong(0, new=True)
 
         del Words.current[Words.selected[0]]
 
@@ -77,42 +140,26 @@ class Words:
 
 def check_word(_):
     Words.check_correct(input_text.get())
-
     input_text.set("")
 
 
-input_text = tk.StringVar()
-input_field = tk.Entry(root, textvariable=input_text, font=('calibre', 10, 'normal'))
-input_field.bind('<Return>', check_word)
-#
-# # creating a label for
-# # name using widget Label
-# name_label = tk.Label(root, text='Username', font=('calibre', 10, 'bold'))
-#
-# # creating a entry for input
-# # name using widget Entry
-# name_entry = tk.Entry(root, textvariable=name_var, font=('calibre', 10, 'normal'))
-# name_entry.bind('<Return>', goto_next)
-#
-# # creating a label for password
-# passw_label = tk.Label(root, text='Password', font=('calibre', 10, 'bold'))
-#
-# # creating a entry for password
-# passw_entry = tk.Entry(root, textvariable=passw_var, font=('calibre', 10, 'normal'), show='*')
-# passw_entry.bind('<Return>', submit)
-# # creating a button using the widget
-# # Button that will call the submit function
-# sub_btn = tk.Button(root, text='Submit', command=submit)
-#
-# # placing the label and entry in
-# # the required position using grid
-# # method
-# name_label.grid(row=0, column=0)
-# name_entry.grid(row=0, column=1)
-# passw_label.grid(row=1, column=0)
-# passw_entry.grid(row=1, column=1)
-# sub_btn.grid(row=2, column=1)
+Words.get_new_words('lan1')
 
-# performing an infinite loop
-# for the window to display
+root = tk.Tk()
+root.geometry("600x400")
+
+input_text = tk.StringVar(root)
+
+input_field = tk.Entry(root, textvariable=input_text, font=('calibre', 10, 'normal'))
+
+input_field.pack()
+input_field.bind('<Return>', check_word)
+
+wrong_text = tk.Label(root, text='test', foreground="#ff0000", font=("Times New Roman", 12, "bold"), bg='#ffffff')
+root.configure(bg='#ffffff')
+wrong_text.pack()
+
+# test = tk.Button(root, text="test button", command=change)
+# test.pack()
+
 root.mainloop()

@@ -1,83 +1,107 @@
 from translate.FadeText import Fade
-import random
 import tkinter as tk
-from load_words import filter, full_data
-
-filter.Split(';')
-filter.RemoveBetween('(', ')')
-filter.RemoveBetween('/', '/')
-filter.RemoveX('ung.')
+from translate.Words import Words
 
 
-class Words:
-    all = full_data.get('multiple')
-    selected = {}  # all selected words
-    current = {}  # all words left
-    right = {}
-    wrong = {}
+# class Words:
+#     all = full_data.get('multiple')
+#     selected = {}  # all selected words
+#     current = {}  # all words left
+#     right = {}
+#     wrong = {}
+#
+#     current_word = ()
+#
+#     @staticmethod
+#     def nothing_left():
+#         """
+#         called when you have done all the words
+#         """
+#         pass
+#
+#     @staticmethod
+#     def next_word(first=False):
+#         if not first:
+#             del Words.current[Words.selected[0]]
+#
+#         options = list(Words.current.items())
+#
+#         if len(options) == 0:
+#             Words.nothing_left()
+#         else:
+#             Words.selected = random.choice(options)
+#             translate_text.set(Words.selected[0])
+#
+#     @staticmethod
+#     def get_new_words(select):
+#         if select == 'wrong':
+#             Words.current = Words.wrong.copy()
+#         if select == 'right':
+#             Words.current = Words.right.copy()
+#         if select == 'same':
+#             Words.current = Words.selected.copy()
+#         if select == 'lan1':
+#             Words.current = Words.all[0].copy()
+#             Words.selected = Words.all[0].copy()
+#         if select == 'lan2':
+#             Words.current = Words.all[1].copy()
+#             Words.selected = Words.all[1].copy()
+#
+#         Words.right = {}
+#         Words.wrong = {}
+#
+#         Words.next_word(True)
+#
+#     @staticmethod
+#     def check_correct(word):
+#         if word in Words.selected[1]:
+#             # right
+#             Words.right[Words.selected[0]] = Words.selected[1]
+#             wrong_text_var.set('Correct!')
+#             wrong_text_fade.change(start=(0, 255, 0), end=(240, 240, 240), time=1)
+#         else:
+#             # wrong
+#             Words.wrong[Words.selected[0]] = Words.selected[1]
+#             wrong_text_var.set(' / '.join(Words.selected[1]))
+#             wrong_text_fade.change(start=(255, 0, 0), end=(240, 240, 240), time=3)
+#
+#         Words.next_word()
 
-    current_word = ()
+class FullWords(Words):
+    @staticmethod
+    def right_answer():
+        wrong_text_var.set('Correct!')
+        wrong_text_fade.change(start=(0, 255, 0), end=(240, 240, 240), time=1)
 
     @staticmethod
-    def nothing_left():
-        """
-        called when you have done all the words
-        """
-        pass
+    def wrong_answer(text):
+        wrong_text_var.set(' / '.join(text))
+        wrong_text_fade.change(start=(255, 0, 0), end=(240, 240, 240), time=3)
 
     @staticmethod
-    def next_word(first=False):
-        if not first:
-            del Words.current[Words.selected[0]]
-
-        options = list(Words.current.items())
-
-        if len(options) == 0:
-            Words.nothing_left()
-        else:
-            Words.selected = random.choice(options)
-            translate_text.set(Words.selected[0])
-
-    @staticmethod
-    def get_new_words(select):
-        if select == 'wrong':
-            Words.current = Words.wrong.copy()
-        if select == 'right':
-            Words.current = Words.right.copy()
-        if select == 'same':
-            Words.current = Words.selected.copy()
-        if select == 'lan1':
-            Words.current = Words.all[0].copy()
-            Words.selected = Words.all[0].copy()
-        if select == 'lan2':
-            Words.current = Words.all[1].copy()
-            Words.selected = Words.all[1].copy()
-
-        Words.right = {}
-        Words.wrong = {}
-
-        Words.next_word(True)
-
-    @staticmethod
-    def check_correct(word):
-        print(word, Words.selected[1], word in Words.selected[1])
-        if word in Words.selected[1]:
-            # right
-            Words.right[Words.selected[0]] = Words.selected[1]
-            wrong_text_var.set('Correct!')
-            wrong_text_fade.change(start=(0, 255, 0), end=(240, 240, 240), time=1)
-        else:
-            # wrong
-            Words.wrong[Words.selected[0]] = Words.selected[1]
-            wrong_text_var.set(' / '.join(Words.selected[1]))
-            wrong_text_fade.change(start=(255, 0, 0), end=(240, 240, 240), time=3)
-
-        Words.next_word()
+    def set_translate_text(text):
+        translate_text.set(text)
 
 
 def check_word(_):
-    Words.check_correct(input_text.get())
+    FullWords.check_correct(input_text.get())
     input_text.set("")
+
+
+def replace(char):
+    replace_from_to = (('§', '¿'),)
+
+    for rep in replace_from_to:
+        if char.char == rep[0]:
+            text = input_text.get()
+            position = input_field.index(tk.INSERT)
+
+            input_text.set(text[:position] + rep[1] + text[position:])
+
+            # Changing position of cursor one character right
+            input_field.icursor(position + 1)
+
+            return "break"
 
 
 # window
@@ -91,6 +115,7 @@ input_text = tk.StringVar(root)
 input_field = tk.Entry(root, textvariable=input_text, font=("Times New Roman", 40, "bold"), justify='center')
 input_field.pack()
 input_field.bind('<Return>', check_word)
+input_field.bind('<KeyPress>', replace)
 
 # show word to be translated
 translate_text = tk.StringVar(root)
@@ -104,7 +129,6 @@ wrong_text_fade = Fade(frame_obj=root, text_obj=wrong_text, time=3, gradiant='ex
 wrong_text.pack()
 
 # setup
-Words.get_new_words('lan1')
-
+FullWords.get_new_words('lan2')
 
 root.mainloop()

@@ -38,7 +38,7 @@ class EditText:
                             EditText.text = bef_pointer[0:-1] + aft_pointer
 
                     else:
-                        allowed_chars = '1234567890!?,./\\'
+                        allowed_chars = '1234567890!?,./\\ '
                         char = event.unicode
                         if char.isalpha() or (len(char) and char in allowed_chars):
                             EditText.text = bef_pointer + char + aft_pointer

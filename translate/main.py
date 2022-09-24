@@ -1,3 +1,4 @@
+from translate.FadeText import Fade
 import random
 import tkinter as tk
 from load_words import filter, full_data
@@ -6,74 +7,6 @@ filter.Split(';')
 filter.RemoveBetween('(', ')')
 filter.RemoveBetween('/', '/')
 filter.RemoveX('ung.')
-
-
-class FadeText:
-    def __init__(self, text_obj, time, end_color, start_color=None):
-        """
-        temp
-
-        :param text_obj: this is the tk.Label that will fade to end_color
-        :param time: the time it takes to fade
-        :param end_color: the color it fades to
-        :param start_color: the color it starts on
-        """
-
-        self.text_obj = text_obj
-        self.time = time
-        self.end_color = end_color
-        if start_color is None:
-            self.start_color = text_obj.cget("bg")
-        else:
-            self.start_color = start_color
-
-    amount = 0
-
-    @staticmethod
-    def wrong(time_step, new=False):
-        if 1 <= Display.amount:
-            Display.amount += 1
-
-        else:
-            color = int(time_step ** 8)
-
-            if 255 < color:
-                color = 255
-            else:
-                root.after(50, Display.wrong(time_step + 0.05))
-
-            color_hex = '#%02x%02x%02x' % (255, color, color)
-            wrong_text.configure(foreground=color_hex)
-
-        if new:
-            Display.amount += 1
-
-
-class Display:
-    amount = 0
-
-    @staticmethod
-    def wrong(time_step, new=False):
-        if 1 <= Display.amount:
-            Display.amount += 1
-
-        else:
-            color = int(time_step ** 8)
-
-            if 255 < color:
-                color = 255
-            else:
-                root.after(50, Display.wrong(time_step + 0.05))
-
-            color_hex = '#%02x%02x%02x' % (255, color, color)
-            wrong_text.configure(foreground=color_hex)
-
-        if new:
-            Display.amount += 1
-
-    @staticmethod
-    def temp():
-        pass
 
 
 class Words:
@@ -103,6 +36,7 @@ class Words:
             Words.nothing_left()
         else:
             Words.selected = random.choice(options)
+            translate_text.set(Words.selected[0])
 
     @staticmethod
     def get_new_words(select):
@@ -126,16 +60,19 @@ class Words:
 
     @staticmethod
     def check_correct(word):
+        print(word, Words.selected[1], word in Words.selected[1])
         if word in Words.selected[1]:
+            # right
             Words.right[Words.selected[0]] = Words.selected[1]
-            # todo call some func to show the right translation
+            wrong_text_var.set('Correct!')
+            wrong_text_fade.change(start=(0, 255, 0), end=(240, 240, 240), time=1)
         else:
+            # wrong
             Words.wrong[Words.selected[0]] = Words.selected[1]
-            Display.wrong(0, new=True)
+            wrong_text_var.set(' / '.join(Words.selected[1]))
+            wrong_text_fade.change(start=(255, 0, 0), end=(240, 240, 240), time=3)
 
-        del Words.current[Words.selected[0]]
-
-        Words.selected = random.choice(list(Words.current.items()))
+        Words.next_word()
 
 
 def check_word(_):
@@ -143,23 +80,31 @@ def check_word(_):
     input_text.set("")
 
 
-Words.get_new_words('lan1')
-
+# window
 root = tk.Tk()
 root.geometry("600x400")
+default_bg = root.cget('bg')
+# root.configure(bg='#ffffff')
 
+# translation entry
 input_text = tk.StringVar(root)
-
-input_field = tk.Entry(root, textvariable=input_text, font=('calibre', 10, 'normal'))
-
+input_field = tk.Entry(root, textvariable=input_text, font=("Times New Roman", 40, "bold"), justify='center')
 input_field.pack()
 input_field.bind('<Return>', check_word)
 
-wrong_text = tk.Label(root, text='test', foreground="#ff0000", font=("Times New Roman", 12, "bold"), bg='#ffffff')
-root.configure(bg='#ffffff')
+# show word to be translated
+translate_text = tk.StringVar(root)
+translate_word_text = tk.Label(root, textvariable=translate_text, font=("Times New Roman", 40, "bold"))
+translate_word_text.pack()
+
+# shows the right translation if you typed it wrong
+wrong_text_var = tk.StringVar(root)
+wrong_text = tk.Label(root, textvariable=wrong_text_var, font=("Times New Roman", 40, "bold"))
+wrong_text_fade = Fade(frame_obj=root, text_obj=wrong_text, time=3, gradiant='exponential')
 wrong_text.pack()
 
-# test = tk.Button(root, text="test button", command=change)
-# test.pack()
+# setup
+Words.get_new_words('lan1')
+
 
 root.mainloop()

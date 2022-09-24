@@ -1,569 +1,688 @@
 [
     {
         "text": "Vocabulario",
-        "x": 88,
-        "y": 25,
-        "width": 117,
-        "height": 19
-    },
-    {
-        "text": "bes\u00f3k",
-        "x": 736,
-        "y": 66,
-        "width": 49,
+        "x": 13,
+        "y": 49,
+        "width": 94,
         "height": 16
     },
     {
-        "text": "(la) visita",
-        "x": 564,
-        "y": 67,
-        "width": 73,
-        "height": 21
-    },
-    {
-        "text": "(el) avi\u00f3n",
-        "x": 90,
-        "y": 70,
-        "width": 70,
-        "height": 21
-    },
-    {
-        "text": "fiygplan",
-        "x": 286,
-        "y": 71,
-        "width": 60,
-        "height": 20
-    },
-    {
-        "text": "qu\u00e9 lindo (LA)",
-        "x": 564,
-        "y": 97,
-        "width": 113,
-        "height": 22
-    },
-    {
-        "text": "vad fint",
-        "x": 735,
-        "y": 98,
-        "width": 61,
-        "height": 16
-    },
-    {
-        "text": "klockan ir kvart \u00f3ver sju",
-        "x": 287,
-        "y": 101,
-        "width": 185,
-        "height": 20
-    },
-    {
-        "text": "son las siete y cuarto",
-        "x": 91,
-        "y": 102,
-        "width": 164,
-        "height": 20
-    },
-    {
-        "text": "eller hur?",
-        "x": 734,
-        "y": 130,
-        "width": 75,
-        "height": 16
-    },
-    {
-        "text": "\u00bfverdad?",
-        "x": 563,
-        "y": 131,
-        "width": 73,
-        "height": 21
-    },
-    {
-        "text": "pi kv\u00e1llen",
-        "x": 286,
-        "y": 132,
-        "width": 76,
-        "height": 20
-    },
-    {
-        "text": "de la noche",
-        "x": 91,
-        "y": 133,
-        "width": 89,
-        "height": 16
-    },
-    {
-        "text": "allvarligt?",
-        "x": 733,
-        "y": 162,
-        "width": 77,
-        "height": 20
-    },
-    {
-        "text": "vi b\u00f3rjar",
-        "x": 286,
-        "y": 163,
-        "width": 64,
-        "height": 20
-    },
-    {
-        "text": "\u00bfen serio?",
-        "x": 562,
-        "y": 163,
-        "width": 82,
-        "height": 21
-    },
-    {
-        "text": "empezamos",
-        "x": 92,
-        "y": 168,
-        "width": 93,
+        "text": "antes fore",
+        "x": 12,
+        "y": 85,
+        "width": 102,
         "height": 14
     },
     {
-        "text": "ahora",
-        "x": 93,
-        "y": 194,
-        "width": 44,
+        "text": "genial",
+        "x": 216,
+        "y": 88,
+        "width": 39,
         "height": 15
     },
     {
-        "text": "hemma",
-        "x": 732,
-        "y": 194,
-        "width": 59,
-        "height": 16
+        "text": "toppen",
+        "x": 294,
+        "y": 91,
+        "width": 45,
+        "height": 13
     },
     {
-        "text": "nu",
-        "x": 286,
-        "y": 199,
-        "width": 18,
-        "height": 11
-    },
-    {
-        "text": "en casa",
-        "x": 562,
-        "y": 200,
-        "width": 61,
-        "height": 11
-    },
-    {
-        "text": "(el) aterrizaje",
-        "x": 93,
-        "y": 223,
-        "width": 102,
-        "height": 21
-    },
-    {
-        "text": "landning",
-        "x": 287,
-        "y": 225,
-        "width": 64,
-        "height": 20
-    },
-    {
-        "text": "det \u00e1r sommar",
-        "x": 731,
-        "y": 226,
-        "width": 120,
-        "height": 16
-    },
-    {
-        "text": "es verano",
-        "x": 561,
-        "y": 231,
+        "text": "iBuenas!",
+        "x": 449,
+        "y": 94,
         "width": 79,
-        "height": 11
+        "height": 27
     },
     {
-        "text": "\u00e5h",
-        "x": 287,
-        "y": 254,
-        "width": 17,
+        "text": "estar listo vara redo, klar",
+        "x": 12,
+        "y": 109,
+        "width": 168,
+        "height": 15
+    },
+    {
+        "text": "\u00bfc\u00f3mo?",
+        "x": 215,
+        "y": 112,
+        "width": 49,
+        "height": 15
+    },
+    {
+        "text": "hur?",
+        "x": 294,
+        "y": 113,
+        "width": 27,
+        "height": 13
+    },
+    {
+        "text": "tranquilo tugn",
+        "x": 12,
+        "y": 134,
+        "width": 103,
         "height": 17
     },
     {
-        "text": "hace sol",
-        "x": 561,
-        "y": 257,
-        "width": 65,
+        "text": "te llamas",
+        "x": 216,
+        "y": 137,
+        "width": 58,
+        "height": 13
+    },
+    {
+        "text": "du heter",
+        "x": 294,
+        "y": 138,
+        "width": 53,
+        "height": 13
+    },
+    {
+        "text": "\u00bfd\u00f3nde?",
+        "x": 215,
+        "y": 161,
+        "width": 54,
+        "height": 15
+    },
+    {
+        "text": "var?",
+        "x": 293,
+        "y": 162,
+        "width": 26,
+        "height": 13
+    },
+    {
+        "text": "han \u00e1r",
+        "x": 88,
+        "y": 184,
+        "width": 40,
+        "height": 12
+    },
+    {
+        "text": "\u00bfC\u00f3mo?",
+        "x": 521,
+        "y": 192,
+        "width": 73,
+        "height": 26
+    },
+    {
+        "text": "Frases clave",
+        "x": 12,
+        "y": 314,
+        "width": 94,
+        "height": 15
+    },
+    {
+        "text": "H\u00e3lsa och presentera sig",
+        "x": 11,
+        "y": 349,
+        "width": 148,
+        "height": 14
+    },
+    {
+        "text": "Veckodagarna",
+        "x": 397,
+        "y": 354,
+        "width": 85,
+        "height": 15
+    },
+    {
+        "text": "Hola",
+        "x": 11,
+        "y": 376,
+        "width": 29,
+        "height": 12
+    },
+    {
+        "text": "Hej",
+        "x": 194,
+        "y": 376,
+        "width": 21,
         "height": 16
     },
     {
-        "text": "det \u00e1r soligt",
-        "x": 730,
-        "y": 257,
-        "width": 98,
-        "height": 21
+        "text": "lunes",
+        "x": 398,
+        "y": 380,
+        "width": 33,
+        "height": 13
     },
     {
-        "text": "llegamos",
-        "x": 95,
-        "y": 284,
-        "width": 68,
-        "height": 19
-    },
-    {
-        "text": "vi kommer fram",
-        "x": 287,
-        "y": 286,
-        "width": 117,
+        "text": "m\u00e1ndag",
+        "x": 483,
+        "y": 381,
+        "width": 48,
         "height": 16
     },
     {
-        "text": "hace mal tiempo",
-        "x": 560,
-        "y": 288,
-        "width": 133,
-        "height": 20
+        "text": "Buenas",
+        "x": 11,
+        "y": 400,
+        "width": 46,
+        "height": 13
     },
     {
-        "text": "det \u00e1r d\u00e0ligt v\u00e3der",
-        "x": 729,
-        "y": 288,
-        "width": 151,
-        "height": 21
+        "text": "Hej",
+        "x": 194,
+        "y": 401,
+        "width": 21,
+        "height": 16
     },
     {
-        "text": "(el) aeropuerto",
-        "x": 95,
-        "y": 312,
-        "width": 114,
-        "height": 21
+        "text": "tisdag",
+        "x": 482,
+        "y": 405,
+        "width": 37,
+        "height": 16
     },
     {
-        "text": "flygplats",
-        "x": 288,
-        "y": 316,
-        "width": 64,
-        "height": 19
-    },
-    {
-        "text": "\u00bfqu\u00e9 te pasa?",
-        "x": 559,
-        "y": 319,
-        "width": 110,
-        "height": 19
-    },
-    {
-        "text": "vad \u00e1r det med dig?",
-        "x": 727,
-        "y": 320,
-        "width": 162,
-        "height": 21
-    },
-    {
-        "text": "en",
-        "x": 95,
-        "y": 348,
-        "width": 18,
+        "text": "martes",
+        "x": 397,
+        "y": 407,
+        "width": 44,
         "height": 10
     },
     {
-        "text": "est\u00e1s cansado",
-        "x": 559,
-        "y": 349,
-        "width": 115,
+        "text": "Buenos d\u00edas",
+        "x": 11,
+        "y": 425,
+        "width": 76,
+        "height": 12
+    },
+    {
+        "text": "Hej; Gnd dag",
+        "x": 194,
+        "y": 426,
+        "width": 84,
+        "height": 17
+    },
+    {
+        "text": "mi\u00e9rcoles",
+        "x": 397,
+        "y": 429,
+        "width": 61,
+        "height": 12
+    },
+    {
+        "text": "onsdag",
+        "x": 482,
+        "y": 429,
+        "width": 45,
         "height": 16
     },
     {
-        "text": "om",
-        "x": 288,
-        "y": 350,
-        "width": 23,
+        "text": "Buenas tardes",
+        "x": 10,
+        "y": 449,
+        "width": 90,
+        "height": 13
+    },
+    {
+        "text": "Hej; God eftermiddag",
+        "x": 194,
+        "y": 450,
+        "width": 136,
+        "height": 18
+    },
+    {
+        "text": "jueves",
+        "x": 395,
+        "y": 453,
+        "width": 42,
+        "height": 15
+    },
+    {
+        "text": "torsdag",
+        "x": 482,
+        "y": 453,
+        "width": 47,
+        "height": 16
+    },
+    {
+        "text": "Buenas noches",
+        "x": 10,
+        "y": 474,
+        "width": 95,
+        "height": 13
+    },
+    {
+        "text": "He); God kv\u00e3ll; God natt",
+        "x": 194,
+        "y": 475,
+        "width": 151,
+        "height": 16
+    },
+    {
+        "text": "viernes",
+        "x": 396,
+        "y": 477,
+        "width": 47,
+        "height": 13
+    },
+    {
+        "text": "fredag",
+        "x": 482,
+        "y": 477,
+        "width": 39,
+        "height": 16
+    },
+    {
+        "text": "Adi\u00f3s; Hasta luego;",
+        "x": 9,
+        "y": 499,
+        "width": 123,
+        "height": 16
+    },
+    {
+        "text": "Hej d\u00e1",
+        "x": 194,
+        "y": 500,
+        "width": 41,
+        "height": 16
+    },
+    {
+        "text": "s\u00e1bado",
+        "x": 396,
+        "y": 501,
+        "width": 47,
+        "height": 13
+    },
+    {
+        "text": "l\u00f3rdag",
+        "x": 482,
+        "y": 502,
+        "width": 39,
+        "height": 15
+    },
+    {
+        "text": "fin de semana",
+        "x": 552,
+        "y": 512,
+        "width": 91,
+        "height": 12
+    },
+    {
+        "text": "Chao; Chau (LA)",
+        "x": 25,
+        "y": 518,
+        "width": 102,
+        "height": 17
+    },
+    {
+        "text": "domingo",
+        "x": 396,
+        "y": 525,
+        "width": 56,
+        "height": 16
+    },
+    {
+        "text": "s\u00f3ndag",
+        "x": 481,
+        "y": 526,
+        "width": 46,
+        "height": 15
+    },
+    {
+        "text": "\u00bfC\u00f3mo est\u00e1s?; \u00bfQu\u00e9 tal?",
+        "x": 9,
+        "y": 553,
+        "width": 155,
+        "height": 17
+    },
+    {
+        "text": "Hur mar du?; Hur \u00e1r det?",
+        "x": 193,
+        "y": 553,
+        "width": 153,
+        "height": 15
+    },
+    {
+        "text": "M\u00e1naderna",
+        "x": 396,
+        "y": 563,
+        "width": 68,
         "height": 11
     },
     {
-        "text": "du \u00e0r tr\u00f3tt",
-        "x": 727,
-        "y": 351,
-        "width": 81,
-        "height": 17
-    },
-    {
-        "text": "el t!empo",
-        "x": 95,
-        "y": 373,
-        "width": 71,
-        "height": 21
-    },
-    {
-        "text": "v\u00e0dret",
-        "x": 288,
-        "y": 376,
-        "width": 48,
-        "height": 15
-    },
-    {
-        "text": "(la) abuela",
-        "x": 558,
-        "y": 377,
-        "width": 82,
-        "height": 21
-    },
-    {
-        "text": "farmor (\u00e3ven mormor)",
-        "x": 726,
-        "y": 381,
-        "width": 180,
-        "height": 24
-    },
-    {
-        "text": "hoy",
-        "x": 96,
-        "y": 402,
-        "width": 27,
-        "height": 19
-    },
-    {
-        "text": "idag",
-        "x": 288,
-        "y": 405,
-        "width": 32,
-        "height": 19
-    },
-    {
-        "text": "(el) hermano",
-        "x": 558,
-        "y": 408,
-        "width": 100,
-        "height": 20
-    },
-    {
-        "text": "bror",
-        "x": 725,
-        "y": 412,
-        "width": 34,
-        "height": 16
-    },
-    {
-        "text": "t\u00edpico",
-        "x": 96,
-        "y": 432,
-        "width": 42,
-        "height": 18
-    },
-    {
-        "text": "typiskt",
-        "x": 288,
-        "y": 435,
-        "width": 51,
-        "height": 18
-    },
-    {
-        "text": "(la) prima",
-        "x": 557,
-        "y": 437,
-        "width": 74,
-        "height": 20
-    },
-    {
-        "text": "kusin",
-        "x": 724,
-        "y": 442,
-        "width": 40,
-        "height": 17
-    },
-    {
-        "text": "(el) invierno",
-        "x": 96,
-        "y": 460,
-        "width": 90,
-        "height": 20
-    },
-    {
-        "text": "vinter",
-        "x": 288,
-        "y": 464,
-        "width": 43,
-        "height": 15
-    },
-    {
-        "text": "est\u00e1n",
-        "x": 557,
-        "y": 468,
-        "width": 43,
-        "height": 16
-    },
-    {
-        "text": "de \u00e1r",
-        "x": 723,
-        "y": 473,
-        "width": 41,
-        "height": 15
-    },
-    {
-        "text": "hace dieciocho grados",
-        "x": 96,
-        "y": 491,
-        "width": 173,
-        "height": 19
-    },
-    {
-        "text": "det \u00e1r18 grader",
-        "x": 288,
-        "y": 493,
-        "width": 120,
-        "height": 19
-    },
-    {
-        "text": "(la) hora",
-        "x": 557,
-        "y": 496,
-        "width": 64,
-        "height": 20
-    },
-    {
-        "text": "timme",
-        "x": 722,
-        "y": 504,
-        "width": 47,
-        "height": 15
-    },
-    {
-        "text": "est\u00e1 nublado",
-        "x": 96,
-        "y": 520,
-        "width": 100,
-        "height": 16
-    },
-    {
-        "text": "det \u00e1r molnigt",
-        "x": 288,
-        "y": 523,
-        "width": 105,
-        "height": 19
-    },
-    {
-        "text": "all\u00e1 (LA)",
-        "x": 556,
-        "y": 526,
-        "width": 63,
-        "height": 21
-    },
-    {
-        "text": "d\u00e1r",
-        "x": 721,
-        "y": 532,
-        "width": 26,
-        "height": 16
-    },
-    {
-        "text": "llueve",
-        "x": 97,
-        "y": 549,
-        "width": 44,
-        "height": 15
-    },
-    {
-        "text": "det regnar",
-        "x": 288,
-        "y": 552,
-        "width": 79,
-        "height": 19
-    },
-    {
-        "text": "descansamos",
-        "x": 556,
-        "y": 556,
-        "width": 108,
-        "height": 19
-    },
-    {
-        "text": "vi Vilar",
-        "x": 720,
-        "y": 562,
-        "width": 50,
-        "height": 15
-    },
-    {
-        "text": "(los) compa\u00f1eros",
-        "x": 96,
+        "text": "Estoy maJ/regular/",
+        "x": 10,
         "y": 577,
-        "width": 133,
-        "height": 20
-    },
-    {
-        "text": "kamrater; kollegor",
-        "x": 289,
-        "y": 580,
-        "width": 136,
-        "height": 20
-    },
-    {
-        "text": "pobrecito",
-        "x": 556,
-        "y": 586,
-        "width": 75,
-        "height": 18
-    },
-    {
-        "text": "stackars dig",
-        "x": 718,
-        "y": 592,
-        "width": 93,
-        "height": 20
-    },
-    {
-        "text": "les deseamos",
-        "x": 97,
-        "y": 607,
-        "width": 105,
-        "height": 15
-    },
-    {
-        "text": "vi \u00f3nskar er",
-        "x": 288,
-        "y": 610,
-        "width": 87,
-        "height": 15
-    },
-    {
-        "text": "ung det r\u00e1cker",
-        "x": 717,
-        "y": 621,
         "width": 119,
         "height": 18
     },
     {
-        "text": "redan",
-        "x": 289,
-        "y": 638,
-        "width": 42,
-        "height": 15
+        "text": "Jag m\u00e1r d\u00e0ligt/s\u00e2 d\u00e1r/",
+        "x": 192,
+        "y": 578,
+        "width": 145,
+        "height": 17
     },
     {
-        "text": "ya",
-        "x": 97,
-        "y": 640,
-        "width": 18,
-        "height": 14
-    },
-    {
-        "text": "(el) beb\u00e9",
-        "x": 555,
-        "y": 642,
-        "width": 67,
-        "height": 20
-    },
-    {
-        "text": "bebis",
-        "x": 716,
-        "y": 648,
-        "width": 41,
+        "text": "januari",
+        "x": 480,
+        "y": 589,
+        "width": 43,
         "height": 16
     },
     {
-        "text": "primero",
-        "x": 98,
-        "y": 665,
-        "width": 60,
+        "text": "enero",
+        "x": 396,
+        "y": 592,
+        "width": 36,
+        "height": 9
+    },
+    {
+        "text": "bien/muy bien",
+        "x": 25,
+        "y": 597,
+        "width": 90,
         "height": 17
     },
     {
-        "text": "f\u00f3rst; f\u00f3rsta",
-        "x": 289,
-        "y": 666,
-        "width": 86,
+        "text": "bra/j\u00e1ttebra",
+        "x": 209,
+        "y": 598,
+        "width": 78,
         "height": 17
+    },
+    {
+        "text": "febrero",
+        "x": 396,
+        "y": 613,
+        "width": 46,
+        "height": 13
+    },
+    {
+        "text": "februari",
+        "x": 481,
+        "y": 613,
+        "width": 49,
+        "height": 14
+    },
+    {
+        "text": "\u00bfC\u00f3mo te llamas?",
+        "x": 9,
+        "y": 632,
+        "width": 109,
+        "height": 15
+    },
+    {
+        "text": "Vad heter du?",
+        "x": 191,
+        "y": 633,
+        "width": 88,
+        "height": 14
+    },
+    {
+        "text": "marzo",
+        "x": 396,
+        "y": 641,
+        "width": 39,
+        "height": 9
+    },
+    {
+        "text": "mars",
+        "x": 482,
+        "y": 641,
+        "width": 30,
+        "height": 10
+    },
+    {
+        "text": "Me llamo...; Soy...",
+        "x": 10,
+        "y": 656,
+        "width": 111,
+        "height": 19
+    },
+    {
+        "text": "Jag heter..,; Jag \u00e1r,..",
+        "x": 191,
+        "y": 658,
+        "width": 133,
+        "height": 17
+    },
+    {
+        "text": "abril",
+        "x": 395,
+        "y": 662,
+        "width": 28,
+        "height": 13
+    },
+    {
+        "text": "april",
+        "x": 481,
+        "y": 662,
+        "width": 27,
+        "height": 16
+    },
+    {
+        "text": "maj",
+        "x": 482,
+        "y": 688,
+        "width": 21,
+        "height": 15
+    },
+    {
+        "text": "mayo",
+        "x": 396,
+        "y": 690,
+        "width": 34,
+        "height": 13
+    },
+    {
+        "text": "\u00bfCu\u00e1ntos a\u00f1os tienes?",
+        "x": 9,
+        "y": 691,
+        "width": 142,
+        "height": 16
+    },
+    {
+        "text": "Hur gammal ir du?",
+        "x": 192,
+        "y": 693,
+        "width": 119,
+        "height": 17
+    },
+    {
+        "text": "junio",
+        "x": 393,
+        "y": 712,
+        "width": 33,
+        "height": 16
+    },
+    {
+        "text": "juni",
+        "x": 480,
+        "y": 712,
+        "width": 23,
+        "height": 16
+    },
+    {
+        "text": "Tengo anos",
+        "x": 9,
+        "y": 715,
+        "width": 88,
+        "height": 17
+    },
+    {
+        "text": "Jag \u00e1r \u00bfr",
+        "x": 190,
+        "y": 718,
+        "width": 74,
+        "height": 17
+    },
+    {
+        "text": "julio",
+        "x": 393,
+        "y": 737,
+        "width": 29,
+        "height": 16
+    },
+    {
+        "text": "\u00bfD\u00f3nde vives?",
+        "x": 9,
+        "y": 750,
+        "width": 89,
+        "height": 16
+    },
+    {
+        "text": "Var bor do?",
+        "x": 191,
+        "y": 753,
+        "width": 72,
+        "height": 14
+    },
+    {
+        "text": "augusti",
+        "x": 481,
+        "y": 761,
+        "width": 45,
+        "height": 15
+    },
+    {
+        "text": "agosto",
+        "x": 395,
+        "y": 763,
+        "width": 44,
+        "height": 14
+    },
+    {
+        "text": "Vivo ene..",
+        "x": 9,
+        "y": 774,
+        "width": 57,
+        "height": 14
+    },
+    {
+        "text": "Jag bor",
+        "x": 191,
+        "y": 778,
+        "width": 49,
+        "height": 17
+    },
+    {
+        "text": "septiembre",
+        "x": 395,
+        "y": 785,
+        "width": 72,
+        "height": 16
+    },
+    {
+        "text": "september",
+        "x": 481,
+        "y": 785,
+        "width": 67,
+        "height": 15
+    },
+    {
+        "text": "\u00bfDe d\u00f3nde eres?",
+        "x": 8,
+        "y": 799,
+        "width": 106,
+        "height": 16
+    },
+    {
+        "text": "Var kommer du ifr\u00e0n?",
+        "x": 190,
+        "y": 801,
+        "width": 134,
+        "height": 15
+    },
+    {
+        "text": "oktober",
+        "x": 481,
+        "y": 809,
+        "width": 49,
+        "height": 13
+    },
+    {
+        "text": "octubre",
+        "x": 395,
+        "y": 810,
+        "width": 49,
+        "height": 13
+    },
+    {
+        "text": "Soy sueco/sueca",
+        "x": 8,
+        "y": 833,
+        "width": 109,
+        "height": 16
+    },
+    {
+        "text": "november",
+        "x": 481,
+        "y": 833,
+        "width": 61,
+        "height": 13
+    },
+    {
+        "text": "noviembre",
+        "x": 395,
+        "y": 834,
+        "width": 67,
+        "height": 14
+    },
+    {
+        "text": "Jag ar svensk",
+        "x": 190,
+        "y": 837,
+        "width": 88,
+        "height": 17
+    },
+    {
+        "text": "Soy de Suecia",
+        "x": 8,
+        "y": 853,
+        "width": 88,
+        "height": 16
+    },
+    {
+        "text": "Oag komrner fr\u00e0n Sverige",
+        "x": 190,
+        "y": 855,
+        "width": 158,
+        "height": 18
+    },
+    {
+        "text": "diciembre",
+        "x": 395,
+        "y": 858,
+        "width": 62,
+        "height": 14
+    },
+    {
+        "text": "december",
+        "x": 480,
+        "y": 858,
+        "width": 63,
+        "height": 12
+    },
+    {
+        "text": "Datum",
+        "x": 394,
+        "y": 897,
+        "width": 41,
+        "height": 11
+    },
+    {
+        "text": "Vilket datum \u00e1r det idag?",
+        "x": 565,
+        "y": 920,
+        "width": 152,
+        "height": 16
+    },
+    {
+        "text": "\u00bfQu\u00e9 d\u00eda es hoy?",
+        "x": 394,
+        "y": 921,
+        "width": 108,
+        "height": 17
+    },
+    {
+        "text": "Hoy es viernes II dejulio Idag \u00e1r det fredag den II juli",
+        "x": 394,
+        "y": 945,
+        "width": 343,
+        "height": 18
     }
 ]

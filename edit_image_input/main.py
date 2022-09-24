@@ -1,7 +1,9 @@
 import pygame as pg
 
-from data.funcs import Handler, SimplifiedJson, Cleaner
+from data.funcs import Handler
+from load_words.save_data import save_data
 
+from data.funcs import Cleaner
 from lisseners import EditText
 from edit_input import Basic, Check
 import draw
@@ -55,7 +57,9 @@ class Mode:
         for pair in pairs:
             word_data.append((pair[0]['text'], pair[1]['text']))
 
-        SimplifiedJson.save_to_jason(word_data, '../load_words/words/ch2/clean_data_full')
+        save_data(word_data)  # , '../load_words/words/ch2/clean_data_full')
+        pg.quit()
+        quit()
 
     @staticmethod
     def next_mode(frame_events):
@@ -160,14 +164,13 @@ def main():
     # lan_1_word  lan_2_word     lan_1_word  lan_2_word
     # lan_1_word  lan_2_word     lan_1_word  lan_2_word
     languishes = 'spa', 'swe'
+    Cleaner.new_image(r"C:\Users\videw\Downloads\spa_images\IMG_2494.jpg", languishes)
 
     text_image_dir = 'data/selected_image.jpg'
     pg_text_img = pg.image.load(text_image_dir)
     game_screen = pg.display.set_mode((pg_text_img.get_size()))
 
     Mode.mode_0_setup()
-
-    # Cleaner.new_image('spa_text_glossary_perfect', languishes)
 
     while True:
         edit_event_loop()

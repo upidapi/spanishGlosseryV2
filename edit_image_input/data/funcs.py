@@ -243,6 +243,7 @@ class Cleaner:
         }
 
         image_dir = test_images[select_image] if select_image in test_images else select_image
+
         image = Image.open(image_dir)
         image.thumbnail((1000, 1000))
 

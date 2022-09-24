@@ -3,7 +3,7 @@ import json
 
 
 def save_data(data):
-    selected_directories = tkfilebrowser.askopenfilename(initialdir=r"../load_words_r/words/", title='select')
+    selected_directories = tkfilebrowser.askopenfilename(initialdir=r"../load_words/words/", title='select')
 
     # converts python-array to json-document with indent 4
     json_object = json.dumps(data, indent=4)

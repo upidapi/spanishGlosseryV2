@@ -135,6 +135,18 @@ class TextEntry:
         return tk_font.measure(text) + tolerance
 
     # call funcs
+    def custom_bind(self, key, func: callable, mod=None, do_extra: callable = None):
+        # used to ease the proses of binding things
+
+        def combined_funcs(event):
+            if key in get_mods(event) or mod is None:
+                func()
+
+            if do_extra is not None:
+                do_extra()
+
+        self.entry.bind(key, lambda event: combined_funcs(event))
+
     def on_key_press(self, event):
         other = ['BackSpace', 'Delete']
         if 0 < Handler.mode or self.allow_write:

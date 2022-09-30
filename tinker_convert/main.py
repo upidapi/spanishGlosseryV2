@@ -27,7 +27,6 @@ def main():
     raw_img = Image.open(path)
     w, h = raw_img.size
     tk_image = ImageTk.PhotoImage(raw_img)
-
     label1 = tk.Label(root, image=tk_image)
     label1.place(x=0, y=0)
 

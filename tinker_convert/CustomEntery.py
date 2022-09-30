@@ -2,10 +2,10 @@ import tkinter as tk
 from tinker_convert.helper_funcs import get_mods
 from tinker_convert.data.Data import get
 
-# todo strip saved text from spaces
 
 class Handler:
     switch = False
+    save_focus_text = (None, None)
     mode = 0
 
     # helper funcs
@@ -17,6 +17,7 @@ class Handler:
                 return instance
 
     # call funcs
+    # affects all
     @staticmethod
     def next_mode(event):
         if 'ctrl' in get_mods(event):
@@ -28,6 +29,22 @@ class Handler:
 
                 root.title('edit words')
 
+    @staticmethod
+    def switch_text(event):
+        if 'ctrl' in get_mods(event):
+            Handler.switch = not Handler.switch
+            # switches the text and other_text for all instances
+            for instance in TextEntry.instances:
+                text_main = instance.saved_text
+                text_switch = instance.other_text
+
+                instance.tk_text.set(text_switch)
+                instance.saved_text = text_switch
+                instance.other_text = text_main
+
+                instance.update_hit_box(2)
+
+    # affects only a few
     @staticmethod
     def new_word():
         x, y = root.winfo_pointerxy()
@@ -54,19 +71,27 @@ class Handler:
                 self.entry.place(x=x, y=y, width=entry_data['width'])
 
     @staticmethod
-    def switch_text(event):
+    def merge(event):
         if 'ctrl' in get_mods(event):
-            Handler.switch = not Handler.switch
-            # switches the text and other_text for all instances
+            selected_widget = Handler.find_focus()
+
+            over_widget = None
+            x, y = root.winfo_pointerxy()
+            widget = root.winfo_containing(x, y)
             for instance in TextEntry.instances:
-                text_main = instance.saved_text
-                text_switch = instance.other_text
+                if instance.entry == widget:
+                    over_widget = instance
+                    break
 
-                instance.tk_text.set(text_switch)
-                instance.saved_text = text_switch
-                instance.other_text = text_main
+            if selected_widget != over_widget and over_widget is not None and selected_widget is not None:
+                selected_widget.save()
 
-                instance.update_hit_box()
+                selected_widget.saved_text += over_widget.saved_text
+                selected_widget.other_text += over_widget.other_text
+                selected_widget.tk_text.set(selected_widget.saved_text)
+
+                over_widget.delete_instance()
+                selected_widget.save()
 
     # other
     @staticmethod
@@ -120,6 +145,7 @@ class Handler:
         root.bind('<Button-2>', lambda event: Handler.new_word())
         root.bind('<w>', lambda event: Handler.switch_text(event))
         root.bind('<Return>', lambda event: Handler.next_mode(event))
+        root.bind('<q>', lambda event: Handler.merge(event))
 
         root.focus()
 
@@ -135,78 +161,58 @@ class TextEntry:
         return tk_font.measure(text) + tolerance
 
     # call funcs
-    def custom_bind(self, key, func: callable, mod=None, do_extra: callable = None):
+    def on_key_press(self, event):
+        other = ['BackSpace', 'Delete', 'Control_L']
+        combined_char = ['\x04']
+
+        if Handler.mode == 0 and not self.allow_write:
+            # # for example ctrl + W => \x17
+            # combined_unicode = event.char != event.keysym and len(event.keysym) == 1
+            combined_char_exception = event.char in combined_char
+
+            # some things just don't get captured, this ia a quick fix
+            exception = event.keysym in other
+
+            # checks if it's a normal character (abc, 123, !?\, etc)
+            normal_character = event.char.isprintable() and event.char != ''
+
+            if combined_char_exception or exception or normal_character:
+                return 'break'
+
+            self.update_hit_box(2)
+
+        elif self.entry == root.focus_get():
+            self.update_hit_box(11)
+
+    def custom_bind(self, key, func: callable = None, do_extra: callable = None, mod=None):
         # used to ease the proses of binding things
 
         def combined_funcs(event):
-            if key in get_mods(event) or mod is None:
-                func()
+            if mod in get_mods(event) or mod is None:
+                if func is not None:
+                    func()
 
             if do_extra is not None:
                 do_extra()
 
+            return self.on_key_press(event)
+
         self.entry.bind(key, lambda event: combined_funcs(event))
 
-    def on_key_press(self, event):
-        other = ['BackSpace', 'Delete']
-        if 0 < Handler.mode or self.allow_write:
-            self.update_hit_box()
-        else:
-            if (event.keysym in other) or (event.char.isprintable() and event.char != ''):
-                return 'break'
+    def delete_instance(self):
+        self.entry.destroy()
+        TextEntry.instances.remove(self)
 
-    def update_hit_box(self, tolerance=11):
+    def update_hit_box(self, tolerance):
         width = self.get_width(tolerance)
         entry_data = self.entry.place_info()
 
         self.entry.grid_forget()
         self.entry.place(x=entry_data['x'], y=entry_data['y'], width=width)
 
-    def un_focus(self, do_extra: callable = None):
-        """
-        does all things that have to be done when you un focus
-
-        :param do_extra: will be called after un_focus() is run
-        """
-        self.allow_write = False
-
-        self.update_hit_box(2)
-
-        if self.tk_text.get() == "":
-            self.entry.destroy()
-
-        self.entry.config(fg='#000000')
-
-        if do_extra is not None:
-            do_extra()
-
-    def save(self, do_extra: callable = None):
-        """
-        saves the entry data
-
-        :param do_extra: will be called after save() is run
-        """
-
-        self.saved_text = self.tk_text.get()
-
-        entry_data = self.entry.place_info()
-        x, y = entry_data['x'], entry_data['y']
-        width = self.get_width(2)
-
-        self.saved_pos = (x, y)
-
-        self.entry.grid_forget()
-        self.entry.place(x=x, y=y, width=width)
-
-        if do_extra is not None:
-            do_extra()
-
-    def revert_changes(self, do_extra):
+    def revert_changes(self):
         """
         reverts all changes on the text entry
-
-        :param do_extra: will be called after revert_changes() is run
-        :return:
         """
         # Remove changes
         self.tk_text.set(self.saved_text)
@@ -217,42 +223,62 @@ class TextEntry:
         self.entry.grid_forget()
         self.entry.place(x=x, y=y, width=width)
 
-        if do_extra is not None:
-            do_extra()
+    def un_focus(self):
+        """
+        does all things that have to be done when you un focus
+        """
+        self.allow_write = False
 
-    def delete_instance(self, event):
-        if 'ctrl' in get_mods(event):
-            self.entry.destroy()
-            TextEntry.instances.remove(self)
-        return self.on_key_press(event)
+        self.entry.config(fg='#000000')
 
-    def split(self, event):
-        if 'ctrl' in get_mods(event):
-            cursor_pos = self.entry.index(tk.INSERT)
+        # if its empty delete it
+        if self.saved_text == "":
+            self.delete_instance()
 
-            text_main, text_translation = self.tk_text.get(), self.other_text
-            if Handler.switch:
-                text_main, text_translation = text_translation, text_main
+        else:
+            self.revert_changes()
 
-            bef_cursor = text_main[:cursor_pos]
-            aft_cursor = text_translation[cursor_pos:]
+    def save(self):
+        """
+        saves the entry data
+        """
+        text = self.tk_text.get().strip()
+        self.saved_text = text
 
-            self.tk_text.set(bef_cursor)
-            self.other_text = bef_cursor
-            self.save()
-            self.un_focus()
+        if self.allow_write:
+            self.other_text = self.saved_text
 
-            x = int(self.entry.place_info()['width']) + 5 + int(self.saved_pos[0])  # the 5 is to shift it a bit
-            y = int(self.saved_pos[1])
-            split_text = TextEntry(text=aft_cursor, x=x, y=y, allow_write=True)
-            split_text.save()
-            split_text.un_focus()
+        entry_data = self.entry.place_info()
+        x, y = entry_data['x'], entry_data['y']
+        width = self.get_width(2)
 
-        return self.on_key_press(event)
+        self.saved_pos = (x, y)
+
+        self.entry.grid_forget()
+        self.entry.place(x=x, y=y, width=width)
+
+    def split(self):
+        cursor_pos = self.entry.index(tk.INSERT)
+
+        text_main, text_translation = self.tk_text.get(), self.other_text
+        if Handler.switch:
+            text_main, text_translation = text_translation, text_main
+
+        bef_cursor = text_main[:cursor_pos]
+        aft_cursor = text_translation[cursor_pos:]
+
+        self.tk_text.set(bef_cursor)
+        self.other_text = bef_cursor
+        self.save()
+        self.un_focus()
+
+        x = int(self.entry.place_info()['width']) + 5 + int(self.saved_pos[0])  # the 5 is to shift it a bit
+        y = int(self.saved_pos[1])
+        split_text = TextEntry(text=aft_cursor, x=x, y=y, allow_write=True)
+        split_text.save()
+        split_text.un_focus()
 
     def __init__(self, *, text, x, y, text_other=None, allow_write=False):
-        global root
-
         TextEntry.instances.append(self)
 
         self.allow_write = allow_write
@@ -280,35 +306,13 @@ class TextEntry:
         self.update_hit_box(2)
 
         # binds things
-        self.entry.bind('<Return>', lambda _: self.save(lambda: root.focus()))
-        self.entry.bind('<Escape>', lambda _: self.revert_changes(lambda: root.focus()))
-        self.entry.bind('<FocusOut>', lambda _: self.un_focus())
-        self.entry.bind('<FocusIn>', lambda _: self.entry.config(fg='#ff0000'))
+        self.custom_bind('s', self.split, mod='ctrl')
+        self.custom_bind('<Delete>', self.delete_instance, do_extra=root.focus)
+        self.custom_bind('<Return>', self.save, do_extra=root.focus)
+        self.custom_bind('<Escape>', self.revert_changes, do_extra=root.focus)
 
-        self.entry.bind('<s>', lambda event: self.split(event))
-        self.entry.bind('<Delete>', lambda event: self.delete_instance(event))
+        self.custom_bind('<KeyRelease>')
+        self.custom_bind('<KeyPress>')
 
-        self.entry.bind('<KeyRelease>', lambda _: self.update_hit_box())
-        self.entry.bind('<KeyPress>', lambda event: self.on_key_press(event))
-
-
-# class CustomisedEntry(tk.Entry):
-#     def __init__(self, master, master_self, **kw):
-#         print('asd')
-#         super().__init__(master, **kw)
-#         self.master_self = master_self
-#
-#     def insert(self, pos, value):
-#         if 0 < Handler.mode or self.master_self.allow_write:
-#             super().insert(pos, value)
-#             self.master_self.update_hit_box()
-#         else:
-#             self.config(state='normal')
-#             super().insert(pos, value)
-#             self.config(state='disabled')
-#
-#     def delete(self, first, last=None):
-#         print(111)
-#         if 0 < Handler.mode or self.master_self.allow_write:
-#             super().delete(first, last)
-#             self.master_self.update_hit_box()
+        self.custom_bind('<FocusOut>', self.un_focus)
+        self.custom_bind('<FocusIn>', lambda: self.entry.config(fg='#ff0000'))

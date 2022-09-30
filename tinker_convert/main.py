@@ -34,7 +34,7 @@ def main():
     root.geometry(f"{w}x{h}")
     root.title('split/move/add/delete words')
 
-    handler = Handler(global_root=root, global_font=tk_font)
+    handler = Handler(global_root=root, global_font=tk_font, tk_image=tk_image)
 
     root.mainloop()
 

@@ -5,7 +5,6 @@ from tinker_convert.data.Data import get
 
 class Handler:
     switch = False
-    save_focus_text = (None, None)
     mode = 0
 
     # helper funcs
@@ -126,28 +125,45 @@ class Handler:
 
             TextEntry(text=text_1, x=x, y=y, text_other=text_2)
 
-    def __init__(self, global_root, global_font):
-        global root, tk_font, font_height, bg_color
+    @staticmethod
+    def hide(event, show):
+        # hides the text by overlaying an identical image of the bg
+        if 'ctrl' in get_mods(event) or show:
+            if show:
+                overlay_image.place_forget()
+            else:
+                overlay_image.place(x=0, y=0)
+
+    def __init__(self, global_root, global_font, tk_image):
+        global root, tk_font, font_height, bg_color, overlay_image
 
         bg_color = '#f0f0f0'
-
         root = global_root
         tk_font = global_font
 
+        # gets the height of the font
         widget = tk.Label(root, text="My String")
         widget.pack()
         font_height = tk.font.Font(font=widget['font']).metrics('linespace')
         widget.destroy()
 
+        # adds all the enters
         Handler.populate()
+        # to prevent the last added entry from being focused
+        root.focus()
 
+        # identical bg image
+        overlay_image = tk.Label(root, image=tk_image)
+
+        # binds
         root.bind('<Button-3>', lambda event: Handler.move(event))
         root.bind('<Button-2>', lambda event: Handler.new_word())
-        root.bind('<w>', lambda event: Handler.switch_text(event))
         root.bind('<Return>', lambda event: Handler.next_mode(event))
         root.bind('<q>', lambda event: Handler.merge(event))
+        root.bind('<w>', lambda event: Handler.switch_text(event))
 
-        root.focus()
+        root.bind('<e>', lambda event: Handler.hide(event, False))
+        root.bind('<KeyRelease-e>', lambda event: Handler.hide(event, True))
 
 
 class TextEntry:

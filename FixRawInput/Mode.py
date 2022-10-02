@@ -1,7 +1,7 @@
-from FixRawInput import find_tr_pairs
-from FixRawInput import get_mods
-from FixRawInput import Handler
-from FixRawInput import save_data
+from FixRawInput.CustomEntery import Handler
+from FixRawInput.TrLines import find_tr_pairs
+from FixRawInput.data.Data import save_data
+from FixRawInput.helper_funcs import get_mods
 
 
 def __init__(global_root, global_languages):

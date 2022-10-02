@@ -2,8 +2,10 @@ import tkinter as tk
 from tkinter import font
 from PIL import ImageTk, Image
 
-from FixRawInput import Handler
-from FixRawInput import TrLines, Mode, CustomEntery
+from FixRawInput import TrLines
+from FixRawInput import Mode
+from FixRawInput import CustomEntery
+from FixRawInput.CustomEntery import Handler
 
 
 def canvas_setup():

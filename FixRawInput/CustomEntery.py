@@ -1,7 +1,7 @@
 import tkinter as tk
 
-from FixRawInput import get_mods
-from FixRawInput import Data
+from FixRawInput.helper_funcs import get_mods
+from FixRawInput.data import Data
 from FixRawInput import TrLines
 
 

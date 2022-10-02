@@ -1,6 +1,9 @@
 import requests
 import json
 from PIL import Image
+import tkfilebrowser
+
+from tinker_convert.helper_funcs import get_line_bounding_box
 
 
 def get_data_from_image(filename, language='eng'):
@@ -33,30 +36,6 @@ def get_data_from_image(filename, language='eng'):
     # from json-str to python-array
     return_data = json.loads(return_data)
     return return_data
-
-
-def get_line_bounding_box(line):
-    min_x1, min_y1, max_x2, max_y2 = [1_000_000, 1_000_000, 0, 0]
-    words = line["Words"]
-    for word in words:
-        # converts width/height to coordinates
-        x, y, width, height = word["Left"], word["Top"], word["Width"], word["Height"]
-        x1, y1, x2, y2 = x, y, x + width, y + height
-
-        # gets the min/max chords of chords to get the bounding box
-        min_x1 = min(min_x1, x1)
-        min_y1 = min(min_y1, y1)
-        max_x2 = max(max_x2, x2)
-        max_y2 = max(max_y2, y2)
-
-    # converts coordinate to width/height
-    x1, y1, x2, y2 = min_x1, min_y1, max_x2, max_y2
-    width = abs(x1 - x2)
-    height = abs(y1 - y2)
-    x = min(x1, x2)
-    y = min(y1, y2)
-
-    return x, y, width, height
 
 
 def clean_up_data(dirty_data):
@@ -225,3 +204,12 @@ def debug(select_image):
     select_image = test_images[select_image] if select_image in test_images else select_image
 
     new_image(select_image, languishes)
+
+
+def save_data(data):
+    selected_directories = tkfilebrowser.askopenfilename(initialdir=r"../load_words/words/", title='select')
+
+    # converts python-array to json-document with indent 4
+    json_object = json.dumps(data, indent=4)
+    with open(selected_directories, "w") as outfile:
+        outfile.write(json_object)

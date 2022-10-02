@@ -1,10 +1,35 @@
 import tkinter as tk
+
 from tinker_convert.helper_funcs import get_mods
-from tinker_convert.data.Data import get
+from tinker_convert.data import Data
+from tinker_convert import TrLines
+
+
+def __init__(global_root, global_font, tk_image, global_languages):
+    global \
+        root, \
+        tk_font, \
+        font_height, \
+        bg_color, \
+        tk_image_save, \
+        languages
+
+    bg_color = "#f0f0f0"
+    root = global_root
+    tk_font = global_font
+    tk_image_save = tk_image
+    languages = global_languages
+
+    # gets the height of the font
+    widget = tk.Label(root, text="My String")
+    widget.pack()
+    font_height = tk.font.Font(font=widget['font']).metrics('linespace')
+    widget.destroy()
 
 
 class Handler:
     switch = False
+    show_entries = True
     mode = 0
 
     # helper funcs
@@ -15,33 +40,90 @@ class Handler:
             if instance.entry == focus:
                 return instance
 
-    # call funcs
-    # affects all
+    # other
     @staticmethod
-    def next_mode(event):
-        if 'ctrl' in get_mods(event):
-            Handler.mode += 1
+    def get_data():
+        full_data = []
+        # gets the data from all the instances
+        for instance in TextEntry.instances:
+            text_main = instance.tk_text.get()
+            text_translation = instance.other_text
 
-            if Handler.mode == 1:
-                for instance in TextEntry.instances:
-                    instance.entry.config(state='normal')
+            raw_entry_data = instance.entry.place_info()
+            x, y = raw_entry_data['x'], raw_entry_data['y']
 
-                root.title('edit words')
+            text_width = instance.get_width()
+
+            if Handler.switch:
+                text_main, text_translation = text_translation, text_main
+
+            data = {
+                'self': instance,
+                'text': {'main': text_main, 'translation': text_translation},
+                'x': int(x),
+                'y': int(y),
+                'height': int(font_height),
+                'width': int(text_width),
+            }
+
+            full_data.append(data)
+
+        return full_data
+
+    @staticmethod
+    def populate():
+        data = Data.get()
+
+        for d1, d2 in zip(*data):
+            text_1, text_2 = d1['text'], d2['text']
+            x, y = d1['x'], d1['y']
+
+            TextEntry(text=text_1, x=x, y=y, text_other=text_2)
+
+    @staticmethod
+    def hide(event, show):
+        global overlay_image
+        # hides the text by overlaying an identical image of the bg
+        if 'ctrl' in get_mods(event) or show:
+            if show:
+                if not Handler.show_entries:
+                    overlay_image.destroy()
+                    Handler.show_entries = True
+            else:
+                if Handler.show_entries:
+                    overlay_image = tk.Label(root, image=tk_image_save)
+                    w, h = tk_image_save.width(), tk_image_save.height()
+                    overlay_image.place(x=0, y=0, w=w, h=h)
+                    Handler.show_entries = False
+
+    @staticmethod
+    def update_tr_lines():
+        TrLines.draw(Handler)
 
     @staticmethod
     def switch_text(event):
-        if 'ctrl' in get_mods(event):
-            Handler.switch = not Handler.switch
-            # switches the text and other_text for all instances
-            for instance in TextEntry.instances:
-                text_main = instance.saved_text
-                text_switch = instance.other_text
+        # when it goes to mode 1 the text gets combined (saved_text == other_text)
+        if Handler.mode == 0:
+            if 'ctrl' in get_mods(event):
+                if Handler.switch:
+                    Handler.switch = False
+                    root.title(f'split/move/add/delete words (lan: {languages[0]})')
+                else:
+                    Handler.switch = True
+                    root.title(f'split/move/add/delete words (lan: {languages[1]})')
 
-                instance.tk_text.set(text_switch)
-                instance.saved_text = text_switch
-                instance.other_text = text_main
+                # switches the text and other_text for all instances
+                for instance in TextEntry.instances:
+                    text_main = instance.saved_text
+                    text_switch = instance.other_text
 
-                instance.update_hit_box(2)
+                    instance.tk_text.set(text_switch)
+                    instance.saved_text = text_switch
+                    instance.other_text = text_main
+
+                    instance.update_hit_box(2)
+
+            Handler.update_tr_lines()
 
     # affects only a few
     @staticmethod
@@ -52,6 +134,8 @@ class Handler:
         y -= font_height // 2
 
         TextEntry(text='', x=x, y=y, allow_write=True)
+
+        Handler.update_tr_lines()
 
     @staticmethod
     def move(_):
@@ -68,6 +152,8 @@ class Handler:
 
                 self.entry.grid_forget()
                 self.entry.place(x=x, y=y, width=entry_data['width'])
+
+        Handler.update_tr_lines()
 
     @staticmethod
     def merge(event):
@@ -92,82 +178,10 @@ class Handler:
                 over_widget.delete_instance()
                 selected_widget.save()
 
-    # other
-    @staticmethod
-    def get_data():
-        full_data = []
-        # gets the data from all the instances
-        for instance in TextEntry.instances:
-            text_main = instance.tk_text.get()
-            text_translation = instance.other_text
-            raw_entry_data = instance.entry.place_info()
-            x, y = raw_entry_data['x'], raw_entry_data['y']
-
-            if Handler.switch:
-                text_main, text_translation = text_translation, text_main
-
-            data = {
-                'text': {'main': text_main, 'translation': text_translation},
-                'x': x,
-                'y': y,
-                'height': font_height,
-            }
-
-            full_data.append(data)
-
-    @staticmethod
-    def populate():
-        data = get()
-
-        for d1, d2 in zip(*data):
-            text_1, text_2 = d1['text'], d2['text']
-            x, y = d1['x'], d1['y']
-
-            TextEntry(text=text_1, x=x, y=y, text_other=text_2)
-
-    @staticmethod
-    def hide(event, show):
-        # hides the text by overlaying an identical image of the bg
-        if 'ctrl' in get_mods(event) or show:
-            if show:
-                overlay_image.place_forget()
-            else:
-                overlay_image.place(x=0, y=0)
-
-    def __init__(self, global_root, global_font, tk_image):
-        global root, tk_font, font_height, bg_color, overlay_image
-
-        bg_color = '#f0f0f0'
-        root = global_root
-        tk_font = global_font
-
-        # gets the height of the font
-        widget = tk.Label(root, text="My String")
-        widget.pack()
-        font_height = tk.font.Font(font=widget['font']).metrics('linespace')
-        widget.destroy()
-
-        # adds all the enters
-        Handler.populate()
-        # to prevent the last added entry from being focused
-        root.focus()
-
-        # identical bg image
-        overlay_image = tk.Label(root, image=tk_image)
-
-        # binds
-        root.bind('<Button-3>', lambda event: Handler.move(event))
-        root.bind('<Button-2>', lambda event: Handler.new_word())
-        root.bind('<Return>', lambda event: Handler.next_mode(event))
-        root.bind('<q>', lambda event: Handler.merge(event))
-        root.bind('<w>', lambda event: Handler.switch_text(event))
-
-        root.bind('<e>', lambda event: Handler.hide(event, False))
-        root.bind('<KeyRelease-e>', lambda event: Handler.hide(event, True))
+        Handler.update_tr_lines()
 
 
 class TextEntry:
-    mode = 0
     instances = []
 
     # helper funcs
@@ -184,6 +198,7 @@ class TextEntry:
         if Handler.mode == 0 and not self.allow_write:
             # # for example ctrl + W => \x17
             # combined_unicode = event.char != event.keysym and len(event.keysym) == 1
+
             combined_char_exception = event.char in combined_char
 
             # some things just don't get captured, this ia a quick fix
@@ -219,6 +234,8 @@ class TextEntry:
         self.entry.destroy()
         TextEntry.instances.remove(self)
 
+        Handler.update_tr_lines()
+
     def update_hit_box(self, tolerance):
         width = self.get_width(tolerance)
         entry_data = self.entry.place_info()
@@ -238,6 +255,8 @@ class TextEntry:
 
         self.entry.grid_forget()
         self.entry.place(x=x, y=y, width=width)
+
+        Handler.update_tr_lines()
 
     def un_focus(self):
         """

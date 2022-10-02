@@ -1,8 +1,8 @@
 import tkinter as tk
 
 from FixRawInput.helper_funcs import get_mods
-from FixRawInput.data import Data
-from FixRawInput import TrLines
+from Data import load_raw_data
+import TrLines
 
 
 def __init__(global_root, global_font, tk_image, global_languages):
@@ -44,7 +44,7 @@ class Handler:
     @staticmethod
     def get_data():
         full_data = []
-        # gets the data from all the instances
+        # gets the New from all the instances
         for instance in TextEntry.instances:
             text_main = instance.tk_text.get()
             text_translation = instance.other_text
@@ -72,7 +72,7 @@ class Handler:
 
     @staticmethod
     def populate():
-        data = Data.get()
+        data = load_raw_data()
 
         for d1, d2 in zip(*data):
             text_1, text_2 = d1['text'], d2['text']
@@ -275,7 +275,7 @@ class TextEntry:
 
     def save(self):
         """
-        saves the entry data
+        saves the entry New
         """
         text = self.tk_text.get().strip()
         self.saved_text = text

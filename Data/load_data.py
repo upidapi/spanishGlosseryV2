@@ -1,4 +1,42 @@
-from load_words.file_data import load_data, get_files
+import os
+import json
+from Data import SelectFiles
+
+
+def get_sub_files(directory):
+    if os.path.isfile(directory):
+        return [directory.replace(os.getcwd() + '\\', '').replace('\\', '/')]
+    else:
+        files = []
+        for sub_dir in os.listdir(directory):
+            files += get_sub_files(os.path.join(directory, sub_dir))
+
+        return files
+
+
+def get_dir_files(directory):
+    if isinstance(directory, tuple):
+        files = []
+        for sub_dir in directory:
+            files += get_sub_files(sub_dir)
+
+        return files
+
+    elif directory is not None:
+        return [directory.split('\\')[-1]]
+
+    else:
+        return []
+
+
+def load_data(files: list):
+    full_data = []
+    for file in files:
+        with open(file) as jsonFile:
+            full_data += json.load(jsonFile)
+            jsonFile.close()
+
+    return full_data
 
 
 def clean(word, split_keys: tuple, remove_keys: tuple, remove_between_keys: tuple):
@@ -64,13 +102,32 @@ def find_alternative_translations(data: list):
     return w1_to_w2, w2_to_w1
 
 
-def get(select):
-    all_data = load_data(get_files(select))
+def load_clean_data(select='multiple'):
+    directories = SelectFiles.ask_select(r"../Data/words", select)  # , 'multiple')
+    files = get_dir_files(directories)
+    all_data = load_data(files)
+
     for i, pair in enumerate(all_data):
         for j, word in enumerate(pair):
+            # todo might want to add the clean args to get
             all_data[i][j] = clean(word,
                                    split_keys=(';',),
                                    remove_keys=('ung.',),
                                    remove_between_keys=(('(', ')'), ('/', '/')))
 
     return find_alternative_translations(all_data)
+
+
+def load_raw_data():
+    def _get_data(file):
+        # gets the New
+        with open(file) as jsonFile:
+            json_object = json.load(jsonFile)
+            jsonFile.close()
+
+        return json_object
+
+    data_1 = _get_data(r'..\tinker_convert\data\lan1_data.json')
+    data_2 = _get_data(r'..\tinker_convert\data\lan2_data.json')
+
+    return data_1, data_2

@@ -2,16 +2,17 @@ import tkinter as tk
 from tkinter import font
 from PIL import ImageTk, Image
 
-from FixRawInput import TrLines
-from FixRawInput import Mode
-from FixRawInput import CustomEntery
+import TrLines
+import Mode
+import CustomEntery
 from FixRawInput.CustomEntery import Handler
 
 
 def canvas_setup():
     global canvas, tk_image
     # background image
-    path = r'..\FixRawInput\data\selected_image.jpg'
+    # todo might cause problems
+    path = r'../Data/New/selected_image.jpg'
     raw_img = Image.open(path)
     tk_image = ImageTk.PhotoImage(raw_img)
     w = tk_image.width()
@@ -44,7 +45,7 @@ def main():
     global root
     languishes = ('spa', 'swe')
 
-    # from FixRawInput.data import Data
+    # from FixRawInput.New import Data
     # Data.new_image(r"C:\Users\videw\Downloads\spa_images\IMG_2496.jpg", languishes)
 
     root = tk.Tk()
@@ -53,7 +54,7 @@ def main():
     canvas_setup()
     root.geometry(f"{tk_image.width()}x{tk_image.height()}")
 
-    CustomEntery.__init__(root, tk_font, tk_image, global_languages=('spa', 'swe'))
+    CustomEntery.__init__(root, tk_font, tk_image, global_languages=languishes)
     TrLines.__init__(global_canvas=canvas, global_tk_image=tk_image)
     Mode.__init__(root, global_languages=languishes)
 

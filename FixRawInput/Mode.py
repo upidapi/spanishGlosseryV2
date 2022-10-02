@@ -1,6 +1,6 @@
 from FixRawInput.CustomEntery import Handler
 from FixRawInput.TrLines import find_tr_pairs
-from FixRawInput.data.Data import save_data
+from Data import save_data
 from FixRawInput.helper_funcs import get_mods
 
 
@@ -46,7 +46,7 @@ def setup_1():
 
 
 def setup_2():
-    # saves the data
+    # saves the New
     global mode
 
     data = Handler.get_data()

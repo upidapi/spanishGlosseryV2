@@ -1,9 +1,29 @@
-import requests
 import json
-from PIL import Image
-import tkfilebrowser
+import requests
 
-from FixRawInput.helper_funcs import get_line_bounding_box
+
+def get_line_bounding_box(line):
+    min_x1, min_y1, max_x2, max_y2 = [1_000_000, 1_000_000, 0, 0]
+    words = line["Words"]
+    for word in words:
+        # converts width/height to coordinates
+        x, y, width, height = word["Left"], word["Top"], word["Width"], word["Height"]
+        x1, y1, x2, y2 = x, y, x + width, y + height
+
+        # gets the min/max chords of chords to get the bounding box
+        min_x1 = min(min_x1, x1)
+        min_y1 = min(min_y1, y1)
+        max_x2 = max(max_x2, x2)
+        max_y2 = max(max_y2, y2)
+
+    # converts coordinate to width/height
+    x1, y1, x2, y2 = min_x1, min_y1, max_x2, max_y2
+    width = abs(x1 - x2)
+    height = abs(y1 - y2)
+    x = min(x1, x2)
+    y = min(y1, y2)
+
+    return x, y, width, height
 
 
 def get_data_from_image(filename, language='eng'):
@@ -40,14 +60,14 @@ def get_data_from_image(filename, language='eng'):
 
 def clean_up_data(dirty_data):
     """
-    converts the raw return data into a better format
+    converts the raw return New into a better format
 
-    :param dirty_data: the raw json data
-    :return: a cleaner version of the data
+    :param dirty_data: the raw json New
+    :return: a cleaner version of the New
     """
     clean_data = []
 
-    # data format
+    # New format
     # [
     #     {
     #         'text': 'the lines text',
@@ -134,24 +154,26 @@ def get_missing_words(lan1, lan2):
 
 
 def new_image(select_image, lan):
-    files = [r'..\tinker_convert\data\lan1_data.json', r'..\tinker_convert\data\lan2_data.json']
+    from PIL import Image
+
+    files = [r'..\Data\other_data\lan1_data.json', r'..\Data\other_data\lan2_data.json']
 
     # crops it due to the 1k x 1k limit from the api
     image = Image.open(select_image)
     image.thumbnail((1000, 1000))
 
-    image.save(r'..\tinker_convert\data\selected_image.jpg')
+    image.save(r'..\Data\other_data\selected_image.jpg')
 
-    # gets the data and cleans up the data format
+    # gets the New and cleans up the New format
     clean_data = []
     for i in range(2):
-        json_data = get_data_from_image(r'..\tinker_convert\data\selected_image.jpg', language=lan[i])
+        json_data = get_data_from_image(r'..\Data\other_data\selected_image.jpg', language=lan[i])
         clean_data.append(clean_up_data(json_data))
 
     # add some missing words
     fixed_data = get_missing_words(*clean_data)
 
-    # saves the data
+    # saves the New
     for i in range(2):
         fixed_data[i].sort(key=lambda x: x['y'])
 
@@ -159,53 +181,3 @@ def new_image(select_image, lan):
         json_object = json.dumps(fixed_data[i], indent=4)
         with open(files[i], "w") as outfile:
             outfile.write(json_object)
-            
-    return fixed_data
-
-
-def get():
-    def _get_data(file):
-        # gets the data
-        with open(file) as jsonFile:
-            json_object = json.load(jsonFile)
-            jsonFile.close()
-
-        return json_object
-
-    data_1 = _get_data(r'..\tinker_convert\data\lan1_data.json')
-    data_2 = _get_data(r'..\tinker_convert\data\lan2_data.json')
-
-    return data_1, data_2
-
-
-def debug(select_image):
-    """
-    format:
-    lan_1_word  lan_2_word     lan_1_word  lan_2_word
-    lan_1_word  lan_2_word     lan_1_word  lan_2_word
-    lan_1_word  lan_2_word     lan_1_word  lan_2_word
-
-    languishes = lan_1_word, lan_2_word
-    """
-
-    languishes = 'spa', 'swe'
-
-    test_images = {
-        "eng_text_page": r"C:\Users\videw\Downloads\book page.jpg",
-        "spa_text_glossary_rotated": r"C:\Users\videw\Downloads\IMG_2439.jpg",
-        "spa_text_glossary_perfect": r"C:\Users\videw\Downloads\IMG_2438.jpg",
-        "spa_text_glossary_imperfect": r"C:\Users\videw\Downloads\IMG_2421.png"
-    }
-
-    select_image = test_images[select_image] if select_image in test_images else select_image
-
-    new_image(select_image, languishes)
-
-
-def save_data(data):
-    selected_directories = tkfilebrowser.askopenfilename(initialdir=r"../load_words/words/", title='select')
-
-    # converts python-array to json-document with indent 4
-    json_object = json.dumps(data, indent=4)
-    with open(selected_directories, "w") as outfile:
-        outfile.write(json_object)

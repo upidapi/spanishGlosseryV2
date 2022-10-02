@@ -1,10 +1,10 @@
 import random
-from load_words import full_data
 from abc import ABC, abstractmethod
+from Data import load_clean_data
 
 
 class Words(ABC):
-    all = full_data.get('multiple')
+    all = load_clean_data('multiple')
     selected = {}  # all selected words
     current = {}  # all words left
     right = {}

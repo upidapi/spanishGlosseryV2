@@ -5,6 +5,7 @@ from Data import load_raw_data
 import TrLines
 
 
+# todo variables dont get added to the global namespace
 def __init__(global_root, global_font, tk_image, global_languages):
     global \
         root, \
@@ -16,6 +17,7 @@ def __init__(global_root, global_font, tk_image, global_languages):
 
     bg_color = "#f0f0f0"
     root = global_root
+
     tk_font = global_font
     tk_image_save = tk_image
     languages = global_languages
@@ -314,6 +316,8 @@ class TextEntry:
         split_text.un_focus()
 
     def __init__(self, *, text, x, y, text_other=None, allow_write=False):
+        global root
+
         TextEntry.instances.append(self)
 
         self.allow_write = allow_write

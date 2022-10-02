@@ -12,7 +12,7 @@ def canvas_setup():
     global canvas, tk_image
     # background image
     # todo might cause problems
-    path = r'../Data/New/selected_image.jpg'
+    path = r'../Data/other_data/selected_image.jpg'
     raw_img = Image.open(path)
     tk_image = ImageTk.PhotoImage(raw_img)
     w = tk_image.width()

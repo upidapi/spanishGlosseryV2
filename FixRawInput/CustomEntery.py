@@ -1,11 +1,10 @@
 import tkinter as tk
 
-from FixRawInput.helper_funcs import get_mods
+from helper_funcs import get_mods
 from Data import load_raw_data
 import TrLines
 
 
-# todo variables dont get added to the global namespace
 def __init__(global_root, global_font, tk_image, global_languages):
     global \
         root, \

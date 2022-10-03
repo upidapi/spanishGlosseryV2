@@ -1,32 +1,5 @@
-import os
 import json
 from Data import SelectFiles
-
-
-def get_sub_files(directory):
-    if os.path.isfile(directory):
-        return [directory.replace(os.getcwd() + '\\', '').replace('\\', '/')]
-    else:
-        files = []
-        for sub_dir in os.listdir(directory):
-            files += get_sub_files(os.path.join(directory, sub_dir))
-
-        return files
-
-
-def get_dir_files(directory):
-    if isinstance(directory, tuple):
-        files = []
-        for sub_dir in directory:
-            files += get_sub_files(sub_dir)
-
-        return files
-
-    elif directory is not None:
-        return [directory.split('\\')[-1]]
-
-    else:
-        return []
 
 
 def load_data(files: list):
@@ -103,8 +76,7 @@ def find_alternative_translations(data: list):
 
 
 def load_clean_data(select='multiple'):
-    directories = SelectFiles.ask_select(r"../Data/words", select)  # , 'multiple')
-    files = get_dir_files(directories)
+    files = SelectFiles.ask_select(r"../Data/words", select)  # , 'multiple')
     all_data = load_data(files)
 
     for i, pair in enumerate(all_data):

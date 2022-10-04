@@ -4,6 +4,9 @@ from Data import load_clean_data
 
 
 class Words(ABC):
+    # todo this should NOT be run imported
+    # todo this is the thing that causes errors etc
+
     all = load_clean_data('multiple')
     selected = {}  # all selected words
     current = {}  # all words left
@@ -57,6 +60,7 @@ class Words(ABC):
             cls.set_translate_text(Words.selected[0])
 
     @classmethod
+    # todo add some select screen to select what type of words to use
     def get_new_words(cls, select):
         if select == 'wrong':
             Words.current = Words.wrong.copy()

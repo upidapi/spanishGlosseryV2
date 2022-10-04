@@ -81,7 +81,7 @@ def load_clean_data(select='multiple'):
 
     for i, pair in enumerate(all_data):
         for j, word in enumerate(pair):
-            # todo might want to add the clean args to get
+            # todo add the clean args to load_clean_data
             all_data[i][j] = clean(word,
                                    split_keys=(';',),
                                    remove_keys=('ung.',),

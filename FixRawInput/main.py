@@ -2,10 +2,11 @@ import tkinter as tk
 from tkinter import font
 from PIL import ImageTk, Image
 
-import TrLines
-import Mode
-import CustomEntery
-from CustomEntery import Handler
+from FixRawInput import TrLines
+from FixRawInput import Mode
+from FixRawInput import CustomEntery
+from FixRawInput.CustomEntery import Handler
+from Data import load_data
 
 
 def canvas_setup():
@@ -24,7 +25,7 @@ def canvas_setup():
 
 def entries_setup():
     # adds all the enters
-    Handler.populate()
+    Handler.populate(data)
     # to prevent the last added entry from being focused
     root.focus()
     Handler.update_tr_lines()
@@ -40,12 +41,9 @@ def entries_setup():
     root.bind('<KeyRelease-e>', lambda event: Handler.hide(event, True))
 
 
-def main():
-    global root
-    languishes = ('spa', 'swe')
-
-    # from FixRawInput.New import Data
-    # Data.new_image(r"C:\Users\videw\Downloads\spa_images\IMG_2496.jpg", languishes)
+def __init__(global_data, languishes=('spa', 'swe')):
+    global root, data
+    data = global_data
 
     root = tk.Tk()
     tk_font = font.Font(family='DejaVu Sans Mono', size=10)
@@ -61,5 +59,7 @@ def main():
     root.mainloop()
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     data = load_data.load_raw_data()
+#     __init__(data)
+

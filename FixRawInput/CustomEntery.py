@@ -1,8 +1,7 @@
 import tkinter as tk
 
-from helper_funcs import get_mods
-from Data import load_raw_data
-import TrLines
+from FixRawInput.helper_funcs import get_mods
+from FixRawInput import TrLines
 
 
 def __init__(global_root, global_font, tk_image, global_languages):
@@ -72,9 +71,7 @@ class Handler:
         return full_data
 
     @staticmethod
-    def populate():
-        data = load_raw_data()
-
+    def populate(data):
         for d1, d2 in zip(*data):
             text_1, text_2 = d1['text'], d2['text']
             x, y = d1['x'], d1['y']

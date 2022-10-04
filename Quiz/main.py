@@ -69,7 +69,7 @@ def main_window_setup():
     wrong_text.pack()
 
 
-def main():
+def __init__():
     # setup
     main_window_setup()
 
@@ -79,5 +79,5 @@ def main():
     root.mainloop()
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     __init__()

@@ -7,7 +7,11 @@ class Words(ABC):
     # todo this should NOT be run imported
     # todo this is the thing that causes errors etc
 
-    all = load_clean_data('multiple')
+    @classmethod
+    def get_data(cls):
+        cls.all = load_clean_data('multiple')
+
+    all = {}
     selected = {}  # all selected words
     current = {}  # all words left
     right = {}

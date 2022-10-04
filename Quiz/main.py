@@ -71,6 +71,8 @@ def main_window_setup():
 
 def __init__():
     # setup
+    FullWords.get_data()
+
     main_window_setup()
 
     FullWords.get_new_words('lan1')

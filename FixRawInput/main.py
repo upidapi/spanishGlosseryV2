@@ -6,7 +6,7 @@ from FixRawInput import TrLines
 from FixRawInput import Mode
 from FixRawInput import CustomEntery
 from FixRawInput.CustomEntery import Handler
-# from Data import load_data
+from Data import load_data, new_image
 
 
 def canvas_setup():
@@ -19,7 +19,8 @@ def canvas_setup():
     h = tk_image.height()
 
     canvas = tk.Canvas(root, bd=0, highlightthickness=0)
-    canvas.create_image(w//2, h//2, image=tk_image)  # the x and y is the center apparently
+    print(tk_image)
+    # canvas.create_image(w//2, h//2, image=tk_image)  # the x and y is the center apparently
     canvas.place(x=0, y=0, width=w, height=h)
 
 
@@ -41,9 +42,9 @@ def entries_setup():
     root.bind('<KeyRelease-e>', lambda event: Handler.hide(event, True))
 
 
-def __init__(global_data, languishes=('spa', 'swe')):
+def __init__(languishes=('spa', 'swe')):
     global root, data
-    data = global_data
+    data = load_data.load_raw_data()
 
     root = tk.Tk()
     tk_font = font.Font(family='DejaVu Sans Mono', size=10)
@@ -59,7 +60,18 @@ def __init__(global_data, languishes=('spa', 'swe')):
     root.mainloop()
 
 
-# if __name__ == '__main__':
-#     data = load_data.load_raw_data()
+def load_old_data():
+    data = load_data.load_raw_data()
+    __init__(data)
+
+
+# def load_new_image():
+#     # data = new_image(r"C:\Users\videw\Downloads\spa_images\IMG_2494.jpg", languishes)
+#     data = new_image(r"C:\Users\vide.wallstrom\Downloads\MicrosoftTeams-image", ('swe', 'spa'))
+#
 #     __init__(data)
+
+# todo add the ability to scroll on the image or resize the image based om screen height
+if __name__ == '__main__':
+    __init__()
 

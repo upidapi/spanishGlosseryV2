@@ -1,22 +1,15 @@
 import FixRawInput
 import Quiz
 from Data import load_data, new_image
-
 import tkinter as tk
 
 
 class CallFuncs:
     @staticmethod
-    def load_old_data():
-        data = load_data.load_raw_data()
-        FixRawInput.main.__init__(data)
+    def load_new_image():
+        new_image("../Data/other_data/selected_image.jpg", languishes)
 
-    @staticmethod
-    def new_image():
-        # data = new_image(r"C:\Users\videw\Downloads\spa_images\IMG_2494.jpg", languishes)
-        data = new_image(r"C:\Users\vide.wallstrom\Downloads\MicrosoftTeams-image", languishes)
-
-        FixRawInput.main.__init__(data)
+        FixRawInput.main.__init__()
 
 
 class WindowSetup:
@@ -57,19 +50,10 @@ class WindowSetup:
         text_label = tk.Label(root, text='select data')
         text_label.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
 
-        def load_image_data():
-            # todo add this
-            data = load_data.load_raw_data()
-            FixRawInput.main.__init__(data)
-
-        load_image = tk.Button(root, text='load image', command=lambda: print('load_image'))
+        load_image = tk.Button(root, text='load image', command=CallFuncs.load_new_image)
         load_image.place(relx=0.7, rely=0.6, anchor=tk.CENTER)
 
-        def load_old_data():
-            data = load_data.load_raw_data()
-            FixRawInput.main.__init__(data)
-
-        load_old_data = tk.Button(root, text='load old data', command=lambda: print('load_old_data'))
+        load_old_data = tk.Button(root, text='load old data', command=FixRawInput.main.__init__)
         load_old_data.place(relx=0.3, rely=0.6, anchor=tk.CENTER)
 
     @staticmethod
@@ -160,3 +144,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    # CallFuncs.load_old_data()

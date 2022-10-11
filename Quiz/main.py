@@ -81,5 +81,5 @@ def __init__():
     root.mainloop()
 
 
-# if __name__ == '__main__':
-#     __init__()
+if __name__ == '__main__':
+    __init__()

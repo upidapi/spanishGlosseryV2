@@ -1,4 +1,3 @@
-import tkfilebrowser
 import os
 
 
@@ -32,10 +31,14 @@ def get_dir_files(directory):
 # todo might want to do something to prevent an error if directory is empty/contains another directory
 # todo implement a custom file selector
 def ask_select(initial_dir, amount='multiple'):
+    # imported here due to its unreasonable import time (0.1 - 0.4 sec)
+
     if amount == 'multiple':
+        import tkfilebrowser
         selected_directories = tkfilebrowser.askopenfilenames(initialdir=initial_dir, title='select')
         return get_dir_files(selected_directories)
 
     elif amount == 'singular':
+        import tkfilebrowser
         selected_directories = tkfilebrowser.askopenfilename(initialdir=initial_dir, title='select')
         return get_dir_files(selected_directories)[0]

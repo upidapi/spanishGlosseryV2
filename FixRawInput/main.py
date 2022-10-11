@@ -6,7 +6,7 @@ from FixRawInput import TrLines
 from FixRawInput import Mode
 from FixRawInput import CustomEntery
 from FixRawInput.CustomEntery import Handler
-from Data import load_data
+# from Data import load_data
 
 
 def canvas_setup():

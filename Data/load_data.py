@@ -1,5 +1,5 @@
 import json
-from Data import SelectFiles
+from Data import SelectFilesMyOwn
 
 
 def load_data(files: list):
@@ -75,8 +75,9 @@ def find_alternative_translations(data: list):
     return w1_to_w2, w2_to_w1
 
 
-def load_clean_data(select='multiple'):
-    files = SelectFiles.ask_select(r"../Data/words", select)  # , 'multiple')
+def load_clean_data():
+    files = SelectFilesMyOwn.ask_for_files(r"..\Data\books")
+
     all_data = load_data(files)
 
     for i, pair in enumerate(all_data):

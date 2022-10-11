@@ -45,7 +45,7 @@ def main_window_setup():
     # window
     root = tk.Tk()
     root.geometry("600x400")
-    default_bg = root.cget('bg')
+    # default_bg = root.cget('bg')
 
     global input_text, input_field
     # translation entry

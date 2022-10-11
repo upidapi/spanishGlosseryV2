@@ -9,7 +9,7 @@ class Words(ABC):
 
     @classmethod
     def get_data(cls):
-        cls.all = load_clean_data('multiple')
+        cls.all = load_clean_data()
 
     all = {}
     selected = {}  # all selected words

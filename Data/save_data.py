@@ -1,9 +1,9 @@
-from Data import SelectFiles
+from Data import SelectFilesMyOwn
 import json
 
 
 def save_data(data):
-    file = SelectFiles.ask_select(initial_dir=r"../Data/words/", amount='singular')
+    file = SelectFilesMyOwn.ask_for_file(r"..\Data\books")
 
     # converts python-array to json-document with indent 4
     json_object = json.dumps(data, indent=4)

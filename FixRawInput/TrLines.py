@@ -1,18 +1,12 @@
+BG_COLOR = '#f0f0f0'
+ERROR_COLOR = '#%02x%02x%02x' % (255, 200, 200)
+
+
 def __init__(global_canvas, global_tk_image):
-    global \
-        bg_color, \
-        error_color, \
-        canvas, \
-        tk_image, \
-        w, \
-        h
-    
-    bg_color = '#f0f0f0'
-    error_color = '#%02x%02x%02x' % (255, 200, 200)
+    global canvas, tk_image
+
     canvas = global_canvas
     tk_image = global_tk_image
-    w = tk_image.width()
-    h = tk_image.height()
 
 
 def get_bounding_box(lines):
@@ -90,12 +84,13 @@ def find_tr_pairs(data):
     return tr_pairs
 
 
-def draw(handler):
-    data = handler.get_data()
+def draw(data):
     tr_pairs = find_tr_pairs(data)
 
     canvas.delete("all")
-    canvas.create_image(w//2, h//2, image=tk_image)  # the x and y is the center apparently
+    canvas.create_image(tk_image.width()//2,
+                        tk_image.height()//2,
+                        image=tk_image)  # the x and y is the center apparently
 
     for tr_pair in tr_pairs:
         if len(tr_pair) == 2:
@@ -106,8 +101,8 @@ def draw(handler):
 
             canvas.create_line(x1, y1, x2, y2, fill="black", width=1)
 
-            tr_pair[0]['self'].entry.configure(bg=bg_color)
-            tr_pair[1]['self'].entry.configure(bg=bg_color)
+            tr_pair[0]['self'].entry.configure(bg=BG_COLOR)
+            tr_pair[1]['self'].entry.configure(bg=BG_COLOR)
 
         else:
-            tr_pair[0]['self'].entry.configure(bg=error_color)
+            tr_pair[0]['self'].entry.configure(bg=ERROR_COLOR)

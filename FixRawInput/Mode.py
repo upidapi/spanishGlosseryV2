@@ -1,4 +1,4 @@
-from FixRawInput.CustomEntery import Handler
+from FixRawInput.CustomEntery import Handler, Data
 from FixRawInput.TrLines import find_tr_pairs
 from Data import save_data
 from FixRawInput.helper_funcs import get_mods
@@ -25,11 +25,11 @@ def setup_1():
             mode = 0
             return
 
-    Handler.mode = 1
+    Data.mode = 1
 
     # if it gets here all words has a translation
     for tr_pair in tr_pairs:
-        if Handler.switch:
+        if Data.switch:
             tr_pair[0]['self'].saved_text = tr_pair[0]['self'].other_text
             tr_pair[1]['self'].other_text = tr_pair[1]['self'].saved_text
         else:
@@ -58,7 +58,7 @@ def setup_2():
             mode = 1
             return
 
-    Handler.mode = 2
+    Data.mode = 2
 
     all_text_pairs = []
     for tr_pair in tr_pairs:

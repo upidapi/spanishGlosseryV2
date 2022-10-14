@@ -1,5 +1,5 @@
 import json
-from Data import SelectFilesMyOwn
+from Data import SelectFiles
 
 
 def load_data(files: list):

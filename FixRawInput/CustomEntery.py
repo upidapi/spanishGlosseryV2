@@ -4,38 +4,43 @@ from FixRawInput.helper_funcs import get_mods
 from FixRawInput import TrLines
 
 
-def __init__(global_root, global_font, tk_image, global_languages):
-    global \
-        root, \
-        tk_font, \
-        font_height, \
-        bg_color, \
-        tk_image_save, \
-        languages
+class Data:
+    # tkinter instances
+    root: any
+    tk_font: any
+    tk_image: any
+    overlay_image: any
 
+    # declarations
+    font_height: int
     bg_color = "#f0f0f0"
-    root = global_root
+    languages: tuple
 
-    tk_font = global_font
-    tk_image_save = tk_image
-    languages = global_languages
-
-    # gets the height of the font
-    widget = tk.Label(root, text="My String")
-    widget.pack()
-    font_height = tk.font.Font(font=widget['font']).metrics('linespace')
-    widget.destroy()
-
-
-class Handler:
+    # "global" vars
     switch = False
     show_entries = True
     mode = 0
 
+
+def setup(root, tk_font, tk_image, languages):
+    Data.root = root
+
+    Data.tk_font = tk_font
+    Data.tk_image = tk_image
+    Data.languages = languages
+
+    # gets the height of the font
+    widget = tk.Label(root, text="My String", font=tk_font)
+    widget.pack()
+    Data.font_height = tk.font.Font(font=widget['font']).metrics('linespace')
+    widget.destroy()
+
+
+class Handler:
     # helper funcs
     @staticmethod
     def find_focus():
-        focus = root.focus_get()
+        focus = Data.root.focus_get()
         for instance in TextEntry.instances:
             if instance.entry == focus:
                 return instance
@@ -54,7 +59,7 @@ class Handler:
 
             text_width = instance.get_width()
 
-            if Handler.switch:
+            if Data.switch:
                 text_main, text_translation = text_translation, text_main
 
             data = {
@@ -62,7 +67,7 @@ class Handler:
                 'text': {'main': text_main, 'translation': text_translation},
                 'x': int(x),
                 'y': int(y),
-                'height': int(font_height),
+                'height': int(Data.font_height),
                 'width': int(text_width),
             }
 
@@ -80,35 +85,34 @@ class Handler:
 
     @staticmethod
     def hide(event, show):
-        global overlay_image
         # hides the text by overlaying an identical image of the bg
         if 'ctrl' in get_mods(event) or show:
             if show:
-                if not Handler.show_entries:
-                    overlay_image.destroy()
-                    Handler.show_entries = True
+                if not Data.show_entries:
+                    Data.overlay_image.destroy()
+                    Data.show_entries = True
             else:
-                if Handler.show_entries:
-                    overlay_image = tk.Label(root, image=tk_image_save)
-                    w, h = tk_image_save.width(), tk_image_save.height()
-                    overlay_image.place(x=0, y=0, w=w, h=h)
-                    Handler.show_entries = False
+                if Data.show_entries:
+                    Data.overlay_image = tk.Label(Data.root, image=Data.tk_image)
+                    w, h = Data.tk_image.width(), Data.tk_image.height()
+                    Data.overlay_image.place(x=0, y=0, w=w, h=h)
+                    Data.show_entries = False
 
     @staticmethod
     def update_tr_lines():
-        TrLines.draw(Handler)
+        TrLines.draw(Handler.get_data())
 
     @staticmethod
     def switch_text(event):
         # when it goes to mode 1 the text gets combined (saved_text == other_text)
-        if Handler.mode == 0:
+        if Data.mode == 0:
             if 'ctrl' in get_mods(event):
-                if Handler.switch:
-                    Handler.switch = False
-                    root.title(f'split/move/add/delete words (lan: {languages[0]})')
+                if Data.switch:
+                    Data.switch = False
+                    Data.root.title(f'split/move/add/delete words (lan: {Data.languages[0]})')
                 else:
-                    Handler.switch = True
-                    root.title(f'split/move/add/delete words (lan: {languages[1]})')
+                    Data.switch = True
+                    Data.root.title(f'split/move/add/delete words (lan: {Data.languages[1]})')
 
                 # switches the text and other_text for all instances
                 for instance in TextEntry.instances:
@@ -126,10 +130,10 @@ class Handler:
     # affects only a few
     @staticmethod
     def new_word():
-        x, y = root.winfo_pointerxy()
-        x -= root.winfo_rootx()
-        y -= root.winfo_rooty()
-        y -= font_height // 2
+        x, y = Data.root.winfo_pointerxy()
+        x -= Data.root.winfo_rootx()
+        y -= Data.root.winfo_rooty()
+        y -= Data.font_height // 2
 
         TextEntry(text='', x=x, y=y, allow_write=True)
 
@@ -140,10 +144,10 @@ class Handler:
         self = Handler.find_focus()
 
         if self is not None:
-            x, y = root.winfo_pointerxy()
-            x -= root.winfo_rootx()
-            y -= root.winfo_rooty()
-            y -= font_height // 2
+            x, y = Data.root.winfo_pointerxy()
+            x -= Data.root.winfo_rootx()
+            y -= Data.root.winfo_rooty()
+            y -= Data.font_height // 2
 
             if 0 <= x and 0 <= y:
                 entry_data = self.entry.place_info()
@@ -159,8 +163,8 @@ class Handler:
             selected_widget = Handler.find_focus()
 
             over_widget = None
-            x, y = root.winfo_pointerxy()
-            widget = root.winfo_containing(x, y)
+            x, y = Data.root.winfo_pointerxy()
+            widget = Data.root.winfo_containing(x, y)
             for instance in TextEntry.instances:
                 if instance.entry == widget:
                     over_widget = instance
@@ -185,15 +189,15 @@ class TextEntry:
     # helper funcs
     def get_width(self, tolerance=11):
         text = self.tk_text.get()
-
-        return tk_font.measure(text) + tolerance
+        print(Data.tk_font.measure(text))
+        return Data.tk_font.measure(text) + tolerance
 
     # call funcs
     def on_key_press(self, event):
         other = ['BackSpace', 'Delete', 'Control_L']
         combined_char = ['\x04']
 
-        if Handler.mode == 0 and not self.allow_write:
+        if Data.mode == 0 and not self.allow_write:
             # # for example ctrl + W => \x17
             # combined_unicode = event.char != event.keysym and len(event.keysym) == 1
 
@@ -210,7 +214,7 @@ class TextEntry:
 
             self.update_hit_box(2)
 
-        elif self.entry == root.focus_get():
+        elif self.entry == Data.root.focus_get():
             self.update_hit_box(11)
 
     def custom_bind(self, key, func: callable = None, do_extra: callable = None, mod=None):
@@ -294,7 +298,7 @@ class TextEntry:
         cursor_pos = self.entry.index(tk.INSERT)
 
         text_main, text_translation = self.tk_text.get(), self.other_text
-        if Handler.switch:
+        if Data.switch:
             text_main, text_translation = text_translation, text_main
 
         bef_cursor = text_main[:cursor_pos]
@@ -312,28 +316,27 @@ class TextEntry:
         split_text.un_focus()
 
     def __init__(self, *, text, x, y, text_other=None, allow_write=False):
-        global root
-
         TextEntry.instances.append(self)
 
         self.allow_write = allow_write
         self.saved_pos = (x, y)
         self.saved_text = text
-        self.tk_text = tk.StringVar(root, text)
+        self.tk_text = tk.StringVar(Data.root, text)
 
         if text_other is None:
             self.other_text = text
         else:
             self.other_text = text_other
 
+        print(Data.tk_font.actual())
         self.entry = tk.Entry(
-            root,
-            readonlybackground=bg_color,
-            bg=bg_color,
+            Data.root,
+            readonlybackground=Data.bg_color,
+            bg=Data.bg_color,
             borderwidth=0,
             highlightthickness=0,
             textvariable=self.tk_text,
-            font=tk_font
+            font=Data.tk_font
         )
 
         self.entry.place(x=x, y=y)
@@ -342,9 +345,9 @@ class TextEntry:
 
         # binds things
         self.custom_bind('s', self.split, mod='ctrl')
-        self.custom_bind('<Delete>', self.delete_instance, do_extra=root.focus)
-        self.custom_bind('<Return>', self.save, do_extra=root.focus)
-        self.custom_bind('<Escape>', self.revert_changes, do_extra=root.focus)
+        self.custom_bind('<Delete>', self.delete_instance, do_extra=Data.root.focus)
+        self.custom_bind('<Return>', self.save, do_extra=Data.root.focus)
+        self.custom_bind('<Escape>', self.revert_changes, do_extra=Data.root.focus)
 
         self.custom_bind('<KeyRelease>')
         self.custom_bind('<KeyPress>')

@@ -9,22 +9,25 @@ from FixRawInput.CustomEntery import Handler
 from Data import load_data, new_image
 
 
-def canvas_setup():
-    global canvas, tk_image
+def get_tk_image(root):
     # background image
     path = r'../Data/other_data/selected_image.jpg'
     raw_img = Image.open(path)
-    tk_image = ImageTk.PhotoImage(raw_img)
+    tk_image = ImageTk.PhotoImage(raw_img, master=root)
+    return tk_image
+
+
+def get_canvas(root, tk_image):
     w = tk_image.width()
     h = tk_image.height()
 
     canvas = tk.Canvas(root, bd=0, highlightthickness=0)
-    print(tk_image)
-    # canvas.create_image(w//2, h//2, image=tk_image)  # the x and y is the center apparently
     canvas.place(x=0, y=0, width=w, height=h)
 
+    return canvas
 
-def entries_setup():
+
+def entries_setup(root, data):
     # adds all the enters
     Handler.populate(data)
     # to prevent the last added entry from being focused
@@ -43,26 +46,26 @@ def entries_setup():
 
 
 def __init__(languishes=('spa', 'swe')):
-    global root, data
     data = load_data.load_raw_data()
 
     root = tk.Tk()
     tk_font = font.Font(family='DejaVu Sans Mono', size=10)
 
-    canvas_setup()
+    tk_image = get_tk_image(root)
+    canvas = get_canvas(root, tk_image)
+
     root.geometry(f"{tk_image.width()}x{tk_image.height()}")
 
-    CustomEntery.__init__(root, tk_font, tk_image, global_languages=languishes)
+    canvas.create_image(tk_image.width()//2,
+                        tk_image.height()//2,
+                        image=tk_image)  # the x and y is the center apparently
+
+    CustomEntery.setup(root, tk_font, tk_image, languages=languishes)
     TrLines.__init__(global_canvas=canvas, global_tk_image=tk_image)
     Mode.__init__(root, global_languages=languishes)
 
-    entries_setup()
+    entries_setup(root, data)
     root.mainloop()
-
-
-def load_old_data():
-    data = load_data.load_raw_data()
-    __init__(data)
 
 
 # def load_new_image():

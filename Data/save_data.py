@@ -1,4 +1,4 @@
-from Data import SelectFilesMyOwn
+from Data import SelectFiles
 import json
 
 

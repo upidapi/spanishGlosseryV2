@@ -102,7 +102,7 @@ class Handler:
 
     @staticmethod
     def update_tr_lines():
-        TrLines.draw_v2(Handler.get_data())
+        TrLines.draw(Handler.get_data())
 
     @staticmethod
     def switch_text(event):

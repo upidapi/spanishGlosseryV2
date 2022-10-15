@@ -23,6 +23,11 @@ class CallFuncs:
 
 class WindowSetup:
     @staticmethod
+    def close(exit_func):
+        root.destroy()
+        exit_func()
+
+    @staticmethod
     def base(*, width: int, height: int, title: str = ''):
         """
         clears and sets up the root for a new setup
@@ -42,13 +47,16 @@ class WindowSetup:
         text_label.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
 
         flashcards = tk.Button(root, text='flashcards', command=lambda: print('flashcards'))
-        flashcards.place(relx=0.2, rely=0.6, anchor=tk.CENTER)
+        flashcards.place(relx=0.2, rely=0.5, anchor=tk.CENTER)
 
         memory = tk.Button(root, text='memory', command=lambda: print('memory'))
-        memory.place(relx=0.5, rely=0.6, anchor=tk.CENTER)
+        memory.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
-        translate = tk.Button(root, text='translate', command=lambda: Quiz.main.__init__())
-        translate.place(relx=0.8, rely=0.6, anchor=tk.CENTER)
+        translate = tk.Button(root, text='translate', command=lambda: WindowSetup.close(Quiz.main.__init__))
+        translate.place(relx=0.8, rely=0.5, anchor=tk.CENTER)
+
+        back = tk.Button(root, text='back', command=WindowSetup.main)
+        back.place(relx=0.1, rely=0.8, anchor=tk.CENTER)
 
     @staticmethod
     def new_part():
@@ -59,11 +67,16 @@ class WindowSetup:
         text_label = tk.Label(root, text='select data')
         text_label.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
 
-        load_image = tk.Button(root, text='load image', command=CallFuncs.load_new_image)
-        load_image.place(relx=0.7, rely=0.6, anchor=tk.CENTER)
+        load_image = tk.Button(root, text='load image',
+                               command=lambda: WindowSetup.close(CallFuncs.load_new_image))
+        load_image.place(relx=0.7, rely=0.5, anchor=tk.CENTER)
 
-        load_old_data = tk.Button(root, text='load old data', command=FixRawInput.main.__init__)
-        load_old_data.place(relx=0.3, rely=0.6, anchor=tk.CENTER)
+        load_old_data = tk.Button(root, text='load old data',
+                                  command=lambda: WindowSetup.close(FixRawInput.main.__init__))
+        load_old_data.place(relx=0.3, rely=0.5, anchor=tk.CENTER)
+
+        back = tk.Button(root, text='back', command=WindowSetup.main)
+        back.place(relx=0.1, rely=0.8, anchor=tk.CENTER)
 
     @staticmethod
     def main():
@@ -119,7 +132,7 @@ class WindowSetup:
 def main():
     global root, languishes
     root = tk.Tk()
-    languishes = ('swe', 'spa')
+    languishes = ('spa', 'swe')
 
     # makes it fill the entire screen
     root.grid_rowconfigure(0, weight=1)

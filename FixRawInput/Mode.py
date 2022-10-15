@@ -1,5 +1,5 @@
 from FixRawInput.CustomEntery import Handler, Data
-from FixRawInput.TrLines import find_tr_pairs
+from FixRawInput.TrLines import get_pairs
 from Data import save_data
 from FixRawInput.helper_funcs import get_mods
 
@@ -17,32 +17,31 @@ def setup_1():
     global mode
 
     data = Handler.get_data()
-    tr_pairs = find_tr_pairs(data)
+    tr_pairs, non_pairs = get_pairs(data)
 
     # if any of the words doesn't have a translation we can't go to next
-    for tr_pair in tr_pairs:
-        if len(tr_pair) != 2:
-            mode = 0
-            return
+    if len(non_pairs) != 0:
+        mode = 0
 
-    Data.mode = 1
+    else:
+        Data.mode = 1
 
-    # if it gets here all words has a translation
-    for tr_pair in tr_pairs:
-        if Data.switch:
-            tr_pair[0]['self'].saved_text = tr_pair[0]['self'].other_text
-            tr_pair[1]['self'].other_text = tr_pair[1]['self'].saved_text
-        else:
-            tr_pair[0]['self'].other_text = tr_pair[0]['self'].saved_text
-            tr_pair[1]['self'].saved_text = tr_pair[1]['self'].other_text
+        # if it gets here all words has a translation
+        for tr_pair in tr_pairs:
+            if Data.switch:
+                tr_pair[0]['self'].saved_text = tr_pair[0]['self'].other_text
+                tr_pair[1]['self'].other_text = tr_pair[1]['self'].saved_text
+            else:
+                tr_pair[0]['self'].other_text = tr_pair[0]['self'].saved_text
+                tr_pair[1]['self'].saved_text = tr_pair[1]['self'].other_text
 
-        tr_pair[0]['self'].tk_text.set(tr_pair[0]['self'].saved_text)
-        tr_pair[1]['self'].tk_text.set(tr_pair[1]['self'].saved_text)
+            tr_pair[0]['self'].tk_text.set(tr_pair[0]['self'].saved_text)
+            tr_pair[1]['self'].tk_text.set(tr_pair[1]['self'].saved_text)
 
-        tr_pair[0]['self'].update_hit_box(2)
-        tr_pair[1]['self'].update_hit_box(2)
+            tr_pair[0]['self'].update_hit_box(2)
+            tr_pair[1]['self'].update_hit_box(2)
 
-    root.title('edit words')
+        root.title('edit words')
 
 
 def setup_2():
@@ -50,25 +49,23 @@ def setup_2():
     global mode
 
     data = Handler.get_data()
-    tr_pairs = find_tr_pairs(data)
+    tr_pairs, non_pairs = get_pairs(data)
 
     # if any of the words doesn't have a translation we can't go to next
-    for tr_pair in tr_pairs:
-        if len(tr_pair) != 2:
-            mode = 1
-            return
+    if len(non_pairs) != 0:
+        mode = 1
 
-    Data.mode = 2
+    else:
+        Data.mode = 2
+        all_text_pairs = []
+        for tr_pair in tr_pairs:
+            data = (
+                tr_pair[0]['text']['main'],
+                tr_pair[1]['text']['main'],
+            )
+            all_text_pairs.append(data)
 
-    all_text_pairs = []
-    for tr_pair in tr_pairs:
-        data = (
-            tr_pair[0]['text']['main'],
-            tr_pair[1]['text']['main'],
-        )
-        all_text_pairs.append(data)
-
-    save_data(all_text_pairs)
+        save_data(all_text_pairs)
 
 
 def next_mode(event):

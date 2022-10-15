@@ -53,46 +53,46 @@ class Words(ABC):
     @classmethod
     def next_word(cls, first=False):
         if not first:
-            del Words.current[Words.selected[0]]
+            del cls.current[cls.selected[0]]
 
-        options = list(Words.current.items())
+        options = list(cls.current.items())
 
         if len(options) == 0:
-            Words.nothing_left()
+            cls.nothing_left()
         else:
-            Words.selected = random.choice(options)
-            cls.set_translate_text(Words.selected[0])
+            cls.selected = random.choice(options)
+            cls.set_translate_text(cls.selected[0])
 
     @classmethod
     # todo add some select screen to select what type of words to use
     def get_new_words(cls, select):
         if select == 'wrong':
-            Words.current = Words.wrong.copy()
+            cls.current = cls.wrong.copy()
         if select == 'right':
-            Words.current = Words.right.copy()
+            cls.current = cls.right.copy()
         if select == 'same':
-            Words.current = Words.selected.copy()
+            cls.current = cls.selected.copy()
         if select == 'lan1':
-            Words.current = Words.all[0].copy()
-            Words.selected = Words.all[0].copy()
+            cls.current = cls.all[0].copy()
+            cls.selected = cls.all[0].copy()
         if select == 'lan2':
-            Words.current = Words.all[1].copy()
-            Words.selected = Words.all[1].copy()
+            cls.current = cls.all[1].copy()
+            cls.selected = cls.all[1].copy()
 
-        Words.right = {}
-        Words.wrong = {}
+        cls.right = {}
+        cls.wrong = {}
 
         cls.next_word(True)
 
     @classmethod
     def check_correct(cls, word):
-        if word in Words.selected[1]:
+        if word in cls.selected[1]:
             # right
-            Words.right[Words.selected[0]] = Words.selected[1]
+            cls.right[cls.selected[0]] = cls.selected[1]
             cls.right_answer()
         else:
             # wrong
-            Words.wrong[Words.selected[0]] = Words.selected[1]
-            cls.wrong_answer(Words.selected[1])
+            cls.wrong[cls.selected[0]] = cls.selected[1]
+            cls.wrong_answer(cls.selected[1])
 
         cls.next_word()

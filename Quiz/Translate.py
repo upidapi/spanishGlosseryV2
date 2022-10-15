@@ -1,6 +1,6 @@
-from Quiz.FadeText import Fade
+from Quiz.other.FadeText import Fade
 import tkinter as tk
-from Quiz.Words import Words
+from Quiz.other.Words import Words
 
 
 class FullWords(Words):

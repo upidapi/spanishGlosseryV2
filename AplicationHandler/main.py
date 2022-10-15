@@ -23,9 +23,11 @@ class CallFuncs:
 
 class WindowSetup:
     @staticmethod
-    def close(exit_func):
+    def close(exit_func, return_func=None):
         root.destroy()
         exit_func()
+        if return_func is not None:
+            return_func()
 
     @staticmethod
     def base(*, width: int, height: int, title: str = ''):
@@ -46,13 +48,13 @@ class WindowSetup:
         text_label = tk.Label(root, text='what method')
         text_label.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
 
-        flashcards = tk.Button(root, text='flashcards', command=lambda: print('flashcards'))
+        flashcards = tk.Button(root, text='flashcards', command=lambda: WindowSetup.close(Quiz.FlashCards.__init__))
         flashcards.place(relx=0.2, rely=0.5, anchor=tk.CENTER)
 
-        memory = tk.Button(root, text='memory', command=lambda: print('memory'))
+        memory = tk.Button(root, text='memory', command=lambda: WindowSetup.close(Quiz.Memory.__init__))
         memory.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
-        translate = tk.Button(root, text='translate', command=lambda: WindowSetup.close(Quiz.main.__init__))
+        translate = tk.Button(root, text='translate', command=lambda: WindowSetup.close(Quiz.Translate.__init__))
         translate.place(relx=0.8, rely=0.5, anchor=tk.CENTER)
 
         back = tk.Button(root, text='back', command=WindowSetup.main)

@@ -1,6 +1,7 @@
 import tkinter as tk
 import os
 
+# todo add option to add/delete book/chapter/part from file browser
 """
 root = {
     'chapter_1': {

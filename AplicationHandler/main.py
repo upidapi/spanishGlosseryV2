@@ -1,13 +1,22 @@
 import FixRawInput
 import Quiz
-from Data import load_data, new_image
+from Data import new_image
+
 import tkinter as tk
+from tkinter import filedialog
 
 
 class CallFuncs:
     @staticmethod
     def load_new_image():
-        new_image("../Data/other_data/selected_image.jpg", languishes)
+        image_path = tk.filedialog.askopenfilename(
+            initialdir="/",
+            title="Select an image",
+            filetypes=[("Images", ("*.jpg*", "*.png*"))]  # might want to add more possible file types
+        )
+
+        # new_image("../Data/other_data/selected_image.jpg", languishes)
+        new_image(image_path, languishes)
 
         FixRawInput.main.__init__()
 

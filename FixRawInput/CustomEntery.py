@@ -27,6 +27,8 @@ def setup(root, tk_font, tk_image, languages):
 
     Data.tk_font = tk_font
     Data.tk_image = tk_image
+    print(f"{Data.tk_font.actual()=}")
+
     Data.languages = languages
 
     # gets the height of the font
@@ -100,7 +102,7 @@ class Handler:
 
     @staticmethod
     def update_tr_lines():
-        TrLines.draw(Handler.get_data())
+        TrLines.draw_v2(Handler.get_data())
 
     @staticmethod
     def switch_text(event):
@@ -189,7 +191,7 @@ class TextEntry:
     # helper funcs
     def get_width(self, tolerance=11):
         text = self.tk_text.get()
-        print(Data.tk_font.measure(text))
+        # print(f"text: {text}, Width: {Data.tk_font.measure(text)}")
         return Data.tk_font.measure(text) + tolerance
 
     # call funcs
@@ -328,7 +330,6 @@ class TextEntry:
         else:
             self.other_text = text_other
 
-        print(Data.tk_font.actual())
         self.entry = tk.Entry(
             Data.root,
             readonlybackground=Data.bg_color,
@@ -336,7 +337,9 @@ class TextEntry:
             borderwidth=0,
             highlightthickness=0,
             textvariable=self.tk_text,
-            font=Data.tk_font
+            font=('DejaVu Sans Mono', 10)
+            # todo fix this (by using the var tk_font instead somehow)
+            # for some reason when multiple tk.Tk() instances exist the family argument on a font doesn't change family
         )
 
         self.entry.place(x=x, y=y)

@@ -76,7 +76,7 @@ def find_alternative_translations(data: list):
 
 
 def load_clean_data():
-    files = SelectFilesMyOwn.ask_for_files(r"..\Data\books")
+    files = SelectFiles.ask_for_files(r"..\Data\books")
 
     all_data = load_data(files)
 

@@ -1,4 +1,4 @@
-def __init__():
+def __init__(languishes=('spa', 'swe')):
     print('the "Memory" option is unimplemented')
 
 

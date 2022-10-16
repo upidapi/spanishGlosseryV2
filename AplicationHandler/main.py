@@ -8,7 +8,7 @@ from tkinter import filedialog
 
 class CallFuncs:
     @staticmethod
-    def load_new_image():
+    def load_new_image(_):
         image_path = tk.filedialog.askopenfilename(
             initialdir="/",
             title="Select an image",
@@ -18,14 +18,14 @@ class CallFuncs:
         # new_image("../Data/other_data/selected_image.jpg", languishes)
         new_image(image_path, languishes)
 
-        FixRawInput.main.__init__()
+        FixRawInput.main.__init__(languishes)
 
 
 class WindowSetup:
     @staticmethod
     def close(exit_func, return_func=None):
         root.destroy()
-        exit_func()
+        exit_func(languishes)
         if return_func is not None:
             return_func()
 
@@ -75,6 +75,7 @@ class WindowSetup:
 
         load_old_data = tk.Button(root, text='load old data',
                                   command=lambda: WindowSetup.close(FixRawInput.main.__init__))
+
         load_old_data.place(relx=0.3, rely=0.5, anchor=tk.CENTER)
 
         back = tk.Button(root, text='back', command=WindowSetup.main)

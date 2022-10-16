@@ -1,98 +1,80 @@
 import random
-from abc import ABC, abstractmethod
+from typing import Literal
+
 from Data import load_clean_data
+from Quiz.other import end_screen
 
 
-class Words(ABC):
+class WordData:
     # todo this should NOT be run imported
     # todo this is the thing that causes errors etc
+    
+    def __init__(self, languishes):
+        self.languishes = languishes
 
-    @classmethod
-    def get_data(cls):
-        cls.all = load_clean_data()
+        self.right_answer = None
+        self.wrong_answer = None
+        self.set_translate_text = None
 
-    all = {}
-    selected = {}  # all selected words
-    current = {}  # all words left
-    right = {}
-    wrong = {}
+        self.all = load_clean_data()
+        self.selected = {}  # all selected words
+        self.current = {}  # all words left
+        self.right = {}
+        self.wrong = {}
 
-    current_word = ()
+        self.current_word = ()
 
-    @staticmethod
-    @abstractmethod
-    def right_answer():
-        # example implementation
-        # wrong_text_var.set('Correct!')
-        # wrong_text_fade.change(start=(0, 255, 0), end=(240, 240, 240), time=1)
-        pass
+    def setup(self, right_answer, wrong_answer, set_translate_text):
+        self.right_answer = right_answer
+        self.wrong_answer = wrong_answer
+        self.set_translate_text = set_translate_text
 
-    @staticmethod
-    @abstractmethod
-    def wrong_answer(text):
-        # example implementation
-        # wrong_text_var.set(' / '.join(text))
-        # wrong_text_fade.change(start=(255, 0, 0), end=(240, 240, 240), time=3)
-        pass
-
-    @staticmethod
-    @abstractmethod
-    def set_translate_text(text):
-        # example implementation
-        # translate_text.set(text)
-        pass
-
-    @staticmethod
-    def nothing_left():
-        """
-        called when you have done all the words
-        """
-        pass
+    def nothing_left(self):
+        end_screen(self, self.languishes)
 
     # the cls is used so that the abstract methods gets called
-    @classmethod
-    def next_word(cls, first=False):
+    def next_word(self, first=False):
         if not first:
-            del cls.current[cls.selected[0]]
+            del self.current[self.selected[0]]
 
-        options = list(cls.current.items())
+        options = list(self.current.items())
 
         if len(options) == 0:
-            cls.nothing_left()
+            self.nothing_left()
         else:
-            cls.selected = random.choice(options)
-            cls.set_translate_text(cls.selected[0])
+            self.selected = random.choice(options)
+            self.set_translate_text(self.selected[0])
 
-    @classmethod
     # todo add some select screen to select what type of words to use
-    def get_new_words(cls, select):
+    def get_new_words(self, select: Literal['wrong', 'right', 'same', 'lan1', 'lan2']):
+        # this is never None
+        new_data = None
+
         if select == 'wrong':
-            cls.current = cls.wrong.copy()
-        if select == 'right':
-            cls.current = cls.right.copy()
-        if select == 'same':
-            cls.current = cls.selected.copy()
-        if select == 'lan1':
-            cls.current = cls.all[0].copy()
-            cls.selected = cls.all[0].copy()
-        if select == 'lan2':
-            cls.current = cls.all[1].copy()
-            cls.selected = cls.all[1].copy()
+            new_data = self.wrong
+        elif select == 'right':
+            new_data = self.right
+        elif select == 'same':
+            new_data = self.selected
+        elif select == 'lan1':
+            new_data = self.all[0]
+        elif select == 'lan2':
+            new_data = self.all[1]
 
-        cls.right = {}
-        cls.wrong = {}
+        # makes it possible to load the same data as last time
+        self.selected = new_data.copy()
+        self.current = new_data.copy()
+        self.right = {}
+        self.wrong = {}
 
-        cls.next_word(True)
-
-    @classmethod
-    def check_correct(cls, word):
-        if word in cls.selected[1]:
+    def check_correct(self, word):
+        if word in self.selected[1]:
             # right
-            cls.right[cls.selected[0]] = cls.selected[1]
-            cls.right_answer()
+            self.right[self.selected[0]] = self.selected[1]
+            self.right_answer()
         else:
             # wrong
-            cls.wrong[cls.selected[0]] = cls.selected[1]
-            cls.wrong_answer(cls.selected[1])
+            self.wrong[self.selected[0]] = self.selected[1]
+            self.wrong_answer(self.selected[1])
 
-        cls.next_word()
+        self.next_word()

@@ -62,8 +62,6 @@ class WindowSetup:
 
     @staticmethod
     def new_part():
-        # todo remove this, it's mostly for debug purposes
-        # todo fix this, add load image/load old data
         WindowSetup.base(width=230, height=100)
 
         text_label = tk.Label(root, text='select data')

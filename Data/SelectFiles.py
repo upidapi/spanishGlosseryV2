@@ -21,6 +21,128 @@ root = {
 """
 
 
+class SuperPart:
+    def __init__(self, parent):
+        self.file = None
+
+        self.indent_width = 0
+
+        self.children = []
+        self.parent = parent
+        self.show_children = False
+
+    @property
+    def siblings(self):
+        """
+        :return: the parents children (siblings)
+        """
+        return self.parent.children
+
+    @property
+    def super_parents(self):
+        """
+        :return: the parent (and theirs recursively)
+        """
+        if self.parent is None:
+            return []
+        else:
+            return [self] + self.super_parents
+
+    @property
+    def super_children(self):
+        """
+        :return: the shown children (and theirs recursively)
+        """
+        children_below = [self]
+        for child in self.children:
+            children_below += child.super_children
+        return children_below
+
+    @property
+    def shown_children(self):
+        """
+        :return: the shown children (and theirs recursively)
+        """
+        children_below = [self]
+        if self.show_children:
+            for child in self.children:
+                children_below += child.super_children
+        return children_below
+
+    def get_total_indentation(self):
+        """
+        :return: the total indentation of self and parents
+        """
+        total_indentation = 0
+        for parent in self.super_parents:
+            total_indentation += parent.indent_width
+        return total_indentation
+
+    def get_total_index(self):
+        """
+        :return: the total amount of shown parts before self
+        """
+        total_before = 0
+        for sibling_before in self.siblings:
+            if sibling_before == self:
+                break
+
+            total_before += len(self.shown_children)
+
+        if self.parent is None:
+            return total_before
+        else:
+            return total_before + self.parent.get_total_index()
+
+    def place(self):
+        width = 20
+        x = self.get_total_index() * width
+        y = self.get_total_indentation()
+
+        print(self.get_total_index(), x, y)
+
+
+class MasterPart(SuperPart):
+    # the file head
+
+    def __init__(self):
+        super().__init__(None)
+
+        self.indent_width = 0
+
+    def get_part_structure(self):
+        """
+        :return: the part structure
+        """
+        children_below = {'file_name': self.file, 'sub_files': []}
+        for child in self.children:
+            children_below['sub_files'] += child.super_children
+        return children_below
+
+    def place_all(self):
+        for child in self.super_children:
+            child.place()
+
+    def make_structure(self, root_dir="./Data/books", parent=None, step=0):
+        # todo when imported and called the directory is somehow not a directory
+        # what? i think i fixed this
+
+        if parent is None:
+            parent = self
+
+        folder = os.path.basename(os.path.normpath(root_dir))
+        # print('  ' * step, folder)
+
+        if os.path.isdir(root_dir):
+            new_parent = Part(text=folder, parent=parent)
+
+            for directory in get_im_dirs(root_dir):
+                make_tree(directory, new_parent, step + 1)
+
+        else:
+            Part(text=folder, parent=parent, file=root_dir)
+
+
 class Part:
     master_parent = None
     selected_files = []
@@ -148,6 +270,8 @@ def get_im_dirs(root_dir):
 
 def make_tree(root_dir, parent=None, step=0):
     # todo when imported and called the directory is somehow not a directory
+    # what?
+
     folder = os.path.basename(os.path.normpath(root_dir))
     # print('  ' * step, folder)
 

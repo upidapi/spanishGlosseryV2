@@ -82,6 +82,7 @@ def load_clean_data():
 
     for i, pair in enumerate(all_data):
         for j, word in enumerate(pair):
+            # todo do this by adding a (hidden) config file to every book
             # todo add the clean args to load_clean_data
             all_data[i][j] = clean(word,
                                    split_keys=(';',),

@@ -49,8 +49,7 @@ def __init__(languishes=('spa', 'swe')):
     data = load_data.load_raw_data()
 
     root = tk.Tk()
-    # todo fix when called with another tk window open the font isn't right (I think it's the default)
-    
+
     tk_font = font.Font(family='DejaVu Sans Mono', size=10)
 
     tk_image = get_tk_image(root)

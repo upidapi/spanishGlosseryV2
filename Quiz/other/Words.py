@@ -8,6 +8,7 @@ from Quiz.other import end_screen
 class WordData:
     # todo this should NOT be run imported
     # todo this is the thing that causes errors etc
+    # i see no error here but ill leave it here for now
     
     def __init__(self, languishes):
         self.languishes = languishes
@@ -45,7 +46,6 @@ class WordData:
             self.selected = random.choice(options)
             self.set_translate_text(self.selected[0])
 
-    # todo add some select screen to select what type of words to use
     def get_new_words(self, select: Literal['wrong', 'right', 'same', 'lan1', 'lan2']):
         # this is never None
         new_data = None

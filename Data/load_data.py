@@ -75,6 +75,43 @@ def find_alternative_translations(data: list):
     return w1_to_w2, w2_to_w1
 
 
+def load_book_data():
+    # book = {
+    #     "config_file":
+    #     { (inside the file ->)
+    #         "split_keys": (';',),
+    #         "remove_keys": ('ung.',),
+    #         "remove_between_keys": (('(', ')'), ('/', '/')),
+    #     },
+    #     "data_files": [
+    #         "file_path.json",
+    #         "file_path.json",
+    #         "file_path.json",
+    #     ]
+    # }
+
+    config, data_files = SelectFiles.ask_for_files(r"..\Data\books")
+
+    book_data = []
+    for file in data_files:
+        with open(file) as jsonFile:
+            book_data += json.load(jsonFile)
+            jsonFile.close()
+
+    with open(config) as jsonFile:
+        config_data = json.load(jsonFile)
+        jsonFile.close()
+
+    for i, pair in enumerate(book_data):
+        for j, word in enumerate(pair):
+            book_data[i][j] = clean(word,
+                                    split_keys=config_data["split_keys"],
+                                    remove_keys=config_data["remove_keys"],
+                                    remove_between_keys=config_data["remove_between_keys"])
+
+    return find_alternative_translations(book_data)
+
+
 def load_clean_data():
     files = SelectFiles.ask_for_files(r"..\Data\books")
 

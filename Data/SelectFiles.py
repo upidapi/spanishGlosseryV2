@@ -21,37 +21,73 @@ root = {
 """
 
 
+def get_im_dirs(root_dir):
+    sub_dirs = []
+    for file in os.listdir(root_dir):
+        d = os.path.join(root_dir, file)
+        sub_dirs.append(d)
+    return sub_dirs
+
+
 class SuperPart:
-    def __init__(self, parent):
-        self.file = None
+    def __init__(self, parent, file):
+        self.file = file
 
         self.indent_width = 0
 
         self.children = []
         self.parent = parent
         self.show_children = False
+        self.selected = False
+
+        if self.parent is not None:
+            self.parent.children.append(self)
+
+        text = os.path.basename(os.path.normpath(file))
+        self.bar = tk.Button(root,
+                             text=text,
+                             command=self.hide,
+                             background="#f0f0f0")
+
+        # noinspection PyUnresolvedReferences
+        if multiple:  # the last in line is the handler
+            # if you're allowed to select multiple make selection possible (right-click)
+            self.bar.bind("<Button-3>", self.select)
+        else:
+            # if you're only allowed to select one bind selection button to middle-click
+            self.bar.bind("<Button-2>", lambda _: return_x(self.file))
+
+    @property
+    def raw_name(self):
+        """
+        :return: the parents children (siblings)
+        """
+        return os.path.basename(os.path.normpath(self.file))
 
     @property
     def siblings(self):
         """
         :return: the parents children (siblings)
         """
-        return self.parent.children
+        if self.parent is None:
+            return []
+        else:
+            return self.parent.children
 
     @property
     def super_parents(self):
         """
-        :return: the parent (and theirs recursively)
+        :return: all parents (including self at index 0)
         """
         if self.parent is None:
             return []
         else:
-            return [self] + self.super_parents
+            return [self] + self.parent.super_parents
 
     @property
     def super_children(self):
         """
-        :return: the shown children (and theirs recursively)
+        :return: all children (including self at index 0)
         """
         children_below = [self]
         for child in self.children:
@@ -66,7 +102,7 @@ class SuperPart:
         children_below = [self]
         if self.show_children:
             for child in self.children:
-                children_below += child.super_children
+                children_below += child.shown_children
         return children_below
 
     def get_total_indentation(self):
@@ -82,65 +118,176 @@ class SuperPart:
         """
         :return: the total amount of shown parts before self
         """
-        total_before = 0
+        to_parent = 0
         for sibling_before in self.siblings:
             if sibling_before == self:
                 break
 
-            total_before += len(self.shown_children)
+            to_parent += len(sibling_before.shown_children)
 
-        if self.parent is None:
-            return total_before
+        if isinstance(self.parent, Book):
+            return to_parent
         else:
-            return total_before + self.parent.get_total_index()
+            return to_parent + self.parent.get_total_index() + 1
 
+    # high level functions
     def place(self):
-        width = 20
-        x = self.get_total_index() * width
-        y = self.get_total_indentation()
+        """
+        places self att right position
+        """
+        if self.parent.show_children:
+            height = 30
+            x = self.get_total_indentation()
+            y = self.get_total_index() * height
 
-        print(self.get_total_index(), x, y)
+            self.bar.place(x=x, y=y)
+        else:
+            self.bar.place_forget()
+
+    def hide(self):
+        """
+        (un)hides all children
+        """
+        if self.show_children:
+            for child in self.super_children:
+                child.show_children = False
+        else:
+            self.show_children = True
+
+        handler.place_all()
+
+    def select(self, _):
+        """
+        (un)selects all children
+        """
+        change_to = not self.selected
+        color = {True: "#c0c0c0", False: "#f0f0f0"}[change_to]
+        for child in self.super_children:
+            child.selected = change_to
+            child.bar.config(background=color)
 
 
-class MasterPart(SuperPart):
-    # the file head
+class DataPart(SuperPart):
+    """
+    The last part in the line containing the file (with the data)
+    """
+    def __init__(self, parent, file):
+        super().__init__(parent, file)
+
+        self.indent_width = 20
+
+
+class ContainerPart(SuperPart):
+    """
+    Contains ContainerPart(s) / DataPart(s)
+    """
+    def __init__(self, parent, file):
+        super().__init__(parent, file)
+
+        self.indent_width = 20
+        self.drop_down_show()
+
+    def drop_down_show(self):
+        drop_symbol = {True: '˅', False: '˃'}[self.show_children]
+        self.bar.config(text=f"{drop_symbol} {self.raw_name}")
+
+    def hide(self):
+        """
+        (un)hides all children
+        """
+        if self.show_children:
+            for child in self.super_children:
+                child.show_children = False
+        else:
+            self.show_children = True
+
+        self.drop_down_show()
+        handler.place_all()
+
+    def make_structure(self):
+        for path in get_im_dirs(self.file):
+            if path.endswith(".json"):
+                DataPart(self, path)
+            else:
+                ContainerPart(self, path).make_structure()
+
+
+class Book(SuperPart):
+    """
+    Is the handler / head of the parts (this is not shown)
+    """
 
     def __init__(self):
-        super().__init__(None)
+        # todo you have to be able to select book it has to be ./Data/books/(book_name)
+        super().__init__(None, r"..\Data\books\dos semanas en julio")
+
+        if multiple:
+            root.bind('<Return>', lambda _: root.destroy())
 
         self.indent_width = 0
+        self.show_children = True
 
-    def get_part_structure(self):
-        """
-        :return: the part structure
-        """
-        children_below = {'file_name': self.file, 'sub_files': []}
+    def get_data_files(self):
+        config_file = os.path.join(self.file, 'config.json')
+        data_parts = []
         for child in self.children:
-            children_below['sub_files'] += child.super_children
-        return children_below
+            data_parts += child.super_children
+
+        data_files = []
+        for part in data_parts:
+            if part.file.endswith(".json") and part.selected:
+                data_files.append(part.file)
+
+        return {"config_file": config_file, "data_files": data_files}
 
     def place_all(self):
-        for child in self.super_children:
+        for child in self.super_children[1:]:
             child.place()
 
-    def make_structure(self, root_dir="./Data/books", parent=None, step=0):
-        # todo when imported and called the directory is somehow not a directory
-        # what? i think i fixed this
+    def make_structure(self):
+        for path in get_im_dirs(self.file):
+            if os.path.basename(os.path.normpath(path)) != 'config.json':
+                ContainerPart(self, path).make_structure()
 
-        if parent is None:
-            parent = self
 
-        folder = os.path.basename(os.path.normpath(root_dir))
-        # print('  ' * step, folder)
+def ask_for_files2():
+    global root, multiple, handler
+    root = tk.Tk()
+    root.geometry("300x300")
+    root.title('select file(s) (return)')
 
-        if os.path.isdir(root_dir):
-            new_parent = Part(text=folder, parent=parent)
+    multiple = True
+    handler = Book()
+    handler.make_structure()
+    handler.place_all()
 
-            for directory in get_im_dirs(root_dir):
-                make_tree(directory, new_parent, step + 1)
+    root.mainloop()
 
-        else:
-            Part(text=folder, parent=parent, file=root_dir)
+    return handler.get_data_files()
+
+
+def return_x(x):
+    global return_value
+    root.destroy()
+    return_value = x
+
+
+def ask_for_file2():
+    global root, multiple, handler, selected, return_value
+
+    root = tk.Tk()
+    root.geometry("300x300")
+    root.title('select file (middle click)')
+
+    return_value = None
+    multiple = False
+    handler = Book()
+    handler.make_structure()
+    handler.place_all()
+
+    root.mainloop()
+
+    return return_value
 
 
 class Part:
@@ -260,14 +407,6 @@ class Part:
     #     if click_type
 
 
-def get_im_dirs(root_dir):
-    sub_dirs = []
-    for file in os.listdir(root_dir):
-        d = os.path.join(root_dir, file)
-        sub_dirs.append(d)
-    return sub_dirs
-
-
 def make_tree(root_dir, parent=None, step=0):
     # todo when imported and called the directory is somehow not a directory
     # what?
@@ -321,4 +460,4 @@ def ask_for_files(initial_dir):
 
 
 if __name__ == "__main__":
-    print(ask_for_file(r"C:\Users\videw\PycharmProjects\spanishGlosseryV2"))
+    print(ask_for_file2())

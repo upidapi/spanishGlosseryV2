@@ -1,7 +1,7 @@
 from Quiz.other.FadeText import Fade
 import tkinter as tk
 from Quiz.other.Words import WordData
-from Quiz.other import start_screen, end_screen
+from Quiz.other import start_screen  # , end_screen
 
 
 def translation_label_setup(root):

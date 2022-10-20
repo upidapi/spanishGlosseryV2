@@ -55,6 +55,7 @@ def clean(word, split_keys: tuple, remove_keys: tuple, remove_between_keys: tupl
 
 
 def find_alternative_translations(data: list):
+    # todo instead of using dicts to store data use lists instead
     w1_to_w2 = {}
     w2_to_w1 = {}
 
@@ -75,7 +76,7 @@ def find_alternative_translations(data: list):
     return w1_to_w2, w2_to_w1
 
 
-def load_book_data():
+def load_book_data(config, data_files):
     # book = {
     #     "config_file":
     #     { (inside the file ->)
@@ -89,8 +90,6 @@ def load_book_data():
     #         "file_path.json",
     #     ]
     # }
-
-    config, data_files = SelectFiles.ask_for_files(r"..\Data\books")
 
     book_data = []
     for file in data_files:
@@ -112,6 +111,18 @@ def load_book_data():
     return find_alternative_translations(book_data)
 
 
+# def get_translate_data():
+#     from FileBrowser import ask_for_files
+#
+#     w1_to_w2, w2_to_w1 = {}, {}
+#
+#     books = ask_for_files()
+#     for book in books:
+#         config, data_files = book
+#         load_book_data(config, data_files)
+#         x = {'a': 1, 'b': 2} & {'b': 3, 'd': 4}
+#         print(x)
+
 def load_clean_data():
     files = SelectFiles.ask_for_files(r"..\Data\books")
 
@@ -119,8 +130,6 @@ def load_clean_data():
 
     for i, pair in enumerate(all_data):
         for j, word in enumerate(pair):
-            # todo do this by adding a (hidden) config file to every book
-            # todo add the clean args to load_clean_data
             all_data[i][j] = clean(word,
                                    split_keys=(';',),
                                    remove_keys=('ung.',),

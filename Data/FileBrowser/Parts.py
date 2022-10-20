@@ -329,16 +329,27 @@ class Head(SuperPart):
             child.place()
 
     def get_data_files(self):
-        # todo only the first books selected paths gets returned
-
         book_path_files = []
         for book in self.children:
             # this is redundant the book is always an instance of BookPart
             if isinstance(book, BookPart):
                 book_path_files.append(book.get_data_files())
+            # if isinstance(book, ContainerPart):
+            #     book_path_files.append(book.get_data_files())
+            # if isinstance(book, DataPart):
+            #     book_path_files.append(book.get_data_files())
+
         return book_path_files
 
     def make_structure(self):
+        """
+        makes a part structure depending on the structures of the files
+
+        if file has a config.json file it becomes a BookPart
+        elif file ends with .json it becomes a DataPart
+        else it becomes a ContainerPert
+        """
+
         for path in get_im_dirs(self.file):
             if 'config.json' not in os.listdir(path):
                 BookPart(self, path).make_structure()

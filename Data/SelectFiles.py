@@ -128,7 +128,7 @@ class Part:
 
 
 def make_tree(root_dir, parent=None, step=0):
-    # todo when imported and called the directory is somehow not a directory
+    # when imported and called the directory is somehow not a directory
     # what?
 
     folder = os.path.basename(os.path.normpath(root_dir))

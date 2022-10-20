@@ -310,10 +310,10 @@ class Head(SuperPart):
         self.root = root
         self.multiple = multiple
 
+        # todo when imported and run it gets the wrong file
         data_folder = os.path.abspath(
-            os.path.join(
-                os.getcwd(),
-                os.pardir))
+            os.path.join(os.getcwd(), os.pardir)
+        )
         base_dir = os.path.join(data_folder, "books")
 
         super().__init__(None, base_dir)

@@ -56,22 +56,23 @@ def clean(word, split_keys: tuple, remove_keys: tuple, remove_between_keys: tupl
 
 def find_alternative_translations(data: list):
     # todo instead of using dicts to store data use lists instead
-    w1_to_w2 = {}
-    w2_to_w1 = {}
+    w1_to_w2 = []
+    w2_to_w1 = []
 
     for translation in data:
         for word in translation[0]:
             if word in w1_to_w2:
-                w1_to_w2[word] += translation[1]
+                w1_to_w2.append({'word': word, 'translation': translation[1]})
             else:
                 # the join(list) is to prevent multiple possible translations become multiple 'words'
-                w1_to_w2[' / '.join(translation[0])] = translation[1]
+                w1_to_w2.append({'word': ' / '.join(translation[0]), 'translation': translation[1]})
 
         for word in translation[1]:
             if word in w2_to_w1:
-                w2_to_w1[word] += translation[0]
+                w2_to_w1.append({'word': word, 'translation': translation[0]})
             else:
-                w2_to_w1[' / '.join(translation[1])] = translation[0]
+                # the join(list) is to prevent multiple possible translations become multiple 'words'
+                w2_to_w1.append({'word': ' / '.join(translation[1]), 'translation': translation[0]})
 
     return w1_to_w2, w2_to_w1
 
@@ -108,20 +109,21 @@ def load_book_data(config, data_files):
                                     remove_keys=config_data["remove_keys"],
                                     remove_between_keys=config_data["remove_between_keys"])
 
+    return book_data
+
+
+def get_translate_data():
+    from Data.FileBrowser import ask_for_files
+
+    book_data = []
+
+    books = ask_for_files()
+    for book in books:
+        config, data_files = book
+        book_data += load_book_data(config, data_files)
+
     return find_alternative_translations(book_data)
 
-
-# def get_translate_data():
-#     from FileBrowser import ask_for_files
-#
-#     w1_to_w2, w2_to_w1 = {}, {}
-#
-#     books = ask_for_files()
-#     for book in books:
-#         config, data_files = book
-#         load_book_data(config, data_files)
-#         x = {'a': 1, 'b': 2} & {'b': 3, 'd': 4}
-#         print(x)
 
 def load_clean_data():
     files = SelectFiles.ask_for_files(r"..\Data\books")

@@ -1,7 +1,7 @@
 import random
 from typing import Literal
 
-from Data import load_clean_data
+from Data import get_translate_data
 from Quiz.other import end_screen
 
 
@@ -17,13 +17,13 @@ class WordData:
         self.wrong_answer = None
         self.set_translate_text = None
 
-        self.all = load_clean_data()
-        self.selected = {}  # all selected words
-        self.current = {}  # all words left
-        self.right = {}
-        self.wrong = {}
+        self.all = get_translate_data()
+        self.selected = []  # all selected words
+        self.current = []  # all words left
+        self.right = []
+        self.wrong = []
 
-        self.current_word = ()
+        self.current_word = {'word': None, 'translation': None}
 
     def setup(self, right_answer, wrong_answer, set_translate_text):
         self.right_answer = right_answer
@@ -36,15 +36,13 @@ class WordData:
     # the cls is used so that the abstract methods gets called
     def next_word(self, first=False):
         if not first:
-            del self.current[self.selected[0]]
+            self.current.remove(self.current_word)
 
-        options = list(self.current.items())
-
-        if len(options) == 0:
+        if len(self.current) == 0:
             self.nothing_left()
         else:
-            self.selected = random.choice(options)
-            self.set_translate_text(self.selected[0])
+            self.current_word = random.choice(self.current)
+            self.set_translate_text(self.current_word['word'])
 
     def get_new_words(self, select: Literal['wrong', 'right', 'same', 'lan1', 'lan2']):
         # this is never None
@@ -64,17 +62,17 @@ class WordData:
         # makes it possible to load the same data as last time
         self.selected = new_data.copy()
         self.current = new_data.copy()
-        self.right = {}
-        self.wrong = {}
+        self.right = []
+        self.wrong = []
 
     def check_correct(self, word):
-        if word in self.selected[1]:
+        if word in self.current_word['translation']:
             # right
-            self.right[self.selected[0]] = self.selected[1]
+            self.right.append(self.current_word)
             self.right_answer()
         else:
             # wrong
-            self.wrong[self.selected[0]] = self.selected[1]
-            self.wrong_answer(self.selected[1])
+            self.wrong.append(self.current_word)
+            self.wrong_answer(self.current_word['translation'])
 
         self.next_word()

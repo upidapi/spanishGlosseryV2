@@ -1,5 +1,4 @@
 import json
-from Data import SelectFiles
 
 
 def load_data(files: list):
@@ -80,10 +79,20 @@ def find_alternative_translations(data: list):
 def load_book_data(config, data_files):
     # book = {
     #     "config_file":
-    #     { (inside the file ->)
-    #         "split_keys": (';',),
-    #         "remove_keys": ('ung.',),
-    #         "remove_between_keys": (('(', ')'), ('/', '/')),
+    #     {  # (inside the file ->)
+    #         "split_keys":
+    #             [
+    #                 ";"
+    #             ],
+    #         "remove_keys":
+    #             [
+    #                 "ung."
+    #             ],
+    #         "remove_between_keys":
+    #             [
+    #                 ["(", ")"],
+    #                 ["/", "/"]
+    #             ]
     #     },
     #     "data_files": [
     #         "file_path.json",
@@ -119,14 +128,17 @@ def get_translate_data():
 
     books = ask_for_files()
     for book in books:
-        config, data_files = book
-        book_data += load_book_data(config, data_files)
+        config_file = book["config_file"]
+        data_files = book["data_files"]
+        book_data += load_book_data(config_file, data_files)
 
     return find_alternative_translations(book_data)
 
 
 def load_clean_data():
-    files = SelectFiles.ask_for_files(r"..\Data\books")
+    from Data.FileBrowser import ask_for_files
+
+    files = ask_for_files()
 
     all_data = load_data(files)
 

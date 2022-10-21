@@ -1,5 +1,6 @@
 import tkinter as tk
 import os
+import pathlib
 
 
 def get_im_dirs(root_dir):
@@ -279,6 +280,7 @@ class BookPart(ContainerPart):
 
     def get_data_files(self):
 
+        # todo error here
         config_file = os.path.join(self.file, 'config.json')
         data_parts = []
         for child in self.children:
@@ -311,12 +313,11 @@ class Head(SuperPart):
         self.multiple = multiple
 
         # todo when imported and run it gets the wrong file
-        data_folder = os.path.abspath(
-            os.path.join(os.getcwd(), os.pardir)
-        )
-        base_dir = os.path.join(data_folder, "books")
+        file_path = pathlib.Path(__file__).resolve()
+        books_path = file_path.parent.parent / 'books'
+        print(books_path)
 
-        super().__init__(None, base_dir)
+        super().__init__(None, books_path)
 
         self.indent_width = 0
         self.show_children = True
@@ -351,11 +352,10 @@ class Head(SuperPart):
         """
 
         for path in get_im_dirs(self.file):
-            if 'config.json' not in os.listdir(path):
+            if 'config.json' in os.listdir(path):
                 BookPart(self, path).make_structure()
             else:
-                if not path.endswith('config.json'):
-                    if path.endswith('.json'):
-                        ContainerPart(self, path)
-                    else:
-                        ContainerPart(self, path).make_structure()
+                if path.endswith('.json'):
+                    ContainerPart(self, path)
+                else:
+                    ContainerPart(self, path).make_structure()

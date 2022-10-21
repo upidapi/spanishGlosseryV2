@@ -6,10 +6,6 @@ from Quiz.other import end_screen
 
 
 class WordData:
-    # todo this should NOT be run imported
-    # todo this is the thing that causes errors etc
-    # i see no error here but ill leave it here for now
-    
     def __init__(self, languishes):
         self.languishes = languishes
 

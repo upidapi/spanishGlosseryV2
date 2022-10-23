@@ -69,12 +69,6 @@ def __init__(languishes=('spa', 'swe')):
     root.mainloop()
 
 
-# def load_new_image():
-#     # data = new_image(r"C:\Users\videw\Downloads\spa_images\IMG_2494.jpg", languishes)
-#     data = new_image(r"C:\Users\vide.wallstrom\Downloads\MicrosoftTeams-image", ('swe', 'spa'))
-#
-#     __init__(data)
-
 # todo add the ability to scroll on the image or resize the image based om screen height
 if __name__ == '__main__':
     __init__()

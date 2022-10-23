@@ -1,190 +1,254 @@
 [
     [
-        "antes",
-        "f\u00f6re"
+        "(el) turismo",
+        "turism"
     ],
     [
-        "genial",
-        "toppen"
+        "(el) colegio",
+        "skola"
     ],
     [
-        "estar listo",
-        "vara redo, klar"
+        "no s\u00e9",
+        "jag vet inte"
     ],
     [
-        "\u00bfc\u00f3mo?",
-        "hur?"
+        "ver",
+        "se"
     ],
     [
-        "tranquilo",
-        "lugn"
+        "(la) ciudad",
+        "stad"
     ],
     [
-        "te llamas",
-        "du heter"
+        "(la) cosa",
+        "sak"
     ],
     [
-        "pero",
-        "men"
+        "(la) gu\u00eda tur\u00edstica",
+        "turistguide"
     ],
     [
-        "\u00bfd\u00f3nde?",
-        "var?"
+        "no tengo ni idea",
+        "jag har ingen aning"
     ],
     [
-        "es",
-        "han \u00e4r"
+        "despu\u00e9s",
+        "sedan; efter"
     ],
     [
-        "Hola",
-        "Hej"
+        "decidir",
+        "best\u00e4mma"
     ],
     [
-        "lunes",
-        "m\u00e5ndag"
+        "fue fundada",
+        "det grundades"
     ],
     [
-        "Buenas",
-        "Hej"
+        "(el) colonizador",
+        "kolonisat\u00f6r. er\u00f6vrare"
     ],
     [
-        "martes",
-        "tisdag"
+        "el siglo XVI",
+        "1500-talet"
     ],
     [
-        "Buenos d\u00edas",
-        "Hej; Gad dag"
+        "la plaza m\u00e1s famosa",
+        "det mest ber\u00f6mda torget"
     ],
     [
-        "mi\u00e9rcoles",
-        "onsdag"
+        "(el) horario",
+        "\u00f6ppettider"
     ],
     [
-        "Buenas tardes",
-        "Hej; God eftermiddag"
+        "dentro de",
+        "inuti"
     ],
     [
-        "jueves",
-        "torsdag"
+        "(el) edificio",
+        "byggnad"
     ],
     [
-        "Buenas noches",
-        "Hej; God kv\u00e4ll; God natt"
+        "la m\u00e1s grande",
+        "den st\u00f6rsta"
     ],
     [
-        "viernes",
-        "fredag"
+        "maravilloso",
+        "fantastisk"
     ],
     [
-        "Adi\u00f3s; Hasta luego;Chao; Chau (LA)",
-        "Hej d\u00e5"
+        "(la) escultura",
+        "skulptur"
     ],
     [
-        "s\u00e1bado",
-        "l\u00f6rdag"
+        "cerca de",
+        "n\u00e5ra"
     ],
     [
-        "domingo",
-        "s\u00f6ndag"
+        "(la) pintura",
+        "m\u00e5lning"
     ],
     [
-        "\u00bfC\u00f3mo est\u00e1s?; \u00bfQu\u00e9 tal?",
-        "Hur m\u00e5r du?; Hur \u00e4r det?"
+        "(la) gente",
+        "folk"
     ],
     [
-        "Estoy mal/regular/bien/muy bien",
-        "Jag m\u00e5r d\u00e5ligt/s\u00e5 d\u00e4r/bra/j\u00e4ttebra"
+        "para",
+        "f\u00f6r att"
     ],
     [
-        "enero",
-        "januari"
+        "reflexionar",
+        "fundera"
     ],
     [
-        "febrero",
-        "februari"
+        "(la) sala de lectura",
+        "l\u00e5sesal"
     ],
     [
-        "\u00bfC\u00f3mo te llamas?",
-        "Vad heter du?"
+        "gratuito",
+        "gratis"
     ],
     [
-        "marzo",
-        "mars"
+        "alrededor de",
+        "runtom"
     ],
     [
-        "Me llamo...; Soy...",
-        "Jag heter...; Jag \u00e4r..."
+        "(la) tienda",
+        "aff\u00e4r"
     ],
     [
-        "abril",
-        "april"
+        "ir de compras",
+        "g\u00e5 och shoppa"
     ],
     [
-        "\u00bfCu\u00e1ntos a\u00f1os tienes?",
-        "Hur gammal \u00e5r du?"
+        "(el) monumento",
+        "monument"
     ],
     [
-        "mayo",
-        "maj"
+        "(el) libertador",
+        "befriare"
     ],
     [
-        "Tengo a\u00f1os",
-        "Jag \u00e4r ... \u00e5r"
+        "entre",
+        "mellan"
     ],
     [
-        "junio",
-        "juni"
+        "al lado /de/",
+        "bredvid"
     ],
     [
-        "julio",
-        "juli"
+        "alrededor /de/",
+        "runtom"
     ],
     [
-        "\u00bfD\u00f3nde vives?",
-        "Var bor du?"
+        "enfrente /de/",
+        "mittemot"
     ],
     [
-        "agosto",
-        "augusti"
+        "(el) restaurante",
+        "restaurang"
     ],
     [
-        "Vivo ene..",
-        "Jag bor i ..."
+        "a",
+        "till"
     ],
     [
-        "septiembre",
-        "september"
+        "cerca /de/",
+        "n\u00e4ra"
     ],
     [
-        "\u00bfDe d\u00f3nde eres?",
-        "Var kommer du ifr\u00e5n?"
+        "en el centro /de/",
+        "i mitten /av/"
     ],
     [
-        "octubre",
-        "oktober"
+        "dentro /de/",
+        "inuti"
     ],
     [
-        "Soy sueco/sueca",
-        "Jag \u00e4r svensk"
+        "fuera /de/",
+        "utanf\u00f6r"
     ],
     [
-        "noviembre",
-        "november"
+        "(el) parque",
+        "park"
     ],
     [
-        "Soy de Suecia",
-        "Jag kommer fr\u00e5n Sverige"
+        "(la) plaza",
+        "torg"
     ],
     [
-        "diciembre",
-        "december"
+        "(el) teatro",
+        "teater"
     ],
     [
-        "\u00bfQu\u00e9 d\u00eda es hoy?",
-        "Vilket datum \u00e5r det idag?"
+        "(la) tienda",
+        "aff\u00e4r"
     ],
     [
-        "Hoy es viernes II de julio",
-        "Idag \u00e4r det fredag den Il juli"
+        "en",
+        "i; p\u00e5"
+    ],
+    [
+        "de",
+        "fr\u00e5n"
+    ],
+    [
+        "lejos /de/",
+        "l\u00e5ngt Ifr\u00e5n/"
+    ],
+    [
+        "(el) museo",
+        "museum"
+    ],
+    [
+        "(la) mezquita",
+        "mosk\u00e9"
+    ],
+    [
+        "(la) oficina de turismo",
+        "turistbyr\u00e5"
+    ],
+    [
+        "(el) palacio",
+        "palats"
+    ],
+    [
+        "(el) centro comercial",
+        "k\u00f6pcentrum"
+    ],
+    [
+        "(la) iglesia",
+        "kyrka"
+    ],
+    [
+        "(el) monumento",
+        "monument"
+    ],
+    [
+        "(la) avenida",
+        "bred gata, aveny"
+    ],
+    [
+        "(la) cafeter\u00eda",
+        "kaf\u00e9"
+    ],
+    [
+        "(la) calle",
+        "gata"
+    ],
+    [
+        "(la) catedral",
+        "katedral"
+    ],
+    [
+        "(el) centro",
+        "centrum"
+    ],
+    [
+        "(el) cine",
+        "bio"
+    ],
+    [
+        "(la) biblioteca",
+        "bibliotek"
     ]
 ]

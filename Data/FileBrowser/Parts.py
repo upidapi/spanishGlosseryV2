@@ -37,7 +37,11 @@ class SuperPart:
                 self.bar.bind("<Button-3>", self.select)
             else:
                 # if you're only allowed to select one bind selection button to middle-click
-                self.bar.bind("<Button-2>", self.handler.root.destroy)
+                def return_file(_):
+                    self.focus()
+                    self.handler.root.destroy()
+
+                self.bar.bind("<Button-2>", return_file)
 
     @property
     def raw_name(self):
@@ -143,7 +147,7 @@ class SuperPart:
         old_focus = self.handler.focused
         self.handler.focused = self
 
-        if old_focus is not None:
+        if old_focus:
             old_focus.set_color()
 
         if self is not None:
@@ -232,8 +236,7 @@ class NewFilePart(SuperPart):
 
         # makes the bar an entry instead
         del self.bar
-        self.text_var = tk.StringVar()
-        self.bar = tk.Entry(self.handler.root, textvariable=self.text_var)
+        self.bar = tk.Entry(self.handler.root)
 
         self.bar.bind('<Escape>', self.save_file)
         self.bar.bind('<FocusOut>', self.save_file)
@@ -256,15 +259,19 @@ class NewFilePart(SuperPart):
     def save_file(self, _):
         parent_path = os.path.abspath(self.parent.file)
 
-        text = self.text_var.get()
-        extension = '.json' if self.part_type is DataPart else ''
-        file_name = str(text) + extension
+        file_name = self.bar.get()
+
+        if self.part_type is DataPart:
+            # file_name = file_name.replace(' ', '_')
+            file_name += '.json'
+
         file_path = os.path.join(parent_path, file_name)
 
-        if file_name in os.listdir(parent_path) or text.strip(' ') == '':
+        if file_name in os.listdir(parent_path) or file_name.strip(' ') == '':
             self.un_focus()
         else:
-            os.mkdir(file_path)
+            if self.part_type is not DataPart:
+                os.mkdir(file_path)
 
             self.part_type(self.parent, file_path).focus()
             self.del_references()
@@ -279,8 +286,6 @@ class BookPart(ContainerPart):
         super().__init__(parent, file)
 
     def get_data_files(self):
-
-        # todo error here
         config_file = os.path.join(self.file, 'config.json')
         data_parts = []
         for child in self.children:
@@ -308,11 +313,10 @@ class Head(SuperPart):
     """
 
     def __init__(self, root, multiple):
-        self.focused = None
+        self.focused = False
         self.root = root
         self.multiple = multiple
 
-        # todo when imported and run it gets the wrong file
         file_path = pathlib.Path(__file__).resolve()
         books_path = file_path.parent.parent / 'books'
         print(books_path)
@@ -349,6 +353,19 @@ class Head(SuperPart):
         if file has a config.json file it becomes a BookPart
         elif file ends with .json it becomes a DataPart
         else it becomes a ContainerPert
+
+        Structure:
+        Head
+            BookPart
+                ContainerPart
+                    DataPart
+                    DataPart
+                    DataPart
+
+                ContainerPart
+                    DataPart
+            BookPart
+                ...
         """
 
         for path in get_im_dirs(self.file):

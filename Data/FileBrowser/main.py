@@ -4,30 +4,39 @@ import tkinter as tk
 from Data.FileBrowser.Parts import Head, ContainerPart, NewFilePart, DataPart
 
 
-def add_chapter():
+def add_chapter(handler):
     if isinstance(handler.focused, ContainerPart):
         NewFilePart(handler.focused, ContainerPart)
 
 
-def add_part():
+def add_part(handler):
     if isinstance(handler.focused, ContainerPart):
         NewFilePart(handler.focused, DataPart)
 
 
-def add_files_button_setup():
+def add_files_button_setup(root, handler):
     root.update_idletasks()
     w = root.winfo_width()
     h = root.winfo_height()
 
-    translate = tk.Button(root, text='add part', command=add_part)
+    translate = tk.Button(root, text='add part', command=lambda: add_part(handler))
     translate.place(x=w-5, y=h-35, anchor=tk.SE)
 
-    memory = tk.Button(root, text='add chapter', command=add_chapter)
+    memory = tk.Button(root, text='add chapter', command=lambda: add_chapter(handler))
     memory.place(x=w-5, y=h-5, anchor=tk.SE)
 
 
+def manual_close_window():
+    global return_func
+
+    def false_return():
+        return False
+
+    return_func = false_return
+
+
 def ask_for_files():
-    global root, handler
+    global return_func
 
     root = tk.Tk()
     root.geometry("300x300")
@@ -37,26 +46,27 @@ def ask_for_files():
     handler.make_structure()
     handler.place_all()
 
+    return_func = handler.get_data_files
+    root.protocol("WM_DELETE_WINDOW", manual_close_window)
     root.mainloop()
 
-    return handler.get_data_files()
+    return return_func()
 
 
 def ask_for_file():
-    global root, handler
     root = tk.Tk()
     root.geometry("300x300")
     root.title('select file (middle click)')
-    add_files_button_setup()
 
     handler = Head(root, multiple=False)
     handler.make_structure()
     handler.place_all()
 
+    add_files_button_setup(root, handler)
     root.mainloop()
 
     return handler.focused.file
 
 
 if __name__ == "__main__":
-    print(ask_for_files())
+    print(ask_for_file())

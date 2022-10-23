@@ -1,214 +1,234 @@
 [
     [
-        "Hace -grados /bajo cero/",
-        "Det \u00e4r ./minus/grader"
+        "ven ac\u00e1",
+        "kom hit"
     ],
     [
-        "Llueve",
-        "Det regnar"
+        "se llama",
+        "han heter"
     ],
     [
-        "Nieva",
-        "Det sn\u00f6ar"
+        "porque",
+        "d\u00e4rf\u00f6r att"
     ],
     [
-        "Est\u00e1 nublado",
-        "Det \u00e4r molnigt"
+        "cumple a\u00f1os (cumplir)",
+        "hon fyller \u00e5r"
     ],
     [
-        "Hace sol",
-        "Det \u00e5r soligt"
+        "(la) semana",
+        "vecka"
     ],
     [
-        "Hace viento",
-        "Det \u00e4r bl\u00e5sigt"
+        "qu\u00e9 asco",
+        "vad \u00e4ckligt"
     ],
     [
-        "Hace buen/mal tiempo",
-        "Det \u00e4r bra/d\u00e5ligt v\u00e4der"
+        "hay",
+        "det finns"
     ],
     [
-        "Hace calor/fr\u00edo",
-        "Det \u00e4r varmt/katlt"
+        "\u00bfc\u00f3mo se dice?",
+        "hur s\u00e4ger man?"
     ],
     [
-        "(tos) compa\u00f1eros",
-        "kamrater; kollegor"
+        "(la) cucaracha",
+        "kackerlacka"
     ],
     [
-        "les deseamos",
-        "vi \u00f6nskar er"
+        "peligrosas",
+        "farliga"
     ],
     [
-        "primero",
-        "f\u00f6rst; f\u00f6rsta"
+        "bueno, bueno",
+        "h\u00e5r: s\u00e5. s\u00e5"
     ],
     [
-        "ya",
-        "redan"
+        "es tarde",
+        "det \u00e5r sent"
     ],
     [
-        "(el) invierno",
-        "vinter"
+        "mierda",
+        "h\u00e4r; skit ocks\u00e5"
     ],
     [
-        "hace dieciocho grados",
-        "det \u00e4r 18 grader"
+        "ac\u00e1(LA)",
+        "h\u00e4r"
     ],
     [
-        "est\u00e1 nublado",
-        "det \u00e4r molnigt"
+        "venga",
+        "kom nu: kom igen"
     ],
     [
-        "llueve",
-        "det regnar"
+        "todos",
+        "alla; allihop"
     ],
     [
-        "t\u00edpico",
-        "typiskt"
+        "(el) carro (LA)",
+        "bil"
     ],
     [
-        "ay",
-        "\u00e5h"
+        "guau",
+        "voff"
     ],
     [
-        "en",
-        "om"
+        "mi amor",
+        "min \u00e4lskling"
     ],
     [
-        "el tiempo",
-        "v\u00e4dret"
+        "no pasa nada",
+        "det g\u00f6r inget"
     ],
     [
-        "hoy",
-        "idag"
+        "ladra (ladrar)",
+        "sk\u00e4lla"
     ],
     [
-        "(el) avi\u00f3n",
-        "flygplan"
+        "bienvenidos",
+        "v\u00e4lkomna"
     ],
     [
-        "son las siete y cuarto",
-        "klockan \u00e4r kvart \u00f6ver sju"
+        "(la) mujer",
+        "kvinna: fru"
     ],
     [
-        "de la noche",
-        "p\u00e5 kv\u00e4llen"
+        "igualmente",
+        "detsamma"
     ],
     [
-        "empezamos",
-        "vi b\u00f6rjar"
+        "(la) hija",
+        "dotter"
     ],
     [
-        "ahora",
-        "nu"
+        "mucho gusto",
+        "trevligt att tr\u00e4ffas"
     ],
     [
-        "(el) aterrizaje",
-        "landning"
+        "encantado",
+        "trevligt att tr\u00e4ffas"
     ],
     [
-        "llegamos",
-        "vi kommer fram"
+        "dame un beso",
+        "ge mig en puss"
     ],
     [
-        "(el) aeropuerto",
-        "flygplats"
+        "solo",
+        "bara"
     ],
     [
-        "(la) abuela",
-        "farmor (\u00e4ven mormor)"
+        "esta es",
+        "det h\u00e4r \u00e4r"
     ],
     [
-        "qu\u00e9 lindo (LA)",
-        "vad fint"
+        "eres",
+        "du \u00e4r"
     ],
     [
-        "(la) Visita",
-        "bes\u00f6k"
+        "\u00bfc\u00f3mo?",
+        "h\u00e5r: va?"
     ],
     [
-        "hace sol",
-        "det \u00e4r soligt"
+        "usted",
+        "Ni (artigt till en person)"
     ],
     [
-        "\u00bfqu\u00e9 te pasa?",
-        "vad \u00e4r det med dig?"
+        "(el) t\u00edo",
+        "farbror (\u00e4ven morbror)"
     ],
     [
-        "est\u00e1s cansado",
-        "du \u00e4r tr\u00f6tt"
+        "(el) hijo",
+        "son"
     ],
     [
-        "(el) hermano",
-        "bror"
+        "qu\u00e9 alegr\u00eda",
+        "vad roligt"
     ],
     [
-        "(la) prima",
-        "kusin"
+        "Dios m\u00edo",
+        "herregud"
     ],
     [
-        "est\u00e1n",
-        "de \u00e4r"
+        "cu\u00e1nto tiempo",
+        "vad l\u00e4nge sedan"
     ],
     [
-        "(la) hora",
-        "timme"
+        "\u00bfC\u00f3mo?",
+        "Vad sa du/Ni?"
     ],
     [
-        "all\u00e1 (LA)",
-        "d\u00e4r"
+        "\u00bfC\u00f3mo se dice?",
+        "Hur s\u00e4ger man?"
     ],
     [
-        "descansamos",
-        "vi vilar"
+        "iBienvenido!",
+        "V\u00e4lkommen!;V\u00e4lkomna!"
     ],
     [
-        "pobrecito",
-        "stackars dig"
+        "iMi amor!",
+        "Min \u00e4lskling!"
     ],
     [
-        "ya, ya",
-        "ung. det r\u00e4cker"
+        "iCu\u00e1nto tiempo!",
+        "Vad l\u00e4nge sedan!"
     ],
     [
-        "(el) beb\u00e9",
-        "bebis"
+        "iQu\u00e9 alegr\u00eda!",
+        "Vad roligt!"
     ],
     [
-        "\u00bfverdad?",
-        "eller hur?"
+        "Encantado",
+        "Trevligt att tr\u00e4ffas"
     ],
     [
-        "\u00bfen serio?",
-        "allvarligt?"
+        "Mucho gusto",
+        "Trevligt att tr\u00e4ffas"
     ],
     [
-        "en casa",
-        "hemma"
+        "Igualmente",
+        "Detsamma"
     ],
     [
-        "es verano",
-        "det \u00e4r sommar"
+        "azul",
+        "bl\u00e5"
     ],
     [
-        "hace mal tiempo",
-        "det \u00e4r d\u00e5ligt v\u00e4der"
+        "amarill\u00f3",
+        "gul"
     ],
     [
-        "(el) invierno",
-        "vinter"
+        "verde",
+        "gr\u00f6n"
     ],
     [
-        "(la) primavera",
-        "v\u00e5r"
+        "gris",
+        "gr\u00e5"
     ],
     [
-        "(el) verano",
-        "sommar"
+        "rojo",
+        "r\u00f6d"
     ],
     [
-        "(el) oto\u00f1o",
-        "h\u00f6st"
+        "naranja",
+        "orange"
+    ],
+    [
+        "morado",
+        "lila"
+    ],
+    [
+        "rosa",
+        "rosa"
+    ],
+    [
+        "negro",
+        "svart"
+    ],
+    [
+        "blanco",
+        "vit"
+    ],
+    [
+        "marr\u00f3n",
+        "brun"
     ]
 ]

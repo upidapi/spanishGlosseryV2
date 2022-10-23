@@ -54,7 +54,6 @@ def clean(word, split_keys: tuple, remove_keys: tuple, remove_between_keys: tupl
 
 
 def find_alternative_translations(data: list):
-    # todo instead of using dicts to store data use lists instead
     w1_to_w2 = []
     w2_to_w1 = []
 
@@ -127,12 +126,16 @@ def get_translate_data():
     book_data = []
 
     books = ask_for_files()
-    for book in books:
-        config_file = book["config_file"]
-        data_files = book["data_files"]
-        book_data += load_book_data(config_file, data_files)
+    if books:
+        for book in books:
+            config_file = book["config_file"]
+            data_files = book["data_files"]
+            book_data += load_book_data(config_file, data_files)
+            return find_alternative_translations(book_data)
 
-    return find_alternative_translations(book_data)
+    else:
+        # temporary fix
+        get_translate_data()
 
 
 def load_clean_data():

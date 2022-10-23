@@ -1,7 +1,11 @@
 [
     [
-        "Hace -grados /bajo cero/",
-        "Det \u00e4r ./minus/grader"
+        "ya",
+        "redan"
+    ],
+    [
+        "Est\u00e1 nublado",
+        "Det \u00e5r molnigt"
     ],
     [
         "Llueve",
@@ -12,40 +16,20 @@
         "Det sn\u00f6ar"
     ],
     [
-        "Est\u00e1 nublado",
-        "Det \u00e4r molnigt"
+        "Hace... grados /bajocero/",
+        "Det \u00e4r . . /minus/grader"
     ],
     [
-        "Hace sol",
-        "Det \u00e5r soligt"
+        "(el) avi\u00f3n",
+        "flygplan"
     ],
     [
-        "Hace viento",
-        "Det \u00e4r bl\u00e5sigt"
+        "hoy",
+        "idag"
     ],
     [
-        "Hace buen/mal tiempo",
-        "Det \u00e4r bra/d\u00e5ligt v\u00e4der"
-    ],
-    [
-        "Hace calor/fr\u00edo",
-        "Det \u00e4r varmt/katlt"
-    ],
-    [
-        "ya",
-        "redan"
-    ],
-    [
-        "(tos) compa\u00f1eros",
-        "kamrater; kollegor"
-    ],
-    [
-        "les deseamos",
-        "vi \u00f6nskar er"
-    ],
-    [
-        "primero",
-        "f\u00f6rst; f\u00f6rsta"
+        "t\u00edpico",
+        "typiskt"
     ],
     [
         "(el) invierno",
@@ -64,32 +48,40 @@
         "det regnar"
     ],
     [
-        "t\u00edpico",
-        "typiskt"
+        "(los) compa\u00f1eros",
+        "kamrater; kollegor"
     ],
     [
-        "ay",
-        "\u00e5h"
+        "les deseamos",
+        "vi \u00f6nskar er"
     ],
     [
-        "en",
-        "om"
+        "primero",
+        "f\u00f6rst; f\u00f6rsta"
     ],
     [
-        "el tiempo",
-        "v\u00e4dret"
+        "V\u00e2dret",
+        "\u00c5rstiderna"
     ],
     [
-        "hoy",
-        "idag"
+        "Hace buen/mal tiempo",
+        "Det \u00e5r bra/d\u00e5iigt v\u00e4der"
     ],
     [
-        "(el) avi\u00f3n",
-        "flygplan"
+        "Hace calor/fr\u00edo",
+        "Det \u00e4r varmt/kallt"
+    ],
+    [
+        "Hace sol",
+        "Det \u00e4r soligt"
+    ],
+    [
+        "Hace viento",
+        "Det \u00e5r bl\u00e5sigt"
     ],
     [
         "son las siete y cuarto",
-        "klockan \u00e4r kvart \u00f6ver sju"
+        "klockan \u00e5r kvart \u00f6ver sju"
     ],
     [
         "de la noche",
@@ -108,6 +100,10 @@
         "landning"
     ],
     [
+        "ay",
+        "\u00e5h"
+    ],
+    [
         "llegamos",
         "vi kommer fram"
     ],
@@ -116,20 +112,28 @@
         "flygplats"
     ],
     [
+        "en",
+        "om"
+    ],
+    [
+        "el tiempo",
+        "v\u00e4dret"
+    ],
+    [
         "en casa",
         "hemma"
     ],
     [
-        "\u00bfverdad?",
-        "eller hur?"
-    ],
-    [
-        "es verano",
-        "det \u00e4f sommar"
-    ],
-    [
         "hace mal tiempo",
         "det \u00e4r d\u00e5ligt v\u00e4der"
+    ],
+    [
+        "(la) visita",
+        "bes\u00f6k"
+    ],
+    [
+        "\u00bfverdad?",
+        "eller hur?"
     ],
     [
         "qu\u00e9 lindo (LA)",
@@ -140,8 +144,8 @@
         "allvarligt?"
     ],
     [
-        "(la) Visita",
-        "bes\u00f6k"
+        "es verano",
+        "det \u00e4r sommar"
     ],
     [
         "hace sol",
@@ -149,7 +153,7 @@
     ],
     [
         "\u00bfqu\u00e9 te pasa?",
-        "vad \u00e4r det med dig?"
+        "vad \u00e4r det med dig? \u2022"
     ],
     [
         "est\u00e1s cansado",
@@ -176,16 +180,20 @@
         "d\u00e4r"
     ],
     [
+        "ya, ya",
+        "ung. det r\u00e4cker"
+    ],
+    [
+        "(la) abuela",
+        "farmor (\u00e4ven mormor)"
+    ],
+    [
         "descansamos",
         "vi vilar"
     ],
     [
         "pobrecito",
         "stackars dig"
-    ],
-    [
-        "ya, ya",
-        "ung. det r\u00e4cker"
     ],
     [
         "(el) beb\u00e9",
@@ -206,9 +214,5 @@
     [
         "(el) oto\u00f1o",
         "h\u00f6st"
-    ],
-    [
-        "(la) abuela",
-        "farmor (\u00e4ven mormor)"
     ]
 ]

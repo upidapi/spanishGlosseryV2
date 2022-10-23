@@ -56,7 +56,6 @@ def setup_2():
         mode = 1
 
     else:
-        Data.mode = 2
         all_text_pairs = []
         for tr_pair in tr_pairs:
             data = (
@@ -65,7 +64,11 @@ def setup_2():
             )
             all_text_pairs.append(data)
 
-        save_data(all_text_pairs)
+        if save_data(all_text_pairs):
+            Data.mode = 2
+        else:
+            mode = 1
+            setup_1()
 
 
 def next_mode(event):

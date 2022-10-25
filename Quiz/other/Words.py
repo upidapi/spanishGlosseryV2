@@ -19,6 +19,7 @@ class WordData:
         self.right = []
         self.wrong = []
 
+        self.retry = False  # is true when you retry to type a word
         self.current_word = {'word': None, 'translation': None}
 
     def setup(self, right_answer, wrong_answer, set_translate_text):
@@ -64,11 +65,19 @@ class WordData:
     def check_correct(self, word):
         if word in self.current_word['translation']:
             # right
-            self.right.append(self.current_word)
+            if not self.retry:
+                self.right.append(self.current_word)
+            self.retry = False
+
             self.right_answer()
+
+            self.next_word()  # force user to type it right before continuing
+
         else:
             # wrong
-            self.wrong.append(self.current_word)
             self.wrong_answer(self.current_word['translation'])
 
-        self.next_word()
+            if not self.retry:
+                self.wrong.append(self.current_word)
+            self.retry = True
+        # self.next_word()

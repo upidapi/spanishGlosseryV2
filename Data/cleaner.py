@@ -23,9 +23,30 @@ def clean(word, split_keys: tuple, remove_keys: tuple, remove_between_keys: tupl
     :return: the clean word(s) in a list
     """
 
+
     # adds to optional if the amount of characters between start key and end key is less than remove_ken
     import re
-    print(re.findall('//|/.{,2}/', '///el/ test1/tes2 /ue/'))
+    word = [{'text': '///el/ test1/tes2 /ue/', 'type': None}]
+    for i, part in enumerate(word):
+
+        text = part['text']
+        matches = re.finditer('//|/.{,2}/', text)
+
+        split_words = []
+        last_end = 0
+        for match in matches:
+            next_start = match.span(0)
+
+            non_match_text = text[last_end:next_start]
+            split_words += get_add_part(non_match_text, None)
+
+            match_text = match.match[1:-1]
+            split_words += get_add_part(match_text, 'optional')
+
+            last_end = match.span(1)
+
+        word = word[:i] + split_words + word[i:]
+
 
     word_list = [word]
     for key in split_keys:
@@ -61,3 +82,41 @@ def clean(word, split_keys: tuple, remove_keys: tuple, remove_between_keys: tupl
         word[i] = part.strip()
 
     return word
+
+
+def get_add_part(text, option):
+    part_data = []
+    if text:
+        part_data = {
+            'text': text,
+            'type': option
+        }
+    return part_data
+
+
+def main():
+    # adds to optional if the amount of characters between start key and end key is less than remove_ken
+    import re
+    word = [{'text': '///el/ test1/tes2 /ue/', 'type': None}]
+    for i, part in enumerate(word):
+
+        text = part['text']
+        matches = re.finditer('//|/.{,2}/', text)
+
+        split_words = []
+        last_end = 0
+        for match in matches:
+            next_start = match.span()[0]
+
+            non_match_text = text[last_end:next_start]
+            split_words += get_add_part(non_match_text, None)
+
+            match_text = match.match[1:-1]
+            split_words += get_add_part(match_text, 'optional')
+
+            last_end = match.span()[0]
+
+        word = word[:i] + split_words + word[i:]
+
+if __name__ == '__main__':
+    main()

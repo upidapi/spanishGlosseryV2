@@ -1,5 +1,9 @@
 [
     [
+        "contento",
+        "n\u00f6jd"
+    ],
+    [
         "(el) crimen",
         "brott"
     ],
@@ -20,16 +24,12 @@
         "\u00e4ta middag"
     ],
     [
-        "contento",
-        "n\u00f6jd"
-    ],
-    [
         "(el) refresco",
         "l\u00e4sk"
     ],
     [
         "(el) plato",
-        "r\u00e5tt"
+        "r\u00e4tt"
     ],
     [
         "(el) pescado",
@@ -56,10 +56,6 @@
         "de g\u00e5r"
     ],
     [
-        "raro",
-        "konstig"
-    ],
-    [
         "caminar",
         "promenera"
     ],
@@ -74,6 +70,10 @@
     [
         "(la) puerta",
         "d\u00f6rr"
+    ],
+    [
+        "raro",
+        "konstig"
     ],
     [
         "algo",
@@ -132,7 +132,7 @@
         "hals"
     ],
     [
-        "(el) pjo",
+        "(el) ojo",
         "\u00f6ga"
     ],
     [
@@ -144,7 +144,7 @@
         "stj\u00e4rna"
     ],
     [
-        "no puede Ser",
+        "no puede ser",
         "det kan inte vara sant"
     ],
     [
@@ -158,10 +158,6 @@
     [
         "los dos",
         "b\u00e5da tv\u00e5"
-    ],
-    [
-        "iPerfectol",
-        "Perfect!"
     ],
     [
         "(la) boca",
@@ -193,7 +189,7 @@
     ],
     [
         "ha hecho (hacer)",
-        "han/hon har gjort"
+        "hen har gjort"
     ],
     [
         "vamos a",
@@ -208,55 +204,7 @@
         "m\u00f6rdare"
     ],
     [
-        "\u00a1Genial!; Ch\u00e9vere! (LA)",
-        "V\u00e5d coolt'. Vad kull"
-    ],
-    [
-        "te lojuro por mi madre",
+        "te lo juro por mi madre",
         "jag sv\u00e4r vid min mamma"
-    ],
-    [
-        "iAj\u00e1!",
-        "Aha!"
-    ],
-    [
-        "\u00a1Vengal",
-        "Kom igen!"
-    ],
-    [
-        "iMira!",
-        "Titta!"
-    ],
-    [
-        "\u00bfDe verdad?",
-        "\u00c5r det sant?"
-    ],
-    [
-        "iDios m\u00edo!",
-        "Herregud!"
-    ],
-    [
-        "no puede ser!",
-        "Det kan inte vara santl"
-    ],
-    [
-        "\u00bfQu\u00e9 es esto?",
-        "Vad \u00e4r detta?"
-    ],
-    [
-        "iQu\u00e9 raro!",
-        "Vad konstigt!"
-    ],
-    [
-        "iNo tengo ni idea!",
-        "Jag har ingen aningl"
-    ],
-    [
-        "\u00a1Qu\u00e9 bien!",
-        "Vad bral"
-    ],
-    [
-        "\u00a1vamos!",
-        "Nu k\u00e5r vi!"
     ]
 ]

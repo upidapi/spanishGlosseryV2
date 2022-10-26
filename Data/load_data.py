@@ -21,6 +21,8 @@ def clean(word, split_keys: tuple, remove_keys: tuple, remove_between_keys: tupl
     :param remove_between_keys:
     :return: the clean word(s) in a list
     """
+    word.lower()
+
     # removes all instances of the remove_keys
     for key in remove_keys:
         word = word.replace(key, '')

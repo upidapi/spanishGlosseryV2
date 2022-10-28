@@ -95,7 +95,6 @@ def check_correct(inp, answers):
     return True
 
 
-
 data = (['är ', ''], '', 'blå')
 
 print(check_correct('blå', data))

@@ -1,4 +1,4 @@
-import re
+import regex
 
 """
 makes an answer_sheet that the check_correct.py can use to check if a word was typed right
@@ -32,10 +32,59 @@ using these we can also create
 """
 
 
-def find_x(inp, re_ex):
-    matches = re.findall(inp, re_ex)
+# def find_optionals(word: list[dict] | list,
+#                    regex_match_expression: str,
+#                    match_remove_slice: slice = slice(None, None)):
+#     import re
+#
+#     """
+#     :param word: a list of parts of a word
+#     :param regex_match_expression: a regex str to try to match to
+#     :return: finds and sections the text into optional or necessary parts
+#     """
+#
+#     # adds to optional if the amount of characters between start key and end key is less than remove_ken
+#     for i, part in enumerate(word):
+#
+#         text = part['text']
+#         matches = re.finditer(regex_match_expression, text)
+#
+#         split_words = []
+#         next_start = 0
+#         for match in matches:
+#             start = match.span()[0]
+#
+#             # text part before match
+#             split_words += get_add_part(
+#                 text=text[next_start:start],
+#                 option=part['type']  # defaults to "parent's" type
+#             )
+#
+#             # match text part
+#             split_words += get_add_part(
+#                 text=match.group(0)[match_remove_slice],
+#                 option='optional'
+#             )
+#
+#             next_start = match.span()[1]
+#
+#         # text part after last match
+#         split_words += get_add_part(
+#             text=text[next_start:len(text)],
+#             option=part['type']  # defaults to "parent's" type
+#         )
+#
+#         # the i+1 is so that the current part doesn't get added
+#         word = word[:i] + split_words + word[(i + 1):]
+#
+#     return word
+
+
+def find_x(re_ex, inp):
+    matches = regex.finditer(re_ex, inp, overlapped=True)
     for match in matches:
-        print(match.group(), match.end())
+        print(match)
 
 
-print(re.findall('IIIoIIooIIIooIIoooI', 'oo'))
+# find_x(r'/[^/]*/', '/a/b/c/')
+find_x(r'\([^\(\)]*\)', '(a(b)c)')

@@ -1,4 +1,4 @@
-import regex
+# import regex
 
 """
 makes an answer_sheet that the check_correct.py can use to check if a word was typed right
@@ -27,64 +27,43 @@ using these we can also create
         an or statement (se more above)
 
     full_sheet => (['text 1', ''], 'text 2', ['text 3', 'text 4'], 'text 4') # (e.g)
-                    ^^^^^^^^^^^^    ^^^^^^    ^^^^^^^^^^^^^^^^^^    ^^^^^^
-                      optional      text              or             text
+                   ^^^^^^^^^^^^^^  ^^^^^^^
+                      optional
 """
+import re
 
 
-# def find_optionals(word: list[dict] | list,
-#                    regex_match_expression: str,
-#                    match_remove_slice: slice = slice(None, None)):
-#     import re
-#
-#     """
-#     :param word: a list of parts of a word
-#     :param regex_match_expression: a regex str to try to match to
-#     :return: finds and sections the text into optional or necessary parts
-#     """
-#
-#     # adds to optional if the amount of characters between start key and end key is less than remove_ken
-#     for i, part in enumerate(word):
-#
-#         text = part['text']
-#         matches = re.finditer(regex_match_expression, text)
-#
-#         split_words = []
-#         next_start = 0
-#         for match in matches:
-#             start = match.span()[0]
-#
-#             # text part before match
-#             split_words += get_add_part(
-#                 text=text[next_start:start],
-#                 option=part['type']  # defaults to "parent's" type
-#             )
-#
-#             # match text part
-#             split_words += get_add_part(
-#                 text=match.group(0)[match_remove_slice],
-#                 option='optional'
-#             )
-#
-#             next_start = match.span()[1]
-#
-#         # text part after last match
-#         split_words += get_add_part(
-#             text=text[next_start:len(text)],
-#             option=part['type']  # defaults to "parent's" type
-#         )
-#
-#         # the i+1 is so that the current part doesn't get added
-#         word = word[:i] + split_words + word[(i + 1):]
-#
-#     return word
+def rm_invalid():
+
+def capture_between(inp, a, b):
+    between = []
+
+    # finds all possible between instances
+    starts = [x for x in re.finditer(a, inp)]
+    stops = [x for x in re.finditer(b, inp)]
+
+    for start in starts:
+        # start_text = start.group(0)
+        start_start = start.span()[0]
+        # start_end = start.span()[1]
+
+        for stop in stops:
+            stop_end = stop.span()[1]
+            if start_start < stop_end:
+                between.append(inp[start_start:stop_end])
+
+    # remove invalid between instances
+    for i, instance in enumerate(between):
+        for char in instance:
+            if char:
+                pass
 
 
-def find_x(re_ex, inp):
-    matches = regex.finditer(re_ex, inp, overlapped=True)
-    for match in matches:
-        print(match)
+def tes(imp, start, end, a, b):
+    for i in range(start, end):
+        # if it starts with a
+        re.findall(f"^{a}", imp[i:])
 
 
-# find_x(r'/[^/]*/', '/a/b/c/')
-find_x(r'\([^\(\)]*\)', '(a(b)c)')
+
+capture_between('hej (vad) nä d(ej)', '\(', '\)')

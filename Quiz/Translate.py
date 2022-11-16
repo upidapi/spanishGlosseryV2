@@ -87,4 +87,13 @@ def __init__(languishes=('spa', 'swe')):
 
 # todo add how may you got correct / you have done out of total
 if __name__ == '__main__':
+    # todo add buttons for selecting if you spelled it right eg
+    #   "try again"(same as wrong),
+    #   "hard" you got it right (almost right) but it was hard
+    #   "medium" you got it right and it was pretty medium
+    #   "hard" you easily got it right
+    #  these would be used to help the program know when to test you again on that word eg
+    #    "try again" directly after
+    #    "hard" pretty soon
+    #    etc
     __init__()

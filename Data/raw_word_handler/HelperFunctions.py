@@ -93,6 +93,7 @@ def get_next_scope(pointer, data):
             return []
 
 
+
 def get_start_points(data):
     temp_list = ('o', data)
     possibilities = get_next_open_scopes([0, 0], temp_list)

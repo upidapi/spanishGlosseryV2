@@ -6,6 +6,9 @@ data = []
 
 
 class PointerList:
+    # todo convert to masterclass or add flag argument when initiating
+    #  to distinguish between OrStatement and ChainStatement
+    #  change __repr__ based on flag etc
     def __init__(self, *args):
         self.data = list(args)
 

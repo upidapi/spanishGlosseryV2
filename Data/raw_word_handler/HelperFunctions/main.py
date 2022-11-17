@@ -35,6 +35,40 @@ def get_next_open(pointer, data):
     return get_sub_possible([next_thing], data)
 
 
-# todo add tests
-# data = ChainStatement('a', OrStatement(ChainStatement('', 'wc')))
-# print(get_next_open([0], data))
+# not tested
+def get_start_points(data):
+    temp_list = ChainStatement('o', *data)
+    possibilities = get_next_open([0, 0], temp_list)
+    # remove the 'o' from the pointer
+    return [possible[1:] for possible in possibilities]
+
+
+# not tested
+def map_to_all(func, data, pointer=None):
+    if pointer is None:
+        pointers = get_start_points(data)
+    else:
+        pointers = get_next_open(pointer, data)
+
+    for pointer in pointers:
+        pointer_data = get_next_open(pointer, data)
+        if type(pointer_data) is str:
+            print(pointer, get_next_open(pointer, data))
+            # set_pointer_data(func(pointer), pointer, data)
+        else:
+            map_to_all(func, data, pointer)
+
+
+def main():
+    # todo add tests
+    data = ChainStatement('hello', '',
+                          OrStatement('Im',
+                                      ChainStatement('I', ' ', '', 'am')),
+                          OrStatement('red', 'blue'),
+                          OrStatement('rn', ''))
+
+    print(get_next_open([0, 2], data))
+
+
+if __name__ == '__main__':
+    main()

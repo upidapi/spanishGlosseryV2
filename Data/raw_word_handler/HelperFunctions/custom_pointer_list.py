@@ -6,13 +6,12 @@ class PointerList:
         self.data = list(args)
 
     def __getitem__(self, pointer: list | int):
-        if type(pointer) is slice or len(pointer) == 0:
-            return self.data
-
         if type(pointer) is int:
             return self.data[pointer]
         if len(pointer) == 1:
             return self.data[pointer[0]]
+        if type(pointer) is slice or len(pointer) == 0:
+            return self.data
 
         sub_scope = self.data[pointer[0]]
 

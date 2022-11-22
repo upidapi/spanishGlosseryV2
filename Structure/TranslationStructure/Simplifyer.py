@@ -1,5 +1,4 @@
-"""removes unnecessary parts of the structure"""
-from Data.raw_word_handler.Helpers import ChainStatement, OrStatement
+from Structure.Helpers import ChainStatement, OrStatement
 
 
 def one_len_unpack(structure, changed_structure):
@@ -94,31 +93,40 @@ def duplicate_remove(structure, changed_structure):
     if type(structure) is OrStatement:
         temp_list = []
         for part in structure:
-            # todo this doesn't work, it's just a temporary implementation
-            #  you cant compare content of two "custom_pointer_list"s
             if part not in temp_list:
                 temp_list.append(part)
+        return OrStatement(*temp_list), changed_structure
     return structure, changed_structure
 
 
-def clean(structure):
-    if type(structure) is str:
-        return structure
+def simplify(structure):
+    def recursion(structure_part):
+        """removes unnecessary parts of the structure"""
+        if type(structure_part) is str:
+            return structure_part
 
-    changed_structure = False
-    structure, changed_structure = one_len_unpack(structure, changed_structure)  # X
-    structure, changed_structure = or_combine(structure, changed_structure)  # X
-    structure, changed_structure = de_chain(structure, changed_structure)  # X
-    structure, changed_structure = chain_part_combine(structure, changed_structure)  # X
-    structure, changed_structure = space_removal(structure, changed_structure)
+        changed = False
+        structure_part, changed = one_len_unpack(structure_part, changed)
+        structure_part, changed = or_combine(structure_part, changed)
+        structure_part, changed = de_chain(structure_part, changed)
+        structure_part, changed = chain_part_combine(structure_part, changed)
+        structure_part, changed = space_removal(structure_part, changed)
+        structure_part, changed = duplicate_remove(structure_part, changed)
 
-    # structure, changed_structure = duplicate_remove(structure, changed_structure)
+        if changed:
+            return recursion(structure_part)
 
-    if changed_structure:
-        return clean(structure)
+        for i in range(len(structure_part)):
+            structure_part[i] = recursion(structure_part[i])
 
-    for i in range(len(structure)):
-        structure[i] = clean(structure[i])
+        return structure_part
+
+    # make it simplify the head too
+    structure = ChainStatement(structure)
+    structure = recursion(structure)
+    if len(structure) == 1:
+        if type(structure[0]) is not str:
+            structure = structure[0]
 
     return structure
 
@@ -154,9 +162,18 @@ def clean(structure):
 # print(space_removal(ChainStatement("ad", "", "", "lals", ChainStatement('sda', 'asd')), False))
 # # (^['ad', 'lals', ^['sda', 'asd']^]^, False)
 
+# print(duplicate_remove(
+#     OrStatement('1',
+#                 '2',
+#                 ChainStatement('sd', 'as'),
+#                 ChainStatement('as', 'sde'),
+#                 '1',
+#                 ChainStatement('sd', 'as')),
+#     False))
+
 # data = ChainStatement("hello",
 #                       ChainStatement("blue"),
-#                       OrStatement("nah", "that",
+#                       OrStatement("nah", "cant",
 #                                   OrStatement("cant", "be")),
 #                       "is it",
 #                       "",
@@ -166,5 +183,9 @@ def clean(structure):
 #                       "asd",
 #                       "de")
 # print(clean(data))
-# # ^['helloblue', *['nah', 'that', 'cant', 'be']*, 'is itahsdjsasdde']^
+# # ^['helloblue', *['nah', 'cant', 'be']*, 'is itahsdjsasdde']^
 
+# print(simplify(OrStatement(OrStatement('a', 'd'), OrStatement('b', 'e'))))
+# # *['a', 'd', 'b', 'e']*
+# print(simplify(ChainStatement('a')))
+# # ^['a']^

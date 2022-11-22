@@ -1,6 +1,6 @@
 import re
 
-from Data.raw_word_handler.Helpers import OrStatement, ChainStatement
+from Structure.Helpers import OrStatement, ChainStatement
 
 
 def get_combined_matches(inp, between: tuple[str, str]):
@@ -110,4 +110,8 @@ def make_between_optional(inp: str, between: tuple[str, str]):
 
     return recursion(tuple(between_data))
 
-print(make_between_optional("hello (im) wut ((hello) nah (the))", ('\(', '\)')))
+
+# print(get_between("(he(im)(you))", ("\(", "\)")))
+# print(make_between_optional("(he(im)(you))", ("\(", "\)")))
+# print(get_between("hello (he( im)( you)) wa; likes", ("\(", "\)")))
+# print(make_between_optional("hello (im) wut ((hello) nah (the))", ('\(', '\)')))

@@ -1,7 +1,7 @@
 import re
 from typing import Literal
 
-from Data.raw_word_handler.Helpers import ChainStatement, OrStatement
+from Structure.Helpers import ChainStatement, OrStatement
 
 
 class SplitPatterns:
@@ -82,5 +82,7 @@ def get_split(inp, pattern: Literal['restrictive', 'normal', 'permissive', 'gree
         out.append(OrStatement(
                 *re.split(f"{at}", match.group(0))))
 
-    out.append(inp[last_end:-1])
+# x=^[*[^['he', *['im', '']*, *['you', '']*]^, '']*]^
+
+    out.append(inp[last_end:])
     return ChainStatement(*out)

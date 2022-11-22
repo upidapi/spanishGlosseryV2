@@ -59,6 +59,15 @@ class PointerList:
     def __len__(self):
         return len(self.data)
 
+    def __eq__(self, other) -> bool:
+        if issubclass(type(other), PointerList):
+            if len(self) == len(other) and type(self) == type(other):
+                return all(part == compare for part, compare in zip(self.data, other.data))
+            return False
+        else:
+            return False
+            # raise TypeError(f"cannot compare {type(self)} with {other} (anything not a subclass of PointerList)")
+
     def __bool__(self):
         return bool(self.data)
 

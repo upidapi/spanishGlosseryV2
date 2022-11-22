@@ -1,5 +1,5 @@
-from Data.raw_word_handler.Helpers.custom_pointer_list \
-    import OrStatement, ChainStatement
+from Structure.Helpers.custom_pointer_list \
+    import OrStatement
 
 
 def get_parent_type(data, pointer):

@@ -1,17 +1,16 @@
 class PointerList:
-    # todo convert to masterclass or add flag argument when initiating
-    #  to distinguish between OrStatement and ChainStatement
-    #  change __repr__ based on flag etc
     def __init__(self, *args):
         self.data = list(args)
 
-    def __getitem__(self, pointer: list | int):
+    def __getitem__(self, pointer: list | int | slice):
+        if type(pointer) is slice:
+            return self.data[pointer]
         if type(pointer) is int:
             return self.data[pointer]
         if len(pointer) == 1:
             return self.data[pointer[0]]
-        if type(pointer) is slice or len(pointer) == 0:
-            return self.data
+        if len(pointer) == 0:
+            return self
 
         sub_scope = self.data[pointer[0]]
 
@@ -32,11 +31,30 @@ class PointerList:
         if len(pointer) == 1:
             self.data[pointer[0]] = value
         elif type(change_data) is str:
-            self.data[pointer[0]] = change_data[:pointer[1]] + value + change_data[pointer[1] + 1:]
+            self.data[pointer[0]] = change_data[:pointer[1]] + \
+                                    value + \
+                                    change_data[pointer[1] + 1:]
         else:
             self.data[pointer[0]][pointer[1:]] = value
 
         return self.data
+
+    def __delitem__(self, pointer: list | int):
+        if type(pointer) is int:
+            pointer = [pointer]
+
+        change_data = self.data[pointer[0]]
+
+        if len(pointer) == 1:
+            del self.data[pointer[0]]
+        elif type(change_data) is str:
+            self[pointer] = ''
+        else:
+            del change_data[pointer[1:]]
+
+    def __iter__(self):
+        for part in self.data:
+            yield part
 
     def __len__(self):
         return len(self.data)

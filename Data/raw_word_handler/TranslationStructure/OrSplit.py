@@ -1,6 +1,7 @@
 import re
+from typing import Literal
 
-from Data.raw_word_handler.HelperFunctions import get_next_open_scopes
+from Data.raw_word_handler.Helpers import ChainStatement, OrStatement
 
 
 class SplitPatterns:
@@ -13,6 +14,8 @@ class SplitPatterns:
     ['im/you are/hes', 'car/bicycle/house']
     >>> re.findall(SplitPatterns.greedy("/"), "hello im/you are/hes the car/bicycle/house")
     ['im/you are/hes the car/bicycle/house']
+    >>> re.findall(SplitPatterns.super_greedy("/"), "hello im/you are/hes the car/bicycle/house")
+    ['hello im/you are/hes the car/bicycle/house']
     """
 
     LARGE_NUMBER = 1000
@@ -23,12 +26,12 @@ class SplitPatterns:
 
         return re.compile(
             f"(?:(?<=^)|(?<= ))"  # is at start or starts with " "
-            f"({wc}{at}"  # word before
-            f"(?: |){wc}"  # first word inside
-            f"(?: {wc}){{,{space_tolerance}}}{at}"  # extra words 
-            f"{{,{extra_or_statements}}}"  # extra or statements
-            f"{wc})"  # word after
-            f"(?:(?=$)|(?= ))")  # is at end or ends with " ")
+            f"{wc}{at}"  # word {split}
+            f"(?:(?:{wc} ){{,{space_tolerance}}}"  # captures (extra_words) words
+            f"{wc}{at})"  # + one word, new or statement
+            f"{{,{extra_or_statements}}}"  # captures (or_statements) or statements
+            f"{wc}"  # last word
+            f"(?:(?=$)|(?= ))")  # is at end or ends with " "
 
     @staticmethod
     def restrictive(at):
@@ -47,6 +50,10 @@ class SplitPatterns:
         return SplitPatterns.mater_function(at, SplitPatterns.LARGE_NUMBER, SplitPatterns.LARGE_NUMBER)
 
     @staticmethod
+    def super_greedy(at):
+        return re.compile(f".+{at}.+")
+
+    @staticmethod
     def test_all(at, test_str):
         exclusions = ["__", "test_all", "mater_function"]
         valid = [func for func in dir(SplitPatterns)
@@ -57,5 +64,23 @@ class SplitPatterns:
             print(func, re.findall(getattr(SplitPatterns, func)(at), test_str))
 
 
-# while True:
-#     pointer = get_next_open_scopes()
+def get_split(inp, pattern: Literal['restrictive', 'normal', 'permissive', 'greedy', 'super_greedy'], at):
+    """
+    splits the inp into ChainStatement(str, OrStatement(str, ...), str ...)
+    :param inp:
+    :param pattern:
+    :param at:
+    :return:
+    """
+    out = []
+    last_end = 0
+    pattern = getattr(SplitPatterns, pattern)(at)
+    temp = re.finditer(pattern, inp)
+    for match in temp:
+        out.append(inp[last_end:match.span()[0]])
+        last_end = match.span()[1]
+        out.append(OrStatement(
+                *re.split(f"{at}", match.group(0))))
+
+    out.append(inp[last_end:-1])
+    return ChainStatement(*out)

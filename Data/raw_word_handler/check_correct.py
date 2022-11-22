@@ -1,4 +1,4 @@
-from HelperFunctions import get_pointer_data, get_next_open_scopes
+from Helpers import get_pointer_data, get_next_open_scopes
 
 
 def get_all_possibilities(pointers, data):

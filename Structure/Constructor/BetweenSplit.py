@@ -30,10 +30,7 @@ def get_combined_matches(inp, between: tuple[str, str]):
     return ordered
 
 
-# todo make this return a OrStatement(str, '') where it matched
-#  that's whats causing problems
 def get_between(inp: str, between: tuple[str, str]):
-    # todo currently it removes unnecessary parentheses might cause problems
     """
     :param inp: ex "a ((b) c (d)) (e)"
     :param between: ex ("\(", "\)")
@@ -95,6 +92,9 @@ def get_between(inp: str, between: tuple[str, str]):
 
 
 def make_between_optional(inp: str, between: tuple[str, str]):
+    if inp == '':
+        return ''
+
     between_data = get_between(inp, between)
 
     def recursion(inu):

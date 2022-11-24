@@ -84,7 +84,10 @@ def chain_part_combine(structure, changed_structure):
 
 
 def space_removal(structure, changed_structure):
-    if type(structure) is ChainStatement:
+    if type(structure) is ChainStatement \
+            and len(structure) > 1:
+        # if 1 len chain statements can be canceled it could remove the optional part of or statements
+        # todo remove if len > 1 might be unnecessary
         structure = ChainStatement(*[part for part in structure if part != ""])
     return structure, changed_structure
 

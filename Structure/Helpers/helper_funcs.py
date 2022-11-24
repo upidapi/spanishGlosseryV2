@@ -1,5 +1,5 @@
 from Structure.Helpers.custom_pointer_list \
-    import OrStatement
+    import OrStatement, ChainStatement
 
 
 def get_parent_type(data, pointer):
@@ -61,6 +61,26 @@ def map_to_all(func, data, start=None):
     :param start: where to start, defaults to "get_start_points(data)"
     """
     if start is None:
+        start = []
+
+    for i in range(len(data[start])):
+        pointer = start + [i]
+        scope = data[pointer]
+
+        if type(scope) is str:
+            data[pointer] = func(pointer)
+        else:
+            map_to_all(func, data, pointer)
+
+
+def map_to_all_old_version(func, data, start=None):
+    """
+    maps func to all objects in data
+    :param func: function to be mapped, if the func returns none the item is deleted
+    :param data:
+    :param start: where to start, defaults to "get_start_points(data)"
+    """
+    if start is None:
         pointers = get_start_points(data)
     else:
         pointers = get_all_next_possible(start, data)
@@ -78,4 +98,3 @@ def map_to_all(func, data, start=None):
                 del data[pointer[:-1]]
                 map_to_all(func, data, start)
                 break
-

@@ -83,6 +83,24 @@ class PointerList:
                 out_str += ", "
         return f"[{out_str}]"
 
+    def multi_line_print(self, indent=0):
+        if type(self) is ChainStatement:
+            print(f"{'  ' * indent}*[")
+        elif type(self) is OrStatement:
+            print(f"{'  ' * indent}^[")
+
+        for part in self.data:
+            if type(part) is str:
+                print(f'{"  " * (indent + 1)}"{part}"')
+            else:
+                part.multi_line_print(indent+1)
+
+        if type(self) is ChainStatement:
+            print(f"{'  ' * indent}]*")
+        elif type(self) is OrStatement:
+            print(f"{'  ' * indent}]^")
+
+
 
 class OrStatement(PointerList):
     def __repr__(self):

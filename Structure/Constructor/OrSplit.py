@@ -64,7 +64,7 @@ class SplitPatterns:
             print(func, re.findall(getattr(SplitPatterns, func)(at), test_str))
 
 
-def get_split(inp, pattern: Literal['restrictive', 'normal', 'permissive', 'greedy', 'super_greedy'], at):
+def get_split_old(inp, pattern: Literal['restrictive', 'normal', 'permissive', 'greedy', 'super_greedy'], at):
     """
     splits the inp into ChainStatement(str, OrStatement(str, ...), str ...)
     :param inp:
@@ -82,7 +82,21 @@ def get_split(inp, pattern: Literal['restrictive', 'normal', 'permissive', 'gree
         out.append(OrStatement(
                 *re.split(f"{at}", match.group(0))))
 
-# x=^[*[^['he', *['im', '']*, *['you', '']*]^, '']*]^
-
     out.append(inp[last_end:])
     return ChainStatement(*out)
+
+
+from Structure.Constructor import Replace
+
+
+# todo test if this works the same as "get_split"
+def get_split(inp, pattern: Literal['restrictive', 'normal', 'permissive', 'greedy', 'super_greedy'], at):
+    """
+    splits the inp into ChainStatement(str, OrStatement(str, ...), str ...)
+    """
+    pattern = getattr(SplitPatterns, pattern)(at)
+
+    def convert_func(x):
+        return OrStatement(*re.split(f"{at}", x))
+
+    return Replace.replace(inp, pattern, convert_func)

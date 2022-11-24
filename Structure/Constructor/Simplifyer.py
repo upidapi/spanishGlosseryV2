@@ -1,7 +1,7 @@
 from Structure.Helpers import ChainStatement, OrStatement
 
 
-def one_len_unpack(structure, changed_structure):
+def one_len_unpack(structure):
     # unpacks unnecessary 1 len statements
     if type(structure) in (ChainStatement, OrStatement):
         temp_list = []
@@ -9,7 +9,7 @@ def one_len_unpack(structure, changed_structure):
             if type(part) in (ChainStatement, OrStatement) and len(part) <= 1:
                 # full data
                 temp_list += part[[]]
-                changed_structure = True
+                
             else:
                 temp_list.append(part)
         if type(structure) is ChainStatement:
@@ -17,24 +17,24 @@ def one_len_unpack(structure, changed_structure):
         if type(structure) is OrStatement:
             structure = OrStatement(*temp_list)
 
-    return structure, changed_structure
+    return structure
 
 
-def or_combine(structure, changed_structure):
+def or_combine(structure):
     # combines multiple or statements into one
     if type(structure) is OrStatement:
         temp_list = []
         for part in structure:
             if type(part) is OrStatement:
                 temp_list += part[[]]
-                changed_structure = True
+                
             else:
                 temp_list.append(part)
-        return OrStatement(*temp_list), changed_structure
-    return structure, changed_structure
+        return OrStatement(*temp_list)
+    return structure
 
 
-def de_chain(structure, changed_structure):
+def de_chain(structure):
     # remove unnecessary chain statements
     if type(structure) is ChainStatement:
         temp_list = []
@@ -42,14 +42,14 @@ def de_chain(structure, changed_structure):
             if type(part) is ChainStatement:
                 # full data
                 temp_list += part[[]]
-                changed_structure = True
+                
             else:
                 temp_list.append(part)
         structure = ChainStatement(*temp_list)
-    return structure, changed_structure
+    return structure
 
 
-def chain_part_combine(structure, changed_structure):
+def chain_part_combine(structure):
     # merges strs and chain statements when two or more are in a row
     def combine_parts(parts):
         if 2 <= len(streak):
@@ -67,7 +67,7 @@ def chain_part_combine(structure, changed_structure):
         for part in structure:
             if isinstance(part, streak_type):
                 streak.append(part)
-                changed_structure = True
+                
             else:
                 if type(part) in (ChainStatement, str):
                     streak_type = type(part)
@@ -79,27 +79,27 @@ def chain_part_combine(structure, changed_structure):
                 streak = [part]
         temp_list += combine_parts(streak)
 
-        return ChainStatement(*temp_list), changed_structure
-    return structure, changed_structure
+        return ChainStatement(*temp_list)
+    return structure
 
 
-def space_removal(structure, changed_structure):
+def space_removal(structure):
     if type(structure) is ChainStatement \
             and len(structure) > 1:
         # if 1 len chain statements can be canceled it could remove the optional part of or statements
         # todo remove if len > 1 might be unnecessary
         structure = ChainStatement(*[part for part in structure if part != ""])
-    return structure, changed_structure
+    return structure
 
 
-def duplicate_remove(structure, changed_structure):
+def duplicate_remove(structure):
     if type(structure) is OrStatement:
         temp_list = []
         for part in structure:
             if part not in temp_list:
                 temp_list.append(part)
-        return OrStatement(*temp_list), changed_structure
-    return structure, changed_structure
+        return OrStatement(*temp_list)
+    return structure
 
 
 def simplify(structure):
@@ -108,19 +108,15 @@ def simplify(structure):
         if type(structure_part) is str:
             return structure_part
 
-        changed = False
-        structure_part, changed = one_len_unpack(structure_part, changed)
-        structure_part, changed = or_combine(structure_part, changed)
-        structure_part, changed = de_chain(structure_part, changed)
-        structure_part, changed = chain_part_combine(structure_part, changed)
-        structure_part, changed = space_removal(structure_part, changed)
-        structure_part, changed = duplicate_remove(structure_part, changed)
-
-        if changed:
-            return recursion(structure_part)
-
         for i in range(len(structure_part)):
             structure_part[i] = recursion(structure_part[i])
+
+        structure_part = one_len_unpack(structure_part)
+        structure_part = or_combine(structure_part)
+        structure_part = de_chain(structure_part)
+        structure_part = chain_part_combine(structure_part)
+        structure_part = space_removal(structure_part)
+        structure_part = duplicate_remove(structure_part)
 
         return structure_part
 

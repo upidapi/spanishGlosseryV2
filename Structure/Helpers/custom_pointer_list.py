@@ -84,22 +84,41 @@ class PointerList:
         return f"[{out_str}]"
 
     def multi_line_print(self, indent=0):
-        if type(self) is ChainStatement:
-            print(f"{'  ' * indent}*[")
-        elif type(self) is OrStatement:
-            print(f"{'  ' * indent}^[")
+        print(f'{"   " * indent}', end='')
+        if all(type(part) is str for part in self.data):
+            sub = ", ".join([f'"{part}"' for part in self.data])
 
-        for part in self.data:
-            if type(part) is str:
-                print(f'{"  " * (indent + 1)}"{part}"')
-            else:
-                part.multi_line_print(indent+1)
+            if type(self) is ChainStatement:
+                print(f"[{sub}]", end='')
+            elif type(self) is OrStatement:
+                print(f"{{{sub}}}", end='')
 
-        if type(self) is ChainStatement:
-            print(f"{'  ' * indent}]*")
-        elif type(self) is OrStatement:
-            print(f"{'  ' * indent}]^")
+        else:
+            if type(self) is ChainStatement:
+                print(f"[")
+            elif type(self) is OrStatement:
+                print(f"{{")
 
+            for i, part in enumerate(self.data):
+                if type(part) is str:
+                    print(f'{"   " * (indent + 1)}', end='')
+                    print(f'"{part}"', end='')
+                else:
+                    part.multi_line_print(indent+1)
+
+                if i < len(self.data) - 1:
+                    print(",")
+                else:
+                    print()
+
+            print(f'{"   " * indent}', end='')
+            if type(self) is ChainStatement:
+                print(f"]", end='')
+            elif type(self) is OrStatement:
+                print(f"}}", end='')
+
+        if indent == 0:
+            print()
 
 
 class OrStatement(PointerList):

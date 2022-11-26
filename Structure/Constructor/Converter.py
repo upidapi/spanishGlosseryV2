@@ -2,15 +2,15 @@
 makes a structure that the check_correct.py can use to check if a word was spelled right
 
 to do this it uses the following parts
-    ChainStatement() => [] => chain statement
+    ChainStatement() => () => chain statement
         # used manly to chain 'or statements' and 'text statements'
 
-        [a, b, c]
+        (a, b, c)
         if you're at 'a' you have to go to next 'b'
         you always have to go to the next index
 
-    OrStatement() => {} => or statement
-        [x, {a, b, c}, y]
+    OrStatement() => [] => or statement
+        (x, [a, b, c], y)
         if you're at 'x' you have to go to 'a', 'b' or 'c'
         if you're at 'a', 'b' or 'c' you have to go to y
 
@@ -18,17 +18,16 @@ to do this it uses the following parts
         when exiting you have to go to after the list
 
 using these we can also create
-    optionals => {'optional text', ''}
+    optionals => ['optional text', '']
         a part that doesn't have to be typed but can be (if you start you can't end)
 
-    or => {'text 1', 'text 2'}
+    or => ['text 1', 'text 2']
         an or statement (se more above)
 
-    full_sheet => [{'text 1', ''}, 'text 2', {'text 3', 'text 4'}, 'text 4'] # (e.g)
+    full_sheet => (['text 1', ''], 'text 2', ['text 3', 'text 4'], 'text 4') # (e.g)
                    ^^^^^^^^^^^^^^  ^^^^^^^
                       optional
 """
-
 
 from Structure.Constructor import \
     get_split, \
@@ -36,7 +35,7 @@ from Structure.Constructor import \
     simplify, \
     make_optional
 
-from Structure.Helpers import map_to_all, ChainStatement
+from Structure.Helpers import map_to_all, ChainStatement, json_load
 
 
 def convert(inp):
@@ -77,5 +76,14 @@ def convert(inp):
 # print(convert("(he(im)(you))"))
 # print(convert("hello (he( im)( you)) wa; likes"))
 # print(convert("abc /ue/; likes /ie/"))
+# print(convert("hello/hi; likes"))
 # convert("hello/hi; likes").multi_line_print()
+# data = json_load([('abc ', ['/ue/', '']), (' likes ', ['/ie/', ''])])
+# print(data)
+# data = convert("abc /ue/; likes /ie/")
+# print(data)
+# data.multi_line_print()
+# print(data.json_dump())
+
+# print(convert("hello/hi (he( im)( you)) wa /ue/; likes /ie/"))
 # convert("hello/hi (he( im)( you)) wa /ue/; likes /ie/").multi_line_print()

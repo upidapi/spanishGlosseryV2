@@ -72,15 +72,21 @@ class PointerList:
         return bool(self.data)
 
     def __repr__(self):
-        out_str = ""
-        for i, item in enumerate(self.data):
-            if type(item) is str:
-                out_str += f"'{item}'"
-            else:
-                out_str += item.__repr__()
+        out_str = ", ".join([part.__repr__() for part in self.data])
+        # for i, item in enumerate(self.data):
+        #     if type(item) is str:
+        #         out_str += f'"{item}"'
+        #     else:
+        #         out_str += item.__repr__()
+        #
+        #     if i + 1 < len(self.data):
+        #         out_str += ", "
 
-            if i + 1 < len(self.data):
-                out_str += ", "
+        if type(self) is ChainStatement:
+            return f'({out_str})'
+        elif type(self) is OrStatement:
+            return f'[{out_str}]'
+
         return f"[{out_str}]"
 
     def multi_line_print(self, indent=0):
@@ -89,15 +95,15 @@ class PointerList:
             sub = ", ".join([f'"{part}"' for part in self.data])
 
             if type(self) is ChainStatement:
-                print(f"[{sub}]", end='')
+                print(f"({sub})", end='')
             elif type(self) is OrStatement:
-                print(f"{{{sub}}}", end='')
+                print(f"[{sub}]", end='')
 
         else:
             if type(self) is ChainStatement:
-                print(f"[")
+                print(f"(")
             elif type(self) is OrStatement:
-                print(f"{{")
+                print(f"[")
 
             for i, part in enumerate(self.data):
                 if type(part) is str:
@@ -113,19 +119,17 @@ class PointerList:
 
             print(f'{"   " * indent}', end='')
             if type(self) is ChainStatement:
-                print(f"]", end='')
+                print(f")", end='')
             elif type(self) is OrStatement:
-                print(f"}}", end='')
+                print(f"]", end='')
 
         if indent == 0:
             print()
 
 
 class OrStatement(PointerList):
-    def __repr__(self):
-        return f"*{super().__repr__()}*"
+    pass
 
 
 class ChainStatement(PointerList):
-    def __repr__(self):
-        return f"^{super().__repr__()}^"
+    pass

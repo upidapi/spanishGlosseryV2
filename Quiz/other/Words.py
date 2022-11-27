@@ -5,6 +5,79 @@ from Data import get_translate_data
 from Quiz.other import end_screen
 
 
+from Structure.Other import check_correct
+
+
+def temp_func_3(_, data_files):
+    import json
+    book_data = []
+    for file in data_files:
+        with open(file) as jsonFile:
+            book_data += json.load(jsonFile)
+            jsonFile.close()
+
+    # with open(config) as jsonFile:
+    #     config_data = json.load(jsonFile)
+    #     jsonFile.close()
+    #
+    # for i, pair in enumerate(book_data):
+    #     for j, word in enumerate(pair):
+    #         book_data[i][j] = clean(word,
+    #                                 split_keys=config_data["split_keys"],
+    #                                 remove_keys=config_data["remove_keys"],
+    #                                 remove_between_keys=config_data["remove_between_keys"])
+    return book_data
+
+
+# temporary implementation to use Structure module instead of the old Data module
+def temp_func_2(data: list) -> tuple[list[dict, ...], list[dict, ...]]:
+    from Structure.Constructor import convert
+
+    w1_to_w2 = []
+    w2_to_w1 = []
+
+    for pair in data:
+        w1_to_w2.append({'word': pair[0], 'translation': convert(pair[1])})
+        w2_to_w1.append({'word': pair[1], 'translation': convert(pair[0])})
+        # for word in pair[0]:
+        #     w1_to_w2.append({'word': word, 'translation': pair[1]})
+        #     # if word in w1_to_w2:
+        #     #     w1_to_w2.append({'word': word, 'translation': pair[1]})
+        #     # else:
+        #     #     # the join(list) is to prevent multiple possible translations become multiple 'words'
+        #     #     w1_to_w2.append({'word': ' / '.join(pair[0]), 'translation': pair[1]})
+        #
+        # for word in pair[1]:
+        #     w2_to_w1.append({'word': word, 'translation': pair[0]})
+        #     # if word in w2_to_w1:
+        #     #     w2_to_w1.append({'word': word, 'translation': pair[0]})
+        #     # else:
+        #     #     # the join(list) is to prevent multiple possible translations become multiple 'words'
+        #     #     w2_to_w1.append({'word': ' / '.join(pair[1]), 'translation': pair[0]})
+
+    return w1_to_w2, w2_to_w1
+
+
+def temp_func():
+    # from Data.load_data import load_book_data
+    from Data.FileBrowser import ask_for_files
+
+    book_data = []
+
+    books = ask_for_files()
+    if books:
+        for book in books:
+            config_file = book["config_file"]
+            data_files = book["data_files"]
+            book_data += temp_func_3(config_file, data_files)
+            return temp_func_2(book_data)
+
+    else:
+        # temporary fix
+        # if you don't select anything just bring it upp again
+        temp_func()
+
+
 class WordData:
     def __init__(self, languishes):
         self.languishes = languishes
@@ -13,7 +86,8 @@ class WordData:
         self.wrong_answer = None
         self.set_translate_text = None
 
-        self.all = get_translate_data()
+        self.all = temp_func()
+        # self.all = get_translate_data()
         self.selected = []  # all selected words
         self.current = []  # all words left
         self.right = []
@@ -63,7 +137,9 @@ class WordData:
         self.wrong = []
 
     def check_correct(self, word):
-        if word in self.current_word['translation']:
+        # correct = word in self.current_word['translation']
+        correct = check_correct(word, self.current_word['translation'])
+        if correct:
             # right
             if not self.retry:
                 self.right.append(self.current_word)

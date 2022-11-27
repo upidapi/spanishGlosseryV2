@@ -28,7 +28,8 @@ def rw_label_setup(root):
         wrong_text_fade.change(start=(0, 255, 0), end=(240, 240, 240), time=1)
 
     def wrong_answer(text):
-        wrong_text_var.set(' / '.join(text))
+        # wrong_text_var.set(' / '.join(text))
+        wrong_text_var.set(text)
         wrong_text_fade.change(start=(255, 0, 0), end=(240, 240, 240), time=3)
 
     return right_answer, wrong_answer

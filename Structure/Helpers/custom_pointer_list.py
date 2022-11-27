@@ -72,7 +72,13 @@ class PointerList:
         return bool(self.data)
 
     def __repr__(self):
-        out_str = ", ".join([part.__repr__() for part in self.data])
+        temp_list = []
+        for part in self.data:
+            if type(part) is str:
+                temp_list.append(f'"{part}"')
+            else:
+                temp_list.append(part.__repr__())
+        out_str = ", ".join(temp_list)
         # for i, item in enumerate(self.data):
         #     if type(item) is str:
         #         out_str += f'"{item}"'

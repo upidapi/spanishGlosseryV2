@@ -78,29 +78,28 @@ def find_alternative_translations(data: list):
 
 
 def load_book_data(config, data_files):
-    # book = {
-    #     "config_file":
-    #     {  # (inside the file ->)
-    #         "split_keys":
-    #             [
-    #                 ";"
-    #             ],
-    #         "remove_keys":
-    #             [
-    #                 "ung."
-    #             ],
-    #         "remove_between_keys":
-    #             [
-    #                 ["(", ")"],
-    #                 ["/", "/"]
-    #             ]
-    #     },
-    #     "data_files": [
-    #         "file_path.json",
-    #         "file_path.json",
-    #         "file_path.json",
-    #     ]
-    # }
+    """
+    book = {
+        # (inside the file ->)
+        "config_file": {
+            "split_keys": [
+                    ";"
+                ],
+            "remove_keys": [
+                    "ung."
+                ],
+            "remove_between_keys": [
+                    ["(", ")"],
+                    ["/", "/"]
+                ]
+        },
+        "data_files": [
+            "file_path.json",
+            "file_path.json",
+            "file_path.json",
+        ]
+    }
+    """
 
     book_data = []
     for file in data_files:
@@ -137,6 +136,7 @@ def get_translate_data():
 
     else:
         # temporary fix
+        # if you don't select anything just bring it upp again
         get_translate_data()
 
 

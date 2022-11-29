@@ -92,7 +92,7 @@ from Structure.Constructor import Replace
 # todo test if this works the same as "get_split"
 def get_split(inp, pattern: Literal['restrictive', 'normal', 'permissive', 'greedy', 'super_greedy'], at):
     """
-    splits the inp into ChainStatement(str, OrStatement(str, ...), str ...)
+    splits the str-inp into ChainStatement(str, OrStatement(str, ...), str ...)
     """
     pattern = getattr(SplitPatterns, pattern)(at)
 
@@ -100,3 +100,24 @@ def get_split(inp, pattern: Literal['restrictive', 'normal', 'permissive', 'gree
         return OrStatement(*re.split(f"{at}", x))
 
     return Replace.replace(inp, pattern, convert_func)
+
+
+# def get_super_split(pointer, at, data):
+#     """
+#     splits the inp into OrStatement(any, ...)
+#     splits upp the chain (until it meets the end or a OrStatement)
+#     """
+#     # pattern = getattr(SplitPatterns, pattern)(at)
+#     if type(data[pointer]) is OrStatement or len(pointer) == 0:
+#         matches = re.finditer(f"{at}", pointer)
+#         for match in matches:
+#
+#
+#
+#     def convert_func(x):
+#         return tuple(*re.split(f"{at}", x))
+#
+#     split_version = Replace.replace(inp, pattern, convert_func)
+
+
+

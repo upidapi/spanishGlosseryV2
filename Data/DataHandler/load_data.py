@@ -166,7 +166,7 @@ def load_raw_data():
 
         return json_object
 
-    data_1 = _get_data(r'../Data/other_data/lan1_data.json')
-    data_2 = _get_data(r'../Data/other_data/lan2_data.json')
+    data_1 = _get_data(r'../DataFiles/lan1_data.json')
+    data_2 = _get_data(r'../DataFiles/lan2_data.json')
 
     return data_1, data_2

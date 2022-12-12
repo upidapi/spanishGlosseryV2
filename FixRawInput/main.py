@@ -6,12 +6,12 @@ from FixRawInput import TrLines
 from FixRawInput import Mode
 from FixRawInput import CustomEntery
 from FixRawInput.CustomEntery import Handler
-from Data import load_data
+from Data import load_raw_data
 
 
 def get_tk_image(root):
     # background image
-    path = r'../Data/other_data/selected_image.jpg'
+    path = r'../Data/DataFiles/selected_image.jpg'
     raw_img = Image.open(path)
     tk_image = ImageTk.PhotoImage(raw_img, master=root)
     return tk_image
@@ -33,8 +33,8 @@ def entries_setup(root, data):
     # to prevent the last added entry from being focused
     root.focus()
     Handler.update_tr_lines()
-
     # binds
+
     root.bind('<Button-3>', lambda event: Handler.move(event))
     root.bind('<Button-2>', lambda event: Handler.new_word())
     root.bind('<Return>', lambda event: Mode.next_mode(event))
@@ -46,7 +46,7 @@ def entries_setup(root, data):
 
 
 def __init__(languishes=('spa', 'swe')):
-    data = load_data.load_raw_data()
+    data = load_raw_data()
 
     root = tk.Tk()
 

@@ -37,31 +37,7 @@ from Structure.Constructor import \
     make_optional, \
     replace
 
-from Structure.Helpers import map_to_all, ChainStatement, OrStatement
-
-
-def super_option_func_map(inp, options, foo: callable):
-    """
-    maps all options to foo which is mapped to inp
-    also re.escapes() all options
-    """
-    for option in options:
-        # sanitise options so that regex doesn't mishandle the "option"
-        if type(option) is str:
-            option = re.escape(option)
-        elif type(option) is tuple:
-            temp_list = []
-            for part in option:
-                if type(part) is str:
-                    temp_list.append(re.escape(part))
-                else:
-                    temp_list.append(part)
-            option = tuple(temp_list)
-
-        def option_func(x):
-            return foo(x, option)
-        map_to_all(option_func, inp)
-
+from Structure.Helpers import map_to_all, ChainStatement  # , OrStatement
 
 # todo add "any" support
 #  eg "hello ... im blue"
@@ -69,50 +45,89 @@ def super_option_func_map(inp, options, foo: callable):
 #  might use notation ("hello ", any, " im blue")
 #  candidates => "...", "x"
 
-# is done to do add replace support
-#  (args: "o, -a, -as, -os", ["o", "a", "os", "as"])
-#  eg bienvenido, -a, -as, -os =>
-#  ("bienvenid", ["o", "a", "os", "as"])
-#  candidates => "a, -n", "o, -a", "o, -a, -as, -os"
-
 # todo make it so you never have to type mre than one space in a row
 #  eg "  " => " "
 
-def convert(inp: str):
+
+def tuple_re_escape(options):
+    escaped = []
+    for option in options:
+        # sanitise options so that regex doesn't mishandle the "option"
+        if type(option) is str:
+            escaped.append(re.escape(option))
+        elif type(option) is tuple:
+            escaped += tuple_re_escape(option)
+    return escaped
+
+
+def list_func_map(inp, temp: tuple[tuple[callable, tuple], ...]):
+    """
+    maps all options to foo which is mapped to inp
+    """
+    for part in temp:
+        func = part[0]
+        options = part[1]
+        options = tuple_re_escape(options)
+
+        for option in options:
+            def option_func(x):
+                return func(inp[x], option)
+
+            map_to_all(option_func, inp)
+
+
+class TempName:
+    @staticmethod
+    def between_greedy(x, option):
+        # splits the input into parts at all "super_greedy"
+        return get_split(x, 'super_greedy', option)
+
+    @staticmethod
+    def between_optional(x, option):
+        # makes all between "between_optionals" optional
+        return make_between_optional(x, option)
+
+    @staticmethod
+    def replace(x, option):
+        # replaces everything in replace
+        return replace(x, option[0], option[1])
+
+    @staticmethod
+    def optional(x, option):
+        # makes all "optionals" optional
+        return make_optional(x, option)
+
+    @staticmethod
+    def between_permissive(x, option):
+        # makes OrStatements at all "normal"
+        return get_split(x, 'permissive', option)
+
+
+def convert(inp: str, blueprint):
     # todo make optionals, super_splits etc changeable
 
-    optionals = ("/ue/", "/ie/", "/de/", "...")  # the "..." is temporary
-    super_splits = (";",)
-    or_splits = ("/", ",")
-    between_optionals = (("(", ")"),)
-    replaces = ((
-                   "a, -n",
-                   OrStatement("a", "n")),
-                (
-                   "o, -a, -as, -os",
-                   OrStatement("o", "a", "os", "as")),
-                (
-                   "o, -a",
-                   OrStatement("o", "a")),
-                )
-
-    inp = inp.lower()
+    # inp = inp.lower()
     inp = ChainStatement(inp)
 
-    # splits the input into parts at all "super_greedy"
-    super_option_func_map(inp, super_splits, lambda x, option: get_split(inp[x], 'super_greedy', option))
-    # replaces everything in replace
-    super_option_func_map(inp, replaces, lambda x, option: replace(inp[x], option[0], option[1]))
-    # makes all "optionals" optional
-    super_option_func_map(inp, optionals, lambda x, option: make_optional(inp[x], option))
-    # makes OrStatements at all "normal"
-    super_option_func_map(inp, or_splits, lambda x, option: get_split(inp[x], 'permissive', option))
-    # makes all between "between_optionals" optional
-    super_option_func_map(inp, between_optionals, lambda x, option: make_between_optional(inp[x], option))
+    # todo add a gui based system for adding and ordering the "TempName" things
+    # blueprint ex =>
+    # (
+    #     (TempName.between_greedy, (";",)),
+    #     (TempName.between_optional, (("(", ")"),)),
+    #     (TempName.between_permissive, ("/",)),
+    #     (TempName.replace, (("a, -n", OrStatement("a", "n")),
+    #                         ("o, -a, -as, -os", OrStatement("o", "a", "os", "as")),
+    #                         ("o, -a", OrStatement("o", "a")),)),
+    #     (TempName.optional, ("/ue/", "/ie/", "/de/", "... ", "de")),
+    #     (TempName.between_permissive, (",",)),
+    # )
+
+    list_func_map(inp, blueprint)
 
     return simplify(inp)
 
 
+# tests
 # print(convert("(he(im)(you))"))
 # print(convert("hello (he( im)( you)) wa; likes"))
 # print(convert("abc /ue/; likes /ie/"))

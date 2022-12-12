@@ -33,5 +33,3 @@ def make_optional(inp: str, at: str):
         return OrStatement(x, "")
 
     return replace(inp, at, replace_func)
-
-

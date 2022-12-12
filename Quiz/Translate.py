@@ -23,13 +23,27 @@ def rw_label_setup(root):
     wrong_text_fade = Fade(frame_obj=root, text_obj=wrong_text, time=3, gradiant='exponential')
     wrong_text.pack()
 
-    def right_answer():
+    total_done_right_var = tk.StringVar(root)
+    total_done_right = tk.Label(root, textvariable=total_done_right_var, font=("Times New Roman", 20, "bold"))
+    total_done_right.pack()
+
+    def both(handler, correct=False):
+        amount_right = len(handler.right)
+        amount_wrong = len(handler.wrong)
+        done = amount_wrong + amount_right
+        total = len(handler.current) + done
+        total = total - 1 if correct else  total
+
+        total_done_right_var.set(f"{total}/{done}/{amount_right}")
+
+    def right_answer(handler):
+        both(handler)
         wrong_text_var.set('Correct!')
         wrong_text_fade.change(start=(0, 255, 0), end=(240, 240, 240), time=1)
 
-    def wrong_answer(text):
-        # wrong_text_var.set(' / '.join(text))
-        wrong_text_var.set(text)
+    def wrong_answer(handler):
+        both(handler)
+        wrong_text_var.set(handler.current_word['translation'])
         wrong_text_fade.change(start=(255, 0, 0), end=(240, 240, 240), time=3)
 
     return right_answer, wrong_answer

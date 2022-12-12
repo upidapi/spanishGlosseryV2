@@ -167,7 +167,7 @@ def new_image(select_image, lan):
     # gets the New and cleans up the New format
     clean_data = []
     for i in range(2):
-        json_data = get_data_from_image(r'..\Data\other_data\selected_image.jpg', language=lan[i])
+        json_data = get_data_from_image(r'../DataFiles/selected_image.jpg', language=lan[i])
         clean_data.append(clean_up_data(json_data))
 
     # add some missing words

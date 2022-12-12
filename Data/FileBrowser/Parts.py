@@ -339,6 +339,9 @@ class Head(SuperPart):
             # this is redundant the book is always an instance of BookPart
             if isinstance(book, BookPart):
                 book_path_files.append(book.get_data_files())
+                # book_data = book.get_data_files()
+                # if len(book_data["data_files"]) == 0:
+                #     book_path_files
             # if isinstance(book, ContainerPart):
             #     book_path_files.append(book.get_data_files())
             # if isinstance(book, DataPart):

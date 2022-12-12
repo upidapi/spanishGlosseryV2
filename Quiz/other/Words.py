@@ -1,7 +1,7 @@
 import random
 from typing import Literal
 
-from Data import get_translate_data
+# from Data import get_translate_data
 from Quiz.other import end_screen
 
 
@@ -31,14 +31,33 @@ def temp_func_3(_, data_files):
 
 # temporary implementation to use Structure module instead of the old Data module
 def temp_func_2(data: list) -> tuple[list[dict, ...], list[dict, ...]]:
-    from Structure.Constructor import convert
+    from Structure.Constructor import convert, TempName
+    from Structure.Helpers import OrStatement
 
     w1_to_w2 = []
     w2_to_w1 = []
 
+    blueprint = (
+        (TempName.between_greedy, (";",)),
+        (TempName.between_optional, (("(", ")"),)),
+        (TempName.between_permissive, ("/",)),
+        (TempName.replace, (("a, -n", OrStatement("a", "n")),
+                            ("o, -a, -as, -os", OrStatement("o", "a", "os", "as")),
+                            ("o, -a", OrStatement("o", "a")),)),
+        (TempName.optional, ("/ue/", "/ie/", "/de/", "... ", "de")),
+        (TempName.between_permissive, (",",)),
+    )
+
     for pair in data:
-        w1_to_w2.append({'word': pair[0], 'translation': convert(pair[1])})
-        w2_to_w1.append({'word': pair[1], 'translation': convert(pair[0])})
+        # todo make simular word translations combine
+        #  [hej, tjena] => [hola]
+        #  [halå, tjena] => [oye]
+        #  =>
+        #  [hej, tjena] => [hola, oye]
+        #  [halå, tjena] => [hola, oye]
+
+        w1_to_w2.append({'word': pair[0], 'translation': convert(pair[1], blueprint)})
+        w2_to_w1.append({'word': pair[1], 'translation': convert(pair[0], blueprint)})
         # for word in pair[0]:
         #     w1_to_w2.append({'word': word, 'translation': pair[1]})
         #     # if word in w1_to_w2:
@@ -70,7 +89,7 @@ def temp_func():
             config_file = book["config_file"]
             data_files = book["data_files"]
             book_data += temp_func_3(config_file, data_files)
-            return temp_func_2(book_data)
+        return temp_func_2(book_data)
 
     else:
         # temporary fix
@@ -145,13 +164,13 @@ class WordData:
                 self.right.append(self.current_word)
             self.retry = False
 
-            self.right_answer()
+            self.right_answer(self)
 
             self.next_word()  # force user to type it right before continuing
 
         else:
             # wrong
-            self.wrong_answer(self.current_word['translation'])
+            self.wrong_answer(self)
 
             if not self.retry:
                 self.wrong.append(self.current_word)

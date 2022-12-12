@@ -1,5 +1,5 @@
 from Structure.Helpers import get_all_next_possible, get_start_points
-from Structure.Constructor import convert
+# from Structure.Constructor import convert
 
 
 def get_text_starts(structure):

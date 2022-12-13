@@ -37,7 +37,7 @@ from Structure.Constructor import \
     make_optional, \
     replace
 
-from Structure.Helpers import map_to_all, ChainStatement  # , OrStatement
+from Structure.Helpers import map_to_all, ChainStatement, OrStatement
 
 # todo add "any" support
 #  eg "hello ... im blue"
@@ -55,8 +55,10 @@ def tuple_re_escape(options):
         # sanitise options so that regex doesn't mishandle the "option"
         if type(option) is str:
             escaped.append(re.escape(option))
-        elif type(option) is tuple:
-            escaped += tuple_re_escape(option)
+        elif type(option) in (tuple, OrStatement, ChainStatement):
+            escaped.append(tuple_re_escape(option))
+        else:
+            raise TypeError(f"invalid options ({option})")
     return escaped
 
 

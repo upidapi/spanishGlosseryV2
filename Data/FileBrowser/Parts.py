@@ -318,7 +318,7 @@ class Head(SuperPart):
         self.multiple = multiple
 
         file_path = pathlib.Path(__file__).resolve()
-        books_path = file_path.parent.parent / 'books'
+        books_path = file_path.parent.parent / 'DataFiles' / 'books'
         print(books_path)
 
         super().__init__(None, books_path)

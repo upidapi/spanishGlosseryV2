@@ -156,18 +156,18 @@ def get_missing_words(lan1, lan2):
 def new_image(select_image, lan):
     from PIL import Image
 
-    files = [r'..\Data\other_data\lan1_data.json', r'..\Data\other_data\lan2_data.json']
+    files = [r'..\Data\DataFiles\lan1_data.json', r'..\Data\DataFiles\lan2_data.json']
 
     # crops it due to the 1k x 1k limit from the api
     image = Image.open(select_image)
     image.thumbnail((1000, 1000))
 
-    image.save(r'..\Data\other_data\selected_image.jpg')
+    image.save(r'..\Data\DataFiles\selected_image.jpg')
 
     # gets the New and cleans up the New format
     clean_data = []
     for i in range(2):
-        json_data = get_data_from_image(r'../DataFiles/selected_image.jpg', language=lan[i])
+        json_data = get_data_from_image(r'..\Data\DataFiles\selected_image.jpg', language=lan[i])
         clean_data.append(clean_up_data(json_data))
 
     # add some missing words

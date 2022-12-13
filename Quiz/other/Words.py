@@ -44,7 +44,7 @@ def temp_func_2(data: list) -> tuple[list[dict, ...], list[dict, ...]]:
         (TempName.replace, (("a, -n", OrStatement("a", "n")),
                             ("o, -a, -as, -os", OrStatement("o", "a", "os", "as")),
                             ("o, -a", OrStatement("o", "a")),)),
-        (TempName.optional, ("/ue/", "/ie/", "/de/", "... ", "de")),
+        (TempName.optional, ("/ue/", "/ie/", "/de/", "... ", "de$")),
         (TempName.between_permissive, (",",)),
     )
 

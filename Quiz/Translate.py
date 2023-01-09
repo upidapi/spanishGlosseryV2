@@ -78,6 +78,14 @@ def text_box_setup(root, word_data_handler):
     input_field.bind('<KeyPress>', replace)
 
 
+# todo add a hinting system for words
+#  eg word "clase de quimica"
+#  would have the folowing hints
+#  ****************
+#  ***** ** *******
+#  c**** ** ******a
+#  cl*** d* *****ca
+#  clase de quimica
 def __init__(languishes=('spa', 'swe')):
     # setup
     word_data_handler = WordData(languishes)

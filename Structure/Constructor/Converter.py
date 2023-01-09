@@ -108,7 +108,7 @@ class TempName:
 def convert(inp: str, blueprint):
     # todo make optionals, super_splits etc changeable
 
-    # inp = inp.lower()
+    inp = inp.lower()
     inp = ChainStatement(inp)
 
     # todo add a gui based system for adding and ordering the "TempName" things

@@ -1,3 +1,5 @@
+from typing import Self
+
 class Data:
     """
     WARNING!
@@ -141,12 +143,7 @@ class Data:
         a.get_tail().adopt(b.get_head())
         b.get_tail().adopt(c.get_head())
 
-    def sync(self):
-        """
-        syncs the head/tail by
-          merging all heads/tails
-          adds things with no parents/children
-        """
+    def get_all(self) -> set[Self]:
         last_len = 0
         cataloged = set()
         cataloged.add(self)
@@ -155,37 +152,7 @@ class Data:
             for thing in cataloged.copy():
                 cataloged |= thing.children
                 cataloged |= thing.parents
-
-        heads = set()
-        tails = set()
-        for thing in cataloged:
-            if thing.data == "head":
-                heads |= thing.children
-                thing.remove()
-            elif len(thing.parents) == 0:
-                heads.add(thing)
-            if thing.data == "tail":
-                tails |= thing.parents
-                thing.remove()
-            elif len(thing.children) == 0:
-                tails.add(thing)
-
-        # don't accidentally remove head nor tail if it's "self"
-        if self.data == "head":
-            self.children = set()
-            head = self
-        else:
-            head = Data("head")
-        if self.data == "tail":
-            self.children = set()
-            tail = self
-        else:
-            tail = Data("tail")
-
-        for thing in heads:
-            head.adopt(thing)
-        for thing in tails:
-            thing.adopt(tail)
+        return cataloged
 
     def get_head(self):
         head = []
@@ -218,8 +185,69 @@ class Data:
             raise TypeError("0 tails found")
         raise TypeError("multiple tails found")
 
+    def make_head_tail(self):
+        """
+        syncs the head/tail by
+          merging all heads/tails
+          adds things with no parents/children
+        """
+
+        heads = set()
+        tails = set()
+        for thing in self.get_all():
+            if thing.data == "head":
+                heads |= thing.children
+                thing.remove()
+            elif len(thing.parents) == 0:
+                heads.add(thing)
+            if thing.data == "tail":
+                tails |= thing.parents
+                thing.remove()
+            elif len(thing.children) == 0:
+                tails.add(thing)
+
+        # don't accidentally remove head nor tail if it's "self"
+        if self.data == "head":
+            self.children = set()
+            head = self
+        else:
+            head = Data("head")
+        if self.data == "tail":
+            self.children = set()
+            tail = self
+        else:
+            tail = Data("tail")
+
+        for thing in heads:
+            head.adopt(thing)
+        for thing in tails:
+            thing.adopt(tail)
+
+    def nodes_to(self):
+        connections = set()
+        for parent in self.parents:
+            if parent.data == "point":
+                connections |= parent.nodes_to()
+            else:
+                connections.add(parent)
+        return connections
+
+    def sync(self):
+        self.make_head_tail()
+        for node in self.get_all():
+
+            if len(node.children) < 2:
+                continue
+            possible = {}
+            for child in node.children:
+                temp = child.nodes_to()
+                if len(temp) >= 2:
+                    possible[child] = temp
+            # how do you decide what to "converge"?
+
+
     # display functions
-    def print(self, id=None):
+    def print(self, ide=None):
         def push_forward(thing):
             for x in layers:
                 try:
@@ -242,10 +270,10 @@ class Data:
                     layers[-1].append(sub_part)
                     some_name.append(sub_part)
 
-        if id is None:
+        if ide is None:
             print(layers)
         else:
-            print(id, layers)
+            print(ide, layers)
         return layers
 
     def sectioned_list(self):
@@ -332,6 +360,9 @@ class Data:
     def __repr__(self):
         return self.data
 
+
+# todo rename "thing" to "node"
+# todo add typehints
 
 a = Data("a")
 b = Data("b")

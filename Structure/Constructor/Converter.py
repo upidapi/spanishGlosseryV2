@@ -111,7 +111,7 @@ def convert(inp: str, blueprint):
     inp = inp.lower()
     inp = ChainStatement(inp)
 
-    # todo add a gui based system for adding and ordering the "TempName" things
+    # todo add a gui based system for adding and or>Ä_ÅÖdering the "TempName" things
     # blueprint ex =>
     # (
     #     (TempName.between_greedy, (";",)),

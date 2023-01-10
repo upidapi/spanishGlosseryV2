@@ -1,6 +1,7 @@
-from typing import Self
+from __future__ import annotations
 
-class Data:
+
+class Node:
     """
     WARNING!
     Do not store references to "head" nor "tail". (and maby "point")
@@ -48,7 +49,7 @@ class Data:
     #
     #     raise ValueError("no possible options availibe")
 
-    def remove(self):
+    def remove(self) -> None:
         """
         Removes all references internal structure references to self.
         Does not remove the data contained by self, i.e. self.children,
@@ -59,7 +60,7 @@ class Data:
         for parent in self.parents:
             parent.children.remove(self)
 
-    def adopt(self, child):
+    def adopt(self, child) -> None:
         # remove head when merge
         if self.data == "tail" and len(self.parents) > 1 and \
                 child.data == "head" and len(child.children) > 1:
@@ -81,10 +82,10 @@ class Data:
             self.children.add(child)
             child.parents.add(self)
 
-    def r_adopt(self, parent):
+    def r_adopt(self, parent) -> None:
         parent.adopt(self)
 
-    def parallelize(self, other):
+    def parallelize(self, other) -> None:
         """parallelize self with respect to other"""
         for child in other.children:
             self.children.add(child)
@@ -93,7 +94,7 @@ class Data:
             self.parents.add(parent)
             parent.children.add(self)
 
-    def insert(self, other):
+    def insert(self, other) -> None:
         """
         inserts other between self and its children
         self => other => self.children
@@ -106,7 +107,7 @@ class Data:
         self.children = {other}
         other.parents = {self}
 
-    def r_insert(self, other):
+    def r_insert(self, other) -> None:
         """
         inserts other between self and self its parents
         self.parents => other => self
@@ -120,7 +121,7 @@ class Data:
         self.parents = {other}
         other.children = {self}
 
-    def contract(self):
+    def contract(self) -> None:
         """
         WARNING
         this practically removes self
@@ -143,7 +144,7 @@ class Data:
         a.get_tail().adopt(b.get_head())
         b.get_tail().adopt(c.get_head())
 
-    def get_all(self) -> set[Self]:
+    def get_all(self) -> set[Node]:
         last_len = 0
         cataloged = set()
         cataloged.add(self)
@@ -154,7 +155,7 @@ class Data:
                 cataloged |= thing.parents
         return cataloged
 
-    def get_head(self):
+    def get_head(self) -> Node:
         head = []
         if self.data == "head":
             head.append(self)
@@ -171,7 +172,7 @@ class Data:
         # self.sync()
         # return self.get_head()
 
-    def get_tail(self):
+    def get_tail(self) -> Node:
         tail = []
         if self.data == "tail":
             tail.append(self)
@@ -185,7 +186,7 @@ class Data:
             raise TypeError("0 tails found")
         raise TypeError("multiple tails found")
 
-    def make_head_tail(self):
+    def make_head_tail(self) -> None:
         """
         syncs the head/tail by
           merging all heads/tails
@@ -211,19 +212,19 @@ class Data:
             self.children = set()
             head = self
         else:
-            head = Data("head")
+            head = Node("head")
         if self.data == "tail":
             self.children = set()
             tail = self
         else:
-            tail = Data("tail")
+            tail = Node("tail")
 
         for thing in heads:
             head.adopt(thing)
         for thing in tails:
             thing.adopt(tail)
 
-    def nodes_to(self):
+    def nodes_to(self) -> set[Node]:
         connections = set()
         for parent in self.parents:
             if parent.data == "point":
@@ -232,19 +233,53 @@ class Data:
                 connections.add(parent)
         return connections
 
-    def sync(self):
-        self.make_head_tail()
+    def temp_name(self):
+        def recursion(n=0) -> list[list[list, set]]:
+            # [[children],{collective_parents}]
+            if n == len(possible) - 1:
+                return [[
+                            [], None
+                        ], [
+                            [possible[n][0]], set(possible[n][1])
+                        ]]
+
+            out = []
+            for part in recursion(n + 1):
+                if part[1] is None:
+                    out.append([[], None])
+                    out.append([[possible[n][0]], set(possible[n][1])])
+                else:
+                    out.append(part)
+
+                    collective_parents = part[1] & possible[n][1]
+                    if len(collective_parents) >= 2:
+                        out.append([
+                            part[0] + possible[n][0],
+                            collective_parents
+                        ])
+
+            return out
+
         for node in self.get_all():
 
             if len(node.children) < 2:
                 continue
-            possible = {}
+
+            possible = []
             for child in node.children:
                 temp = child.nodes_to()
                 if len(temp) >= 2:
-                    possible[child] = temp
-            # how do you decide what to "converge"?
+                    possible.append((child, temp))
 
+            temp = recursion()
+            # optimal_choice = max(temp, key=lambda x: len(x[1]))
+            # check how many "connections" gets removed
+            #  if a "connection" passed through a "point" then it's not
+            #  considered a removed connection
+
+    def sync(self):
+        self.make_head_tail()
+        self.temp_name()
 
     # display functions
     def print(self, ide=None):
@@ -363,48 +398,3 @@ class Data:
 
 # todo rename "thing" to "node"
 # todo add typehints
-
-a = Data("a")
-b = Data("b")
-c = Data("c")
-d = Data("d")
-e = Data("e")
-z = Data("z")
-
-a.adopt(c)
-a.sync()
-print(1, a.sectioned_list())
-a.r_insert(z)
-print(2, a.sectioned_list())
-b.parallelize(a)
-print(3, a.sectioned_list())
-d.parallelize(c)
-print(4, a.sectioned_list())
-b.contract()
-print(5, a.sectioned_list())
-
-e.sync()
-print(6, a.sectioned_list())
-a.get_head().adopt(e.get_head())
-print(7, a.sectioned_list())
-a.sync()
-print(8, a.sectioned_list())
-
-
-
-
-def bp_find_f_pars():
-    inp = "hello (wut() (nah) like)"
-    bet = ("(", ")")
-
-    pars = 1
-    for i in range(len(inp)):
-        if inp[i] == bet[0]:
-            for j in range(i, len(inp)):
-                if inp[j] == bet[0]:
-                    pars += 1
-                if inp[j] == bet[1]:
-                    pars -= 1
-                if pars == 0:
-                    return i, j
-            break
